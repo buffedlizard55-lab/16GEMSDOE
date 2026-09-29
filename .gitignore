@@ -1,0 +1,23 @@
+# Virtual environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+
+# Large raw competition & external feature rasters (placed by scripts/download_competition_data.sh and scripts/prepare_data.py)
+data/raw
+data/cache
+data/external
+data/dem10
+data/derived
+data/scored
+data/*.tif
+data/*.npy
+data/*.npz
+data/*.zip
+!data/manifest.json
+!data/data_verification.json
+!data/preparation_summary.json

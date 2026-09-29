@@ -1,0 +1,189 @@
+{
+  "generated_at_utc": "2026-09-29T22:15:00Z",
+  "organizer_metric_worked_example": {
+    "TP_w": 3.0,
+    "FP_w": 1.89,
+    "FN_w": 2.0,
+    "DTI_exact": 0.6027,
+    "DTI_rounded_2dec": 0.6,
+    "matches_0_60": true
+  },
+  "uniqueness_audit": {
+    "primary_allfinite_sha256_unique": true,
+    "primary_nanmask_sha256_unique": true,
+    "pure_physical_sha256_unique": true,
+    "primary_off_catalogue_px_unique": true,
+    "pure_physical_off_catalogue_px_unique": true,
+    "min_hamming_distance_vs_ens12_px": 68519,
+    "min_hamming_distance_vs_7gemsdoe_px": 207951
+  },
+  "candidates": {
+    "primary_allfinite": {
+      "filename": "gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.tif",
+      "zip_filename": "gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.zip",
+      "zip_size_bytes": 683261,
+      "zip_sha256": "c0d88bb51e0edc6a619e399cf1d280bc09e0346c7bad12ecceb1ebb44b20bd50",
+      "drivendata_submission_note": "16GEMSDOE | H16-1 Seam-Free Multi-Scale Tectonic Ridge Synthesis (1m 3DEP Lidar Antislope/Piedmont Scarp + 10m 3DEP DEM Asymmetry Gap-Fill + 1.5km Strike Geopotential Worms + Hydrothermal Conduits + OOF Spatial Context | 1px Hessian ridge_nms | All-Finite [0,1] float32 | ID: a16f01)",
+      "validation": {
+        "valid": true,
+        "path": "/home/user/16GEMSDOE/docs/downloads/gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.tif",
+        "bytes": 778668,
+        "sha256": "7da9fe49482c9a826ff11a51b27a054b4cdbe4b4160513389c2c0bd6b37b5eeb",
+        "crs": "EPSG:32611",
+        "shape": [
+          3730,
+          3292
+        ],
+        "transform": [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        "dtype": "float32",
+        "footprint_pixels": 5167373,
+        "outside_pixels": 7111787,
+        "in_footprint_nan_count": 0,
+        "in_footprint_min": 0.0,
+        "in_footprint_max": 1.0,
+        "positive_pixels": 198000,
+        "positive_fraction_of_footprint": 0.038317,
+        "sum_mass": 198000.0,
+        "outside_mode": "zero_allfinite"
+      },
+      "spatial_profile": {
+        "on_catalogue_px": 0,
+        "off_catalogue_px": 198000,
+        "off_d_le_3_px": 19725,
+        "off_d_4_15_px": 78575,
+        "off_d_gt_15_px": 99700,
+        "far_field_frac_gt_3": 0.9004,
+        "deep_basin_frac_gt_15": 0.5035,
+        "reach_300m_off_cat_px": 1406701,
+        "reach_300m_off_cat_frac": 0.2755,
+        "mean_300m_kernel_weight": 0.1431,
+        "effective_kernel_lift": 3.69,
+        "overlap_ens12_px": 148000,
+        "overlap_7gemsdoe_px": 33454,
+        "novel_beyond_300m_of_ens12_px": 30998,
+        "projected_live_dti_conservative": 0.1696,
+        "projected_live_dti_central": 0.1814,
+        "emitted_in_24pct_lidar_gap_px": 54172,
+        "ens12_pruned_px": 148000,
+        "g7_novel_scarp_px": 24000,
+        "h16_1_gapfill_px": 18500,
+        "h16_1_lidar_novel_px": 7500
+      }
+    },
+    "primary_nanmask": {
+      "filename": "gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif",
+      "drivendata_submission_note": "16GEMSDOE | H16-1 Seam-Free Multi-Scale Tectonic Ridge Synthesis (Footprint-Valid [0,1], Outside-NaN Twin | 1px Hessian ridge_nms | ID: b16f02)",
+      "validation": {
+        "valid": true,
+        "path": "/home/user/16GEMSDOE/docs/downloads/gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif",
+        "bytes": 849871,
+        "sha256": "78b2aebe410e016d76c1cf15760561d7699346647955039bcc0b8adce87af30a",
+        "crs": "EPSG:32611",
+        "shape": [
+          3730,
+          3292
+        ],
+        "transform": [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        "dtype": "float32",
+        "footprint_pixels": 5167373,
+        "outside_pixels": 7111787,
+        "in_footprint_nan_count": 0,
+        "in_footprint_min": 0.0,
+        "in_footprint_max": 1.0,
+        "positive_pixels": 198000,
+        "positive_fraction_of_footprint": 0.038317,
+        "sum_mass": 198000.0,
+        "outside_mode": "nan"
+      },
+      "spatial_profile": {
+        "on_catalogue_px": 0,
+        "off_catalogue_px": 198000,
+        "off_d_le_3_px": 19725,
+        "off_d_4_15_px": 78575,
+        "off_d_gt_15_px": 99700,
+        "far_field_frac_gt_3": 0.9004,
+        "deep_basin_frac_gt_15": 0.5035,
+        "reach_300m_off_cat_px": 1406701,
+        "reach_300m_off_cat_frac": 0.2755,
+        "mean_300m_kernel_weight": 0.1431,
+        "effective_kernel_lift": 3.69,
+        "overlap_ens12_px": 148000,
+        "overlap_7gemsdoe_px": 33454,
+        "novel_beyond_300m_of_ens12_px": 30998,
+        "projected_live_dti_conservative": 0.1696,
+        "projected_live_dti_central": 0.1814,
+        "emitted_in_24pct_lidar_gap_px": 54172,
+        "ens12_pruned_px": 148000,
+        "g7_novel_scarp_px": 24000,
+        "h16_1_gapfill_px": 18500,
+        "h16_1_lidar_novel_px": 7500
+      }
+    },
+    "pure_physical_contender": {
+      "filename": "gems16-h16-1-pure-physical-scarp-worm-allfinite-20260929-c16f03.tif",
+      "drivendata_submission_note": "16GEMSDOE | H16-1 Pure Physical Multi-Scale Scarp-Worm-Hydrothermal Ridge (Zero-CNN 4-Quadrant Holdout Winner 0.2127 DTI | 1m Lidar + 10m DEM + Strike Worms + Hydrothermal | All-Finite [0,1] float32 | ID: c16f03)",
+      "validation": {
+        "valid": true,
+        "path": "/home/user/16GEMSDOE/docs/downloads/gems16-h16-1-pure-physical-scarp-worm-allfinite-20260929-c16f03.tif",
+        "bytes": 564499,
+        "sha256": "91f3dd7a0bb947e623f2c5660f5741bde099f69cb94a5bcc083c060dd5cd06cc",
+        "crs": "EPSG:32611",
+        "shape": [
+          3730,
+          3292
+        ],
+        "transform": [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        "dtype": "float32",
+        "footprint_pixels": 5167373,
+        "outside_pixels": 7111787,
+        "in_footprint_nan_count": 0,
+        "in_footprint_min": 0.0,
+        "in_footprint_max": 1.0,
+        "positive_pixels": 108500,
+        "positive_fraction_of_footprint": 0.020997,
+        "sum_mass": 108500.0,
+        "outside_mode": "zero_allfinite"
+      },
+      "spatial_profile": {
+        "on_catalogue_px": 0,
+        "off_catalogue_px": 108500,
+        "off_d_le_3_px": 10513,
+        "off_d_4_15_px": 38427,
+        "off_d_gt_15_px": 59560,
+        "far_field_frac_gt_3": 0.9031,
+        "deep_basin_frac_gt_15": 0.5489,
+        "reach_300m_off_cat_px": 947162,
+        "reach_300m_off_cat_frac": 0.1855,
+        "mean_300m_kernel_weight": 0.0895,
+        "effective_kernel_lift": 4.214,
+        "overlap_ens12_px": 14606,
+        "overlap_7gemsdoe_px": 58305,
+        "novel_beyond_300m_of_ens12_px": 37715,
+        "projected_live_dti_conservative": 0.1452,
+        "projected_live_dti_central": 0.1604,
+        "emitted_in_24pct_lidar_gap_px": 26500
+      }
+    }
+  }
+}
