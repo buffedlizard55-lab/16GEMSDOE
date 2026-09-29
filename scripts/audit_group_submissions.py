@@ -1,4 +1,4 @@
-"""Forensic byte-and-pixel audit of all 18 group submission entries across GEMSDOE1..15GEMSDOE."""
+"""Forensic byte-and-pixel audit of 19 recorded submission artifacts."""
 from __future__ import annotations
 
 import hashlib
@@ -206,8 +206,6 @@ def main() -> None:
 
     off_mask = footprint & (~cat)
     dist_to_cat = distance_transform_edt(~cat)
-    G_ref = 25000.0
-
     rows = []
     cached_arrays = {}
     for item in SUBMISSIONS:
@@ -216,7 +214,6 @@ def main() -> None:
         with rasterio.open(p) as src:
             arr = src.read(1)
         cached_arrays[item["repo"]] = arr
-        in_vals = arr[footprint]
         out_vals = arr[~footprint]
         out_nan = bool(np.isnan(out_vals).all())
         pos = (arr > 0.5) & footprint
@@ -228,20 +225,7 @@ def main() -> None:
         d_gt15 = int((off_cat & (dist_to_cat > 15.0)).sum())
 
         edt = distance_transform_edt(~off_cat)
-        k_map = np.maximum(1.0 - edt[off_mask] / 3.0, 0.0)
         reach_300m_pct = round(100.0 * float((edt[off_mask] < 3.0).mean()), 2)
-        rand_coverage = float(k_map.mean())
-
-        M = float(off_cat.sum())
-        D = item["score"]
-        if D is not None:
-            tp_implied = D * (0.8 * G_ref + 0.2 * M) / (1.0 + 0.6 * D)
-            recall_pct = round(100.0 * tp_implied / G_ref, 2)
-            tp_per_1k = round(1000.0 * tp_implied / max(M, 1.0), 2)
-            lift = round((tp_implied / G_ref) / max(rand_coverage, 1e-9), 2)
-            tp_implied = round(tp_implied, 1)
-        else:
-            tp_implied = recall_pct = tp_per_1k = lift = None
 
         rows.append(
             {
@@ -249,7 +233,7 @@ def main() -> None:
                 "site_url": item["site_url"],
                 "repo_url": item["repo_url"],
                 "account": item["account"],
-                "score": D,
+                "score": item["score"],
                 "label": item["label"],
                 "sha256": sha,
                 "sha8": sha[:8],
@@ -260,13 +244,9 @@ def main() -> None:
                 "off_cat_dist_le_300m": d_le3,
                 "off_cat_dist_300m_to_1500m": d_4_15,
                 "off_cat_dist_gt_1500m": d_gt15,
-                "frac_off_cat_gt_1500m": round(d_gt15 / max(M, 1.0), 4),
+                "frac_off_cat_gt_1500m": round(d_gt15 / max(float(off_cat.sum()), 1.0), 4),
                 "reach_300m_pct": reach_300m_pct,
                 "outside_nan": out_nan,
-                "implied_tp_at_G25k": tp_implied,
-                "implied_recall_pct_at_G25k": recall_pct,
-                "tp_per_1k_emitted_px": tp_per_1k,
-                "skill_lift_vs_random": lift,
             }
         )
 
@@ -283,6 +263,7 @@ def main() -> None:
 
     summary = {
         "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "interpretation_scope": "File identity, pixel counts, and spatial distribution relative to the local catalogue are descriptive. The reported DTI scores are not inverted into hidden-test true positives or recall.",
         "identities_verified": {
             "GEMSDOE1_equals_5GEMSDOE_bytes": rows[0]["sha256"] == rows[1]["sha256"],
             "GEMSDOE1_5GEMSDOE_shared_sha256": rows[0]["sha256"],
@@ -300,12 +281,12 @@ def main() -> None:
                 g7_outside_g1_300m / float(g7_pos.sum()), 4
             ),
         },
-        "key_scientific_conclusions": [
-            "1. Why GEMSDOE1, 5GEMSDOE, and 8GEMSDOE all scored 0.1563: GEMSDOE1 and 5GEMSDOE served the exact same GeoTIFF (SHA-256 7f00890a..., 570,890 bytes, 166,519 off-catalogue pixels). 8GEMSDOE_Hedge-v2 (SHA-256 052688ea...) is pixel-for-pixel max(ens12_7f00890a, existing_faults), proving on the live leaderboard that the 60,988 known catalogue pixels are masked/neutral.",
-            "2. Why 12GEMSDOE scored 0.1294 twice: 12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62.tif (NaN outside footprint) and _allfinite.tif (0.0 outside footprint) have identical in-footprint predictions (103,347 pixels), confirming that outside-footprint NaN vs 0.0 yields the exact same score.",
-            "3. Why 7GEMSDOE scored 0.1461 with only 76,859 pixels: The 1m USGS 3DEP lidar scarp ridge-thinned detector achieved 61.82 TP per 1,000 pixels (2.80x random lift) — 35% higher per-pixel precision than ens12 (45.74 TP/1k px) — despite emitting 0 pixels in the 24.6% 1m-lidar gap! Moreover, 42.5% (32,699 pixels) of 7GEMSDOE's lidar scarps lie >300 m outside ens12.",
-            "4. Why 14GEMSDOE (0.0020), 11GEMSDOE (0.0202), 6GEMSDOE (0.0286), and 10GEMSDOE_h16 (0.0461) failed: They placed 92% to 99.97% of their predictions within 1.5 km of already-mapped catalogue faults (14GEMSDOE placed only 38 pixels >1.5 km from the catalogue!). This proves the hidden test set consists of unmapped basin-and-range fault systems (>1.5 km from catalogue), not near-tip horsetails or catalogue halos.",
-            "5. Why 2D exclusion-box NMS dots (12GEMSDOE 0.1294, GEMSDOE3_nodes 0.1193, 15GEMSDOE 0.0782) underperformed continuous 1-px ridges: 5x5 exclusion boxes lose kernel credit when traces are offset by 100-200m and force 70-80% of emitted dots off the fault network into background noise once fault ridges saturate.",
+        "interpretation_limits": [
+            "GEMSDOE1 and 5GEMSDOE contain identical prediction bytes, so their reported equal scores are duplicate submissions rather than independent method results.",
+            "8GEMSDOE differs from ens12 only on pixels overlapping the local known catalogue. Its reported equal four-decimal score is consistent with catalogue neutrality but does not prove the evaluator rule.",
+            "NaN-outside and zero-outside variants with the same in-footprint values are not scientifically distinct. The official submission format requires null/NaN outside bounds; zero-outside files are diagnostic only.",
+            "Per-file counts and distances to the local catalogue are descriptive spatial statistics. Public DTI scores cannot be inverted to true positives or recall without hidden truth and full scoring details.",
+            "A relationship between catalogue-distance distributions and reported scores is observational; it does not establish the hidden faults' geography or the cause of any score."
         ],
         "submissions": rows,
     }

@@ -3,961 +3,133 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>16GEMSDOE — DOE GEMS Prize Contender & Forensic Verification Hub</title>
+  <meta name="description" content="16GEMSDOE research, submission artifacts, holdout results, and audit for DrivenData DOE GEMS." />
+  <title>16GEMSDOE — DOE GEMS Research & Submission Hub</title>
   <style>
-    :root {
-      --bg: #070b16;
-      --panel: #10182d;
-      --panel-alt: #16223f;
-      --border: #263866;
-      --text: #eef4ff;
-      --muted: #9fb2d8;
-      --accent: #38bdf8;
-      --emerald: #10b981;
-      --amber: #f59e0b;
-      --rose: #f43f5e;
-      --violet: #a78bfa;
-      --mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
-      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      line-height: 1.58;
-    }
-    .wrap {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 24px 20px 80px;
-    }
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 14px 20px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
-    .topbar a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 14px;
-    }
-    .topbar a:hover { text-decoration: underline; }
-    .hero-download {
-      background: linear-gradient(145deg, rgba(16,185,129,0.16), rgba(16,24,45,0.98));
-      border: 2px solid var(--emerald);
-      border-radius: 16px;
-      padding: 26px;
-      margin-bottom: 26px;
-      box-shadow: 0 12px 36px rgba(0,0,0,0.45);
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 16px;
-      margin-top: 18px;
-    }
-    .sub-card {
-      background: rgba(7,11,22,0.78);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .sub-card.primary {
-      border-color: var(--emerald);
-      background: rgba(16,185,129,0.08);
-    }
-    .badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .badge-emerald { background: rgba(16,185,129,0.22); color: #6ee7b7; border: 1px solid var(--emerald); }
-    .badge-sky { background: rgba(56,189,248,0.2); color: #7dd3fc; border: 1px solid var(--accent); }
-    .badge-amber { background: rgba(245,158,11,0.2); color: #fcd34d; border: 1px solid var(--amber); }
-    .badge-rose { background: rgba(244,63,94,0.2); color: #fda4af; border: 1px solid var(--rose); }
-    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 10px 15px;
-      border-radius: 9px;
-      font-weight: 700;
-      font-size: 13.5px;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: transform 0.1s ease;
-    }
-    .btn:active { transform: scale(0.98); }
-    .btn-emerald { background: var(--emerald); color: #03150e; }
-    .btn-sky { background: var(--accent); color: #041322; }
-    .btn-outline { background: var(--panel-alt); color: var(--text); border: 1px solid var(--border); }
-    .note-box {
-      background: #050811;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-family: var(--mono);
-      font-size: 12px;
-      color: #bae6fd;
-      word-break: break-word;
-      margin-top: 10px;
-    }
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-    h1 { font-size: 26px; margin: 8px 0 10px; }
-    h2 { font-size: 20px; margin: 0 0 12px; color: #f8fafc; }
-    h3 { font-size: 16px; margin: 0 0 8px; color: #bae6fd; }
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 12px;
-      margin: 16px 0;
-    }
-    .kpi {
-      background: var(--panel-alt);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-    }
-    .kpi .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
-    .kpi .val { font-size: 22px; font-weight: 800; color: var(--emerald); margin-top: 4px; font-family: var(--mono); }
-    .kpi .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .table-wrap { overflow-x: auto; margin-top: 12px; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-    th, td {
-      padding: 9px 11px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
-      background: var(--panel-alt);
-      color: #93c5fd;
-      font-weight: 700;
-      position: sticky;
-      top: 0;
-    }
-    tr:hover td { background: rgba(255,255,255,0.02); }
-    code {
-      font-family: var(--mono);
-      font-size: 12px;
-      background: rgba(255,255,255,0.07);
-      padding: 2px 5px;
-      border-radius: 4px;
-    }
-    .flag-box {
-      border-left: 4px solid var(--amber);
-      background: rgba(245,158,11,0.08);
-      padding: 12px 16px;
-      border-radius: 0 10px 10px 0;
-      margin-bottom: 12px;
-    }
-    a { color: var(--accent); }
+    :root { --bg:#09101e; --panel:#121d31; --panel2:#192842; --line:#304461; --text:#edf5ff; --muted:#a9bbd2; --blue:#65c9ff; --green:#45d6a3; --amber:#ffca68; --red:#ff8292; --mono:ui-monospace,SFMono-Regular,Consolas,monospace; --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    * { box-sizing:border-box; } body { margin:0; background:radial-gradient(ellipse at top,#13223a 0,#09101e 48rem); color:var(--text); font:16px/1.6 var(--sans); }
+    .wrap { max-width:1160px; margin:auto; padding:22px 18px 70px; }
+    .nav { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:13px 17px; background:rgba(18,29,49,.92); border:1px solid var(--line); border-radius:12px; margin-bottom:18px; }
+    .nav-links { display:flex; flex-wrap:wrap; gap:14px; } a { color:var(--blue); } .nav a { text-decoration:none; font-weight:700; }
+    .hero,.card { background:rgba(18,29,49,.94); border:1px solid var(--line); border-radius:16px; padding:22px; margin-bottom:18px; box-shadow:0 16px 40px rgba(0,0,0,.18); }
+    .hero { border-color:rgba(255,130,146,.58); background:linear-gradient(135deg,rgba(255,130,146,.08),rgba(18,29,49,.96) 44%); }
+    .badge { display:inline-flex; padding:4px 10px; border-radius:999px; font-size:.76rem; font-weight:850; text-transform:uppercase; letter-spacing:.045em; border:1px solid currentColor; color:var(--amber); background:rgba(255,202,104,.08); }
+    h1 { font-size:clamp(1.75rem,4vw,2.7rem); line-height:1.15; margin:.45em 0; } h2 { font-size:1.35rem; margin:0 0 12px; } h3 { font-size:1.03rem; margin:0 0 8px; }
+    p { margin:.55em 0; } .muted { color:var(--muted); } .danger { color:var(--red); } .good { color:var(--green); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; } .tile { background:var(--panel2); border:1px solid var(--line); border-radius:12px; padding:16px; }
+    .tile.primary { border-color:var(--green); } .stat { font:800 1.55rem var(--mono); color:var(--green); display:block; margin:4px 0; }
+    code,.mono { font: .9em var(--mono); background:rgba(255,255,255,.07); border-radius:5px; padding:2px 5px; overflow-wrap:anywhere; }
+    .note { display:block; font: .86rem/1.55 var(--mono); color:#d2efff; background:#08101c; border:1px solid var(--line); border-radius:8px; padding:11px; margin:11px 0; overflow-wrap:anywhere; }
+    .btn { display:inline-flex; justify-content:center; align-items:center; gap:7px; padding:10px 14px; border-radius:9px; font-weight:800; text-decoration:none; border:1px solid var(--line); background:var(--panel2); color:var(--text); cursor:pointer; }
+    .btn.main { background:var(--green); color:#06160f; border-color:var(--green); } .btn:hover { filter:brightness(1.08); }
+    .alert { border-left:4px solid var(--amber); background:rgba(255,202,104,.07); border-radius:4px 9px 9px 4px; padding:12px 15px; margin:12px 0; }
+    .table-wrap { overflow-x:auto; } table { border-collapse:collapse; width:100%; font-size:.93rem; } th,td { text-align:left; vertical-align:top; padding:10px; border-bottom:1px solid var(--line); } th { background:var(--panel2); color:#bfe4ff; }
+    ul,ol { padding-left:22px; } li { margin-bottom:7px; } .foot { color:var(--muted); font-size:.9rem; }
+    @media(max-width:620px) { .hero,.card { padding:17px; } .nav { align-items:flex-start; } th,td { min-width:120px; } }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <!-- TOP NAVIGATION & EXECUTIVE SUMMARY BANNER -->
-    <div class="topbar">
-      <div>
-        <span class="badge badge-emerald">16GEMSDOE Verified</span>
-        &nbsp;<strong>DOE GEMS: Geothermal Exploration With Machine Learning (DrivenData #306)</strong>
-      </div>
-      <div>
-        <a href="executive_summary.html" style="color:#6ee7b7; font-weight:800;">&rarr; Open Executive Summary &amp; 60-Second Submission Guide</a>
-        &nbsp;&bull;&nbsp;
-        <a href="leaderboard.json" target="_blank">leaderboard.json</a>
-        &nbsp;&bull;&nbsp;
-        <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">Live Leaderboard &nearr;</a>
-        &nbsp;&bull;&nbsp;
-        <a href="https://github.com/buffedlizard55-lab/16GEMSDOE" target="_blank" rel="noopener">GitHub Repo &nearr;</a>
-      </div>
-    </div>
+  <main class="wrap">
+    <header class="nav">
+      <strong>16GEMSDOE · DOE GEMS / DrivenData #306</strong>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="executive_summary.html">Executive summary &amp; how to submit</a>
+        <a href="research/hypothesis_register.md">Hypothesis register</a>
+        <a href="leaderboard.json">Audit JSON</a>
+        <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">Live leaderboard ↗</a>
+      </nav>
+    </header>
 
-    <!-- IMMEDIATE ONE-CLICK SUBMISSION DOWNLOAD & COPYABLE NOTE AT VERY TOP -->
-    <div class="hero-download">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
-        <div>
-          <span class="badge badge-emerald">Step 1: One-Click Validated GeoTIFF Download &amp; Unique DrivenData Note</span>
-          <h1>16GEMSDOE — H16-1 Seam-Free Multi-Scale Tectonic Ridge Synthesis</h1>
-          <p style="margin:0; color:var(--muted); max-width:920px;">
-            Guaranteed compliant with DrivenData's strict <code>[0, 1]</code> validator (<code>3730 &times; 3292</code>,
-            <code>EPSG:32611</code>, single-band <code>float32</code>, <strong>0 in-footprint NaNs</strong>, values strictly in
-            <code>[0.0, 1.0]</code>). Verified 100% byte- and pixel-unique against all 19 prior group submissions
-            (<code>GEMSDOE1</code> through <code>15GEMSDOE</code>). Need a walkthrough?
-            <a href="executive_summary.html" style="color:#6ee7b7; font-weight:700;">Read the Executive Summary Subpage &rarr;</a>
-          </p>
-        </div>
-      </div>
+    <section class="hero">
+      <span class="badge">Research status: no new candidate passed</span>
+      <h1>Find unmapped faults with evidence—not repeated submissions.</h1>
+      <p class="muted">This project researches fault predictions related to geothermal systems using GeoDAWN and public geologic data. Existing downloads are local format-checked experiments, not verified leaderboard improvements. The latest preregistered new hypothesis, H17-1, failed the spatial holdout gate. <strong class="danger">No new submission is recommended; no submission slot was spent.</strong></p>
+      <p><a class="btn" href="executive_summary.html">Read the 60-second submission guide</a> <a class="btn" href="research/hypothesis_register.md">Review ranked hypotheses &amp; sources</a></p>
+    </section>
 
-      <div class="grid-3">
-        <!-- PRIMARY ALL-FINITE CANDIDATE -->
-        <div class="sub-card primary">
-          <div>
-            <span class="badge badge-emerald">Primary Weekly Slot Recommendation (ID: a16f01)</span>
-            <h3 style="margin-top:10px;">Candidate 1A — All-Finite [0.0, 1.0] Synthesis (.tif &amp; .zip)</h3>
-            <p style="font-size:13px; color:var(--muted); margin:6px 0;">
-              <strong>Zero NaNs in entire 3730&times;3292 raster</strong> (immune to <code>"Predicted values must be in range [0, 1]"</code>).
-              Combines pruned <code>ens12</code> core (<code>148,000</code> px) + novel 1m-lidar <code>7GEMSDOE+H16-1</code> scarp ridges
-              (<code>24,000</code> px) + <code>H16-1</code> 24.6%-lidar-gap ridges from 10m DEM asymmetry, 1.5 km geopotential strike worms,
-              and hydrothermal conduits (<code>18,500</code> px) + novel antislope/worm ridges (<code>7,500</code> px).
-            </p>
-            <ul style="font-size:12.5px; color:var(--text); padding-left:18px; margin:8px 0;">
-              <li><strong>Off-Catalogue Pixels:</strong> <code>198,000</code> (<code>3.83%</code> of footprint; <code>0</code> on-catalogue)</li>
-              <li><strong>24.6% Lidar-Gap Coverage:</strong> <code>54,172</code> px (vs. <code>0</code> px in <code>7GEMSDOE</code>)</li>
-              <li><strong>300m Kernel Reach / Lift:</strong> <code>27.55%</code> reach (<code>+28%</code> vs <code>ens12</code>) | <code>3.69&times;</code> lift</li>
-              <li><strong>Two-Point Calibrated DTI:</strong> <code>0.1696</code> (conservative) – <code>0.1814</code> (central)</li>
-              <li><strong>SHA-256 (.tif):</strong> <code>7da9fe49482c9a82...b5eeb</code> (<code>778,668</code> B)</li>
-            </ul>
-            <div class="note-box" id="note-a16f01">16GEMSDOE | H16-1 Seam-Free Multi-Scale Tectonic Ridge Synthesis (1m 3DEP Lidar Antislope/Piedmont Scarp + 10m 3DEP DEM Asymmetry Gap-Fill + 1.5km Strike Geopotential Worms + Hydrothermal Conduits + OOF Spatial Context | 1px Hessian ridge_nms | All-Finite [0,1] float32 | ID: a16f01)</div>
-          </div>
-          <div class="btn-row">
-            <a class="btn btn-emerald" href="downloads/gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.tif" download>
-              &darr; Download Primary .tif (778 KB)
-            </a>
-            <a class="btn btn-sky" href="downloads/gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.zip" download>
-              &darr; Download .zip (683 KB)
-            </a>
-            <button class="btn btn-outline" onclick="copyNote('note-a16f01', this)">
-              Copy DrivenData Note (a16f01)
-            </button>
-          </div>
-        </div>
+    <section class="card" aria-labelledby="download-title">
+      <h2 id="download-title">Format-checked GeoTIFF download</h2>
+      <div class="alert"><strong>Important:</strong> downloading is not a recommendation to upload. No current file is live-scored. The site’s NaN-outside TIFF is the only supplied file that follows the official outside-bounds null/NaN convention. It is an encoding twin of the all-finite file and not a separate experiment.</div>
+      <div class="grid">
+        <article class="tile primary">
+          <span class="badge" style="color:var(--green);">Official-format encoding · experimental · no live score</span>
+          <h3 style="margin-top:10px;">H16-1 ridge synthesis — NaN outside footprint (b16f02)</h3>
+          <p class="muted">Single-band float32; EPSG:32611; template grid; no NaNs or out-of-range values inside the evaluation footprint; NaN outside. This proves format properties only, not score or geology.</p>
+          <p><strong>File:</strong> <code>gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif</code><br><strong>SHA-256:</strong> <code>78b2aebe410e016d76c1cf15760561d7699346647955039bcc0b8adce87af30a</code></p>
+          <a class="btn main" href="downloads/gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif" download>Download GeoTIFF (.tif, 850 KB)</a>
+          <span class="note" id="submission-note">16GEMSDOE | H16-1 ridge synthesis; NaN outside footprint; float32 [0,1] | ID: b16f02</span>
+          <button class="btn" type="button" onclick="copyNote()">Copy experiment name/comment</button>
+        </article>
+        <article class="tile">
+          <h3>Other experimental files (not a submission recommendation)</h3>
+          <ul>
+            <li><a href="downloads/gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.tif" download>a16f01 all-finite TIFF</a> — outside pixels are zero, so it does not follow the official null/NaN outside-bounds requirement. Same in-footprint values as b16f02.</li>
+            <li><a href="downloads/gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.zip" download>a16f01 ZIP</a> — same all-finite TIFF packaged as ZIP.</li>
+            <li><a href="downloads/gems16-h16-1-pure-physical-scarp-worm-allfinite-20260929-c16f03.tif" download>c16f03 physical-feature TIFF</a> — outside pixels are zero; exact export was not holdout-scored and has no live score.</li>
+          </ul>
+          <p class="foot">Do not submit different nodata encodings of the same in-footprint prediction as separate methods.</p>
+        </article>
+      </div>
+    </section>
 
-        <!-- PRIMARY NAN-MASK TWIN -->
-        <div class="sub-card">
-          <div>
-            <span class="badge badge-sky">Outside-NaN Twin (ID: b16f02)</span>
-            <h3 style="margin-top:10px;">Candidate 1B — Footprint-Valid [0, 1] / Outside-NaN Twin</h3>
-            <p style="font-size:13px; color:var(--muted); margin:6px 0;">
-              Identical <code>198,000</code> in-footprint fault ridge predictions as Candidate 1A, with <code>0</code> in-footprint
-              <code>NaN</code>s and <code>NaN</code> outside the <code>5,167,373</code> evaluation mask (matching the outside-mask convention
-              of <code>sample_submission.tif</code>; proven by <code>12GEMSDOE</code> on <code>SDCF9</code> to score identically to all-finite).
-            </p>
-            <ul style="font-size:12.5px; color:var(--text); padding-left:18px; margin:8px 0;">
-              <li><strong>In-Footprint NaNs:</strong> <code>0</code> (strictly <code>[0.0, 1.0]</code> in footprint)</li>
-              <li><strong>Off-Catalogue Pixels:</strong> <code>198,000</code> (<code>19,725</code> d&le;3 | <code>78,575</code> d=4..15 | <code>99,700</code> d&gt;15)</li>
-              <li><strong>Far-Field Fraction (d&gt;300m):</strong> <code>90.04%</code> (<code>50.35%</code> in deep basins d&gt;1.5km)</li>
-              <li><strong>SHA-256 (.tif):</strong> <code>78b2aebe410e016d...af30a</code> (<code>849,871</code> B)</li>
-            </ul>
-            <div class="note-box" id="note-b16f02">16GEMSDOE | H16-1 Seam-Free Multi-Scale Tectonic Ridge Synthesis (Footprint-Valid [0,1], Outside-NaN Twin | 1px Hessian ridge_nms | ID: b16f02)</div>
-          </div>
-          <div class="btn-row">
-            <a class="btn btn-outline" href="downloads/gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif" download>
-              &darr; Download Outside-NaN .tif (850 KB)
-            </a>
-            <button class="btn btn-outline" onclick="copyNote('note-b16f02', this)">
-              Copy DrivenData Note (b16f02)
-            </button>
-          </div>
-        </div>
+    <section class="card">
+      <h2>Why the score 0.1563 appeared repeatedly</h2>
+      <div class="grid">
+        <article class="tile"><h3>GEMSDOE1 = 5GEMSDOE</h3><span class="stat">Same bytes</span><p>Both public repositories contain the same 570,890-byte TIFF and SHA-256 <code>7f00890a62878d612fb5eef67a9a364a2df819433dde74b6762ce4fc0fc4fe15</code>. The reported 0.1563 is one identical prediction uploaded twice.</p></article>
+        <article class="tile"><h3>8GEMSDOE</h3><span class="stat">Same off-catalogue mask</span><p>Its TIFF is different, but pixelwise equals <code>max(ens12, catalogue)</code>; all changed pixels are on the known catalogue. Equal reported score is consistent with catalogue neutrality, but not conclusive proof of evaluator behavior.</p></article>
+        <article class="tile"><h3>12GEMSDOE twin</h3><span class="stat">Same footprint</span><p>The NaN-outside and zero-outside versions differ in encoding outside the map, not in their in-footprint predictions. They are not unique scientific methods.</p></article>
+      </div>
+      <p class="foot">Historical scores are user/group records, not current guarantees. See the <a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/group_forensic_audit.json">forensic evidence ↗</a>.</p>
+    </section>
 
-        <!-- PURE PHYSICAL ZERO-CNN CONTENDER -->
-        <div class="sub-card">
-          <div>
-            <span class="badge badge-amber">Pure Physical Zero-CNN Contender (ID: c16f03)</span>
-            <h3 style="margin-top:10px;">Candidate 2 — Pure Physical Scarp + Strike-Worm + Hydrothermal</h3>
-            <p style="font-size:13px; color:var(--muted); margin:6px 0;">
-              <strong>100% independent of <code>ens12</code> (zero CNN features).</strong> Direct full-map realization of our 4-quadrant
-              spatial holdout winner (<code>0.21272</code> Dense / <code>0.08541</code> Sparse DTI), matching <code>7GEMSDOE</code>'s ~2.0%
-              1-px ridge density inside 1m lidar (<code>82,000</code> px) and extending it across the 24.6% lidar gap (<code>26,500</code> px).
-            </p>
-            <ul style="font-size:12.5px; color:var(--text); padding-left:18px; margin:8px 0;">
-              <li><strong>Off-Catalogue Pixels:</strong> <code>108,500</code> (<code>2.10%</code> of footprint; all-finite <code>[0.0, 1.0]</code>)</li>
-              <li><strong>24.6% Lidar-Gap Coverage:</strong> <code>26,500</code> px (vs. <code>0</code> px in <code>7GEMSDOE</code>)</li>
-              <li><strong>300m Kernel Reach / Lift:</strong> <code>18.55%</code> reach | <strong><code>4.21&times;</code> effective kernel lift</strong></li>
-              <li><strong>Two-Point Calibrated DTI:</strong> <code>0.1452</code> – <code>0.1604</code> (pure non-CNN!)</li>
-              <li><strong>SHA-256 (.tif):</strong> <code>91f3dd7a0bb947e6...d06cc</code> (<code>564,499</code> B)</li>
-            </ul>
-            <div class="note-box" id="note-c16f03">16GEMSDOE | H16-1 Pure Physical Multi-Scale Scarp-Worm-Hydrothermal Ridge (Zero-CNN 4-Quadrant Holdout Winner 0.2127 DTI | 1m Lidar + 10m DEM + Strike Worms + Hydrothermal | All-Finite [0,1] float32 | ID: c16f03)</div>
-          </div>
-          <div class="btn-row">
-            <a class="btn btn-outline" href="downloads/gems16-h16-1-pure-physical-scarp-worm-allfinite-20260929-c16f03.tif" download>
-              &darr; Download Pure-Physical .tif (564 KB)
-            </a>
-            <button class="btn btn-outline" onclick="copyNote('note-c16f03', this)">
-              Copy DrivenData Note (c16f03)
-            </button>
-          </div>
-        </div>
+    <section class="card">
+      <h2>Leaderboard and spatial holdout: separate measures</h2>
+      <div class="grid">
+        <article class="tile"><h3>Public leaderboard snapshot</h3><span class="stat">0.3168</span><p>Rank 1 at the official page when checked on 2026-09-29, approximately 23:45 UTC. The 0.3049 supplied in the request was an earlier snapshot.</p><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">Refresh from official leaderboard ↗</a><p class="foot">Static snapshot; click through for the live value.</p></article>
+        <article class="tile"><h3>Existing holdout best</h3><span class="stat">0.21272 / 0.08541</span><p>H16-1 mean dense / sparse-proxy DTI across four geographic folds.</p><p class="foot">Scores transfer to held-out regions of known mapped faults and a synthetic sparse-component proxy. They are not public/hidden leaderboard DTI.</p></article>
+        <article class="tile"><h3>New test H17-1</h3><span class="stat" style="color:var(--red);">FAILED</span><p>Cross-sensor magnetic–gravity edge agreement: 0.15759 dense / 0.06227 sparse-proxy. It lost in every fold against H16-1. No TIFF or submission was generated.</p><a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/hypothesis_h17_1_validation.json">View fold scores and hashes ↗</a></article>
       </div>
-    </div>
+      <p class="foot">For exact splits, methods and limitations, see the <a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/spatial_holdout_results.json">holdout report ↗</a> and <a href="research/hypothesis_register.md">ranked hypothesis register</a>.</p>
+    </section>
 
-    <!-- KEY PERFORMANCE METRICS -->
-    <div class="kpi-grid">
-      <div class="kpi">
-        <div class="label">Group Best Live Score</div>
-        <div class="val">0.1563</div>
-        <div class="sub">GEMSDOE1 / 5GEMSDOE / 8GEMSDOE</div>
-      </div>
-      <div class="kpi">
-        <div class="label">Best Physical Scarp Score</div>
-        <div class="val">0.1461</div>
-        <div class="sub">7GEMSDOE (61.82 TP/1k px, 0 in gap)</div>
-      </div>
-      <div class="kpi">
-        <div class="label">4-Quadrant Holdout Winner</div>
-        <div class="val">0.21272</div>
-        <div class="sub">H16-1 (+33.9% vs Base, +22.3% vs G7)</div>
-      </div>
-      <div class="kpi">
-        <div class="label">NE Lidar-Gap Holdout Gain</div>
-        <div class="val">+42.9%</div>
-        <div class="sub">0.23907 (H16-1) vs 0.16727 (G7)</div>
-      </div>
-      <div class="kpi">
-        <div class="label">16GEMSDOE Projected DTI</div>
-        <div class="val">0.1696–0.1814</div>
-        <div class="sub">Two-Point Calibrated on Live LB</div>
-      </div>
-      <div class="kpi">
-        <div class="label">Organizer Benchmark (#21)</div>
-        <div class="val">0.1847</div>
-        <div class="sub">DrivenData Top-1 (#1 DARD): 0.3168</div>
-      </div>
-    </div>
+    <section class="card">
+      <h2>Current research hypotheses</h2>
+      <p>The five new candidates are ranked in the research register with named layers, physical signatures, novelty relative to prior experiments, costs, and trusted source links. H17-1 was the first to test and did not beat H16-1; it is not being promoted. Remaining ideas are proposals, not established findings.</p>
+      <a class="btn" href="research/hypothesis_register.md">Open the full scientific hypothesis register</a>
+    </section>
 
-    <!-- SECTION 1: FORENSIC AUDIT OF ALL 19 GROUP SUBMISSIONS -->
-    <div class="card">
-      <span class="badge badge-sky">Forensic Verification</span>
-      <h2 style="margin-top:8px;">1. Byte-and-Pixel Forensic Audit of All 19 Group Submissions (GEMSDOE1 – 15GEMSDOE)</h2>
-      <p style="color:var(--muted); margin-top:0;">
-        Every repository in our group (<code>GEMSDOE</code> through <code>15GEMSDOE</code>) was shallow-cloned and audited against the
-        official GeoDAWN footprint (<code>5,167,373</code> finite pixels) and public fault catalogue (<code>60,988</code> positive pixels in
-        <code>labels.tif</code>). Full machine-readable audit: <code>evidence/group_forensic_audit.json</code>.
-      </p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Repo / Candidate</th>
-              <th>Account</th>
-              <th>Live DTI</th>
-              <th>SHA-256 (8-char)</th>
-              <th>Off-Cat Px</th>
-              <th>On-Cat Px (d=0)</th>
-              <th>Near-Cat (d&le;3)</th>
-              <th>Mid-Field (d=4..15)</th>
-              <th>Deep Basin (d&gt;15)</th>
-              <th>300m Reach</th>
-              <th>Kernel Lift</th>
-              <th>TP / 1k Px</th>
-              <th>Forensic Diagnosis</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>16GEMSDOE Primary (a16f01)</strong></td>
-              <td><em>Ready</em></td>
-              <td><strong>0.1696–0.1814*</strong></td>
-              <td><code>7da9fe49</code></td>
-              <td><strong>198,000</strong></td>
-              <td>0</td>
-              <td>19,725</td>
-              <td>78,575</td>
-              <td>99,700 (50.4%)</td>
-              <td><strong>27.55%</strong></td>
-              <td><strong>3.69&times;</strong></td>
-              <td><em>52.8*</em></td>
-              <td><strong>Seam-Free Multi-Scale Synthesis:</strong> Pruned <code>ens12</code> + <code>24k</code> novel 1m-lidar scarps + <code>18.5k</code> 24.6%-lidar-gap <code>H16-1</code> ridges + <code>7.5k</code> antislope/worm ridges.</td>
-            </tr>
-            <tr>
-              <td><strong>16GEMSDOE Pure-Phys (c16f03)</strong></td>
-              <td><em>Ready</em></td>
-              <td><strong>0.1452–0.1604*</strong></td>
-              <td><code>91f3dd7a</code></td>
-              <td><strong>108,500</strong></td>
-              <td>0</td>
-              <td>10,513</td>
-              <td>38,431</td>
-              <td>59,556 (54.9%)</td>
-              <td>18.55%</td>
-              <td><strong>4.21&times;</strong></td>
-              <td><em>57.6*</em></td>
-              <td><strong>100% Non-CNN Physical Discovery:</strong> <code>82k</code> 1m-lidar scarps + <code>26.5k</code> 24.6%-gap 10m-DEM/worm/hydrothermal ridges.</td>
-            </tr>
-            <tr>
-              <td><code>GEMSDOE1</code></td>
-              <td><code>extradr19</code></td>
-              <td><strong>0.1563</strong></td>
-              <td><code>7f00890a</code></td>
-              <td>166,519</td>
-              <td>6,455</td>
-              <td>30,859</td>
-              <td>57,161</td>
-              <td>78,499 (47.1%)</td>
-              <td>21.52%</td>
-              <td>2.73&times;</td>
-              <td>45.74</td>
-              <td>12-model multi-scale U-Net/ResNet spatial context ensemble (<code>ens12</code>).</td>
-            </tr>
-            <tr>
-              <td><code>5GEMSDOE</code></td>
-              <td><code>SDCF9</code></td>
-              <td><strong>0.1563</strong></td>
-              <td><code>7f00890a</code></td>
-              <td>166,519</td>
-              <td>6,455</td>
-              <td>30,859</td>
-              <td>57,161</td>
-              <td>78,499 (47.1%)</td>
-              <td>21.52%</td>
-              <td>2.73&times;</td>
-              <td>45.74</td>
-              <td><strong>Byte-for-byte identical</strong> to <code>GEMSDOE1</code> (exact same SHA-256 <code>7f00890a...</code>, <code>570,890</code> bytes).</td>
-            </tr>
-            <tr>
-              <td><code>8GEMSDOE</code></td>
-              <td><code>smashi34</code></td>
-              <td><strong>0.1563</strong></td>
-              <td><code>052688ea</code></td>
-              <td>166,519</td>
-              <td>60,988</td>
-              <td>30,859</td>
-              <td>57,161</td>
-              <td>78,499 (47.1%)</td>
-              <td>21.52%</td>
-              <td>2.73&times;</td>
-              <td>45.74</td>
-              <td><strong>Exact identity:</strong> <code>max(ens12_7f00890a, labels &gt; 0)</code>. Proves on live LB that all <code>60,988</code> known catalogue pixels are masked/neutral.</td>
-            </tr>
-            <tr>
-              <td><code>GEMSDOE2</code></td>
-              <td><code>extradr19</code></td>
-              <td><strong>0.1560</strong></td>
-              <td><code>f68e590f</code></td>
-              <td>175,949</td>
-              <td>6,681</td>
-              <td>32,571</td>
-              <td>60,318</td>
-              <td>83,060 (47.2%)</td>
-              <td>21.80%</td>
-              <td>2.76&times;</td>
-              <td>44.57</td>
-              <td>Binary union adding <code>9,430</code> lower-precision off-catalogue pixels to <code>ens12</code> (+0.28% reach vs +5.66% FP penalty &rarr; -0.0003 DTI).</td>
-            </tr>
-            <tr>
-              <td><code>7GEMSDOE</code></td>
-              <td><code>wbg1</code></td>
-              <td><strong>0.1461</strong></td>
-              <td><code>36c3a3f3</code></td>
-              <td>76,859</td>
-              <td>24,060</td>
-              <td>8,808</td>
-              <td>25,654</td>
-              <td>42,397 (55.2%)</td>
-              <td>13.09%</td>
-              <td><strong>2.80&times;</strong></td>
-              <td><strong>61.82</strong></td>
-              <td><strong>Highest per-pixel precision on LB (+35% vs ens12)</strong> via 1m USGS 3DEP lidar 1-px Hessian <code>ridge_nms</code>, despite <strong>0 pixels in the 24.6% lidar gap</strong>!</td>
-            </tr>
-            <tr>
-              <td><code>12GEMSDOE (NaN)</code></td>
-              <td><code>SDCF9</code></td>
-              <td><strong>0.1294</strong></td>
-              <td><code>0c9199f1</code></td>
-              <td>103,347</td>
-              <td>0</td>
-              <td>27,484</td>
-              <td>41,590</td>
-              <td>34,273 (33.2%)</td>
-              <td>16.92%</td>
-              <td>1.34&times;</td>
-              <td>41.31</td>
-              <td>GBT + DEM10 with 2D 5&times;5 box NMS; omitted <code>ens12</code> &amp; 1m lidar; 66.8% of pixels within 1.5 km of known faults.</td>
-            </tr>
-            <tr>
-              <td><code>12GEMSDOE (AllFinite)</code></td>
-              <td><code>SDCF9</code></td>
-              <td><strong>0.1294</strong></td>
-              <td><code>ce3f70fa</code></td>
-              <td>103,347</td>
-              <td>0</td>
-              <td>27,484</td>
-              <td>41,590</td>
-              <td>34,273 (33.2%)</td>
-              <td>16.92%</td>
-              <td>1.34&times;</td>
-              <td>41.31</td>
-              <td><strong>Live LB proof:</strong> Identical in-footprint predictions to <code>0c9199f1</code> with <code>0.0</code> outside footprint; proves all-finite and outside-<code>NaN</code> score identically.</td>
-            </tr>
-            <tr>
-              <td><code>GEMSDOE3_nodes</code></td>
-              <td><code>smrtdoog5</code></td>
-              <td><strong>0.1193</strong></td>
-              <td><code>f347b70d</code></td>
-              <td>205,717</td>
-              <td>6,928</td>
-              <td>8,096</td>
-              <td>37,651</td>
-              <td>159,970 (77.8%)</td>
-              <td>37.41%</td>
-              <td>0.84&times;</td>
-              <td>28.89</td>
-              <td>5&times;5 box-NMS spaced dots; 77.8% in deep basins diluted TP density to 28.89 TP/1k px.</td>
-            </tr>
-            <tr>
-              <td><code>GEMSDOE3_ridge</code></td>
-              <td><code>smrtdoog5</code></td>
-              <td><strong>0.1152</strong></td>
-              <td><code>4e03fc97</code></td>
-              <td>442,953</td>
-              <td>14,793</td>
-              <td>36,685</td>
-              <td>114,487</td>
-              <td>291,781 (65.9%)</td>
-              <td>34.90%</td>
-              <td>2.21&times;</td>
-              <td>22.34</td>
-              <td>1-px ridges over-emitted to 8.86% of footprint (<code>442,953</code> off-cat px), bloating $0.2\text{FP}$ denominator to <code>88,591</code>.</td>
-            </tr>
-            <tr>
-              <td><code>10GEMSDOE_h20</code></td>
-              <td><code>wbg1</code></td>
-              <td><strong>0.0921</strong></td>
-              <td><code>ffc91a16</code></td>
-              <td>256,879</td>
-              <td>5,879</td>
-              <td>16,660</td>
-              <td>65,575</td>
-              <td>174,644 (68.0%)</td>
-              <td>26.18%</td>
-              <td>1.93&times;</td>
-              <td>19.65</td>
-              <td>Pure 10m DEM scarp ridge without 1m lidar, geopotential worms, or spatial context.</td>
-            </tr>
-            <tr>
-              <td><code>GEMSDOE3_disc</code></td>
-              <td><code>smrtdoog5</code></td>
-              <td><strong>0.0830</strong></td>
-              <td><code>37f9d5b8</code></td>
-              <td>162,796</td>
-              <td>1,464</td>
-              <td>5,050</td>
-              <td>34,475</td>
-              <td>123,271 (75.7%)</td>
-              <td>29.40%</td>
-              <td>0.60&times;</td>
-              <td>20.06</td>
-              <td>Disconnected 5&times;5 box-NMS dots with 0.60&times; kernel lift.</td>
-            </tr>
-            <tr>
-              <td><code>15GEMSDOE</code></td>
-              <td><code>smashi34</code></td>
-              <td><strong>0.0782</strong></td>
-              <td><code>bf858ca2</code></td>
-              <td>99,839</td>
-              <td>0</td>
-              <td>7,044</td>
-              <td>27,481</td>
-              <td>65,314 (65.4%)</td>
-              <td>19.16%</td>
-              <td>0.72&times;</td>
-              <td>18.77</td>
-              <td>Hydrothermal alteration + magnetic 5&times;5 box-NMS spaced dots (omitted 1m lidar, 10m DEM, and <code>ens12</code>).</td>
-            </tr>
-            <tr>
-              <td><code>10GEMSDOE_h16</code></td>
-              <td><code>wbg1</code></td>
-              <td><strong>0.0461</strong></td>
-              <td><code>3431b83c</code></td>
-              <td>114,578</td>
-              <td>0</td>
-              <td>46,796</td>
-              <td>59,012</td>
-              <td>8,770 (7.7%)</td>
-              <td>6.37%</td>
-              <td>2.84&times;</td>
-              <td>10.75</td>
-              <td><strong>Near-Catalogue Collapse:</strong> 92.3% of pixels placed within 1.5 km of known catalogue faults.</td>
-            </tr>
-            <tr>
-              <td><code>GEMSDOE4</code></td>
-              <td><code>extradr19</code></td>
-              <td><strong>0.0343</strong></td>
-              <td><code>7988cef5</code></td>
-              <td>249,296</td>
-              <td>58,412</td>
-              <td>144,307</td>
-              <td>84,825</td>
-              <td>20,164 (8.1%)</td>
-              <td>7.76%</td>
-              <td>8.12&times;</td>
-              <td>4.98</td>
-              <td><strong>Near-Catalogue Collapse:</strong> 91.9% of off-cat pixels placed within 1.5 km of known faults.</td>
-            </tr>
-            <tr>
-              <td><code>6GEMSDOE</code></td>
-              <td><code>SDCF9</code></td>
-              <td><strong>0.0286</strong></td>
-              <td><code>9a74fd9e</code></td>
-              <td>133,023</td>
-              <td>0</td>
-              <td>38,239</td>
-              <td>64,347</td>
-              <td>30,437 (22.9%)</td>
-              <td>8.28%</td>
-              <td>3.32&times;</td>
-              <td>5.86</td>
-              <td>77.1% of pixels within 1.5 km of known faults.</td>
-            </tr>
-            <tr>
-              <td><code>11GEMSDOE</code></td>
-              <td><code>wbg1</code></td>
-              <td><strong>0.0202</strong></td>
-              <td><code>52fa725d</code></td>
-              <td>171,328</td>
-              <td>0</td>
-              <td>57,802</td>
-              <td>102,438</td>
-              <td>11,088 (6.5%)</td>
-              <td>6.86%</td>
-              <td>3.81&times;</td>
-              <td>3.99</td>
-              <td><strong>Near-Catalogue Collapse:</strong> 93.5% of pixels within 1.5 km of known faults.</td>
-            </tr>
-            <tr>
-              <td><code>9GEMSDOE</code></td>
-              <td><code>smashi34</code></td>
-              <td><strong>0.0107</strong></td>
-              <td><code>dc913457</code></td>
-              <td>148,885</td>
-              <td>5,879</td>
-              <td>8,899</td>
-              <td>23,551</td>
-              <td>116,435 (78.2%)</td>
-              <td>17.07%</td>
-              <td>1.52&times;</td>
-              <td>2.17</td>
-              <td>Unsupervised geopotential edges dominated by non-tectonic volcanic/intrusive contacts.</td>
-            </tr>
-            <tr>
-              <td><code>14GEMSDOE</code></td>
-              <td><code>smrtdoog5</code></td>
-              <td><strong>0.0020</strong></td>
-              <td><code>c8070f74</code></td>
-              <td>131,916</td>
-              <td>0</td>
-              <td>90,489</td>
-              <td>41,389</td>
-              <td><strong>38 (0.03%)</strong></td>
-              <td>4.29%</td>
-              <td>6.98&times;</td>
-              <td>0.40</td>
-              <td><strong>Extreme Near-Catalogue Collapse:</strong> Tip-horsetail wedge filter emitted only <code>38</code> pixels &gt;1.5 km from catalogue!</td>
-            </tr>
-            <tr>
-              <td><code>13GEMSDOE</code></td>
-              <td><em>Unscored</em></td>
-              <td><em>N/A</em></td>
-              <td><code>b179369d</code></td>
-              <td>188,285</td>
-              <td>5,069</td>
-              <td>25,650</td>
-              <td>62,256</td>
-              <td>100,379 (53.3%)</td>
-              <td>27.25%</td>
-              <td>1.50&times;</td>
-              <td><em>N/A</em></td>
-              <td>Unscored <code>ens12 + g7 + h20</code> blend; diluted by raw unpruned <code>10GEMSDOE_h20</code> (`0.0921`).</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <section class="card">
+      <h2>Submission checks and known irregularities</h2>
+      <ul>
+        <li>The <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">official competition page</a> requires EPSG:32611, 100 m resolution, matching bounds, a single float32 layer, values in [0,1], and null/NaN outside bounds. Review it before every upload.</li>
+        <li>The prior “Predicted values must be in range [0, 1]” rejection cannot be diagnosed exactly without the rejected file. In-footprint NaNs can trigger the check, but genuinely out-of-range values or other issues are also possible.</li>
+        <li>The official page describes the sample submission as an all-absence baseline. The local bridged sample has 60,988 positive pixels, exactly matching the positive mask in the local labels file. This is a confirmed local-file property, but the private competition download was not independently retrieved here; the cause remains unresolved.</li>
+        <li>The local data came from the team’s public hash-pinned GitHub bridge because the DrivenData data tab requires login. Matching hashes establish consistency with the bridge, not independent provenance from DrivenData.</li>
+        <li>A former README citation for GeoDAWN DOI <code>10.5066/P9Z6SA1Z</code> was incorrect; USGS lists GeoDAWN DOI <a href="https://doi.org/10.5066/P93LGLVQ">10.5066/P93LGLVQ</a>. A previously cited lidar ScienceBase record returned Not Found; see the source register for current official links.</li>
+      </ul>
+    </section>
 
-    <!-- SECTION 2: PRE-REGISTERED GEOLOGICAL HYPOTHESES & 4-QUADRANT SPATIAL HOLDOUT -->
-    <div class="card">
-      <span class="badge badge-emerald">Hypothesis Gate Passed</span>
-      <h2 style="margin-top:8px;">2. Five Pre-Registered Geological Hypotheses &amp; 4-Quadrant Spatially-Blocked Holdout Validation</h2>
-      <p style="color:var(--muted); margin-top:0;">
-        Before synthesizing any submission, we formulated and ranked 5 geological hypotheses (<code>H16-1</code> through <code>H16-5</code>)
-        and evaluated each on a strict <strong>4-fold spatially-blocked geographic quadrant holdout</strong> (<code>NW</code>,
-        <code>NE_LidarGapHeavy</code> [47.4% missing 1m lidar], <code>SW</code>, <code>SE</code>) with a <strong>1.5 km (15-pixel) spatial buffer</strong>
-        and a <strong>300 m (3-pixel) Positive-Unlabeled (PU) collar</strong>, under both Dense Held-Out Quadrant Truth and Sparse 20%
-        Component-Thinned Discovery Truth. Full results: <code>evidence/spatial_holdout_results.json</code>.
-      </p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Rank &amp; Hypothesis ID</th>
-              <th>Exact Layers &amp; Physical Transform</th>
-              <th>Why It Catches Unmapped Faults Missing From USGS/INGENIOUS Catalogue</th>
-              <th>How It Differs From GEMSDOE1–15</th>
-              <th>NW Dense / Sparse</th>
-              <th>NE (47.4% Lidar Gap) Dense / Sparse</th>
-              <th>SW Dense / Sparse</th>
-              <th>SE Dense / Sparse</th>
-              <th>Mean 4-Fold Dense / Sparse DTI</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="background:rgba(16,185,129,0.09);">
-              <td><strong>Rank #1: <code>H16-1</code><br/>Seam-Free Multi-Scale Synthesis (WINNER)</strong></td>
-              <td>
-                Modular fusion of <code>H16-3</code> (1m Lidar + 10m DEM scarps), <code>H16-2</code> (1.5 km strike worms), and <code>H16-4</code> (hydrothermal conduits) with cross-regime quantile calibration across the 24.6% lidar seam + 1-px Hessian <code>ridge_nms</code> (excluding falsified <code>H16-5</code>).
-              </td>
-              <td>
-                Unmapped geothermal faults span both 1m-lidar coverage and the 24.6% lidar gap, transitioning from exposed piedmont scarps to buried basin-floor structures. Quantile calibration eliminates the probability cliff at the lidar boundary.
-              </td>
-              <td>
-                <code>7GEMSDOE</code> emitted 0 px in the 24.6% gap; <code>12GEMSDOE</code> used 2D 5&times;5 box NMS and omitted 1m lidar; <code>13GEMSDOE</code> did not calibrate across the lidar seam.
-              </td>
-              <td><code>0.20773</code> /<br/><code>0.08898</code></td>
-              <td><strong><code>0.23907</code></strong> /<br/><strong><code>0.07795</code></strong></td>
-              <td><code>0.15460</code> /<br/><code>0.06623</code></td>
-              <td><strong><code>0.24950</code></strong> /<br/><code>0.10847</code></td>
-              <td><strong><code>0.21272</code> (+33.9%)</strong> /<br/><strong><code>0.08541</code> (+36.1%)</strong></td>
-            </tr>
-            <tr>
-              <td><strong>Rank #2: <code>H16-3</code><br/>Antislope Graben &amp; Piedmont Scarp + 10m DEM Asymmetry</strong></td>
-              <td>
-                1m USGS 3DEP Lidar (<code>upface_max</code>, <code>downface_max</code>, <code>lapneg_max * lappos_max</code> dipole, <code>step_max / sqrt(relief+9)</code>, <code>coh100 / cross_max</code>) + 10m USGS 3DEP DEM (<code>dem10_onesided3</code>, <code>dem10_onesided</code>, <code>dem10_steep_ratio_max</code>, <code>dem10_curv_absmax</code>).
-              </td>
-              <td>
-                Sub-5 m piedmont scarps, antithetic graben counter-scarps (<code>upface_max</code>), and scarps inside the 24.6% 1m-lidar gap were missed by 1:250k air-photo compilation, while tectonic-to-fluvial gating (<code>coh100 / cross_max</code>) rejects V-shaped desert washes.
-              </td>
-              <td>
-                <code>7GEMSDOE</code> used a 5-feature linear score and was 100% blind in the 24.6% lidar gap; <code>10GEMSDOE_h20</code> used 10m DEM alone without 1m lidar or antislope/relief normalization.
-              </td>
-              <td><code>0.21069</code> /<br/><code>0.08899</code></td>
-              <td><code>0.20448</code> /<br/><code>0.06540</code></td>
-              <td><code>0.15552</code> /<br/><code>0.06533</code></td>
-              <td><code>0.23629</code> /<br/><code>0.10895</code></td>
-              <td><strong><code>0.20175</code> (+27.0%)</strong> /<br/><strong><code>0.08217</code> (+31.0%)</strong><br/><em>(With Base: 0.20311 / 0.07948)</em></td>
-            </tr>
-            <tr>
-              <td><strong>Rank #3: <code>H16-2</code><br/>Strike-Aligned Geopotential Worm Continuation</strong></td>
-              <td>
-                <code>tmi_hg</code> (Band 3), <code>iso_grav_anom_slope</code> (Band 5), <code>det_elev_slope</code> (Band 19), and <code>TMI_up150</code> (150 m upward continuation) integrated along 6 strike orientations ($0^\circ..150^\circ$) over 1.5 km minus $\pm 300\text{ m}$ flanks.
-              </td>
-              <td>
-                Intrabasin step-overs and accommodation zones buried under 50–500 m of Quaternary play/fan alluvium have zero surface scarp for USGS air-photo mappers, but juxtapose dense/magnetic footwall basement against basin fill along strike.
-              </td>
-              <td>
-                <code>9GEMSDOE</code> (`0.0107`) used isotropic pixel edges triggered by circular calderas/plutons; <code>10GEMSDOE_h16</code> (`0.0461`) restricted continuation to 1.5 km around known tips.
-              </td>
-              <td><code>0.13564</code> /<br/><code>0.06019</code></td>
-              <td><code>0.18796</code> /<br/><code>0.05969</code></td>
-              <td><code>0.13095</code> /<br/><code>0.06419</code></td>
-              <td><code>0.19609</code> /<br/><code>0.07230</code></td>
-              <td><strong><code>0.16266</code> (+2.4%)</strong> /<br/><strong><code>0.06409</code> (+2.2%)</strong></td>
-            </tr>
-            <tr>
-              <td><strong>Rank #4: <code>H16-4</code><br/>Hydrothermal Magnetite-Destruction &amp; Potassic Conduit</strong></td>
-              <td>
-                Radiometric <code>K</code>, <code>Th</code>, <code>U</code>, <code>TotalCount</code> + <code>rtp</code> (Band 2), <code>tmi_hg</code> (Band 3), <code>cond_surf</code> (Band 17), <code>det_elev_slope</code> (Band 19): local potassic alteration <code>(K+1)/(Th+10)</code> + RTP demagnetization trough &times; <code>tmi_hg</code> + smectite clay conductivity gated by <code>elev_slope &gt; 1.5</code>.
-              </td>
-              <td>
-                Blind geothermal systems (e.g., McGinness Hills / Bradys style) lack major range-front scarps because strain is partitioned across narrow fault intersections where rising 150–250&deg;C fluids oxidize magnetite to hematite/pyrite and precipitate adularia/illite.
-              </td>
-              <td>
-                <code>15GEMSDOE</code> (`0.0782`) used 5&times;5 box-NMS spaced dots and did not gate out flat saline playas (where evaporitic K/clay creates false positives).
-              </td>
-              <td><code>0.13972</code> /<br/><code>0.06236</code></td>
-              <td><code>0.17908</code> /<br/><code>0.05523</code></td>
-              <td><code>0.13163</code> /<br/><code>0.06427</code></td>
-              <td><code>0.18939</code> /<br/><code>0.07012</code></td>
-              <td><strong><code>0.15996</code> (+0.7%)</strong> /<br/><strong><code>0.06299</code> (+0.4%)</strong></td>
-            </tr>
-            <tr style="background:rgba(244,63,94,0.08);">
-              <td><strong>Rank #5: <code>H16-5</code><br/>Geodetic Strain &amp; Seismicity Prior (FALSIFIED &amp; EXCLUDED)</strong></td>
-              <td>
-                <code>geod_2ndinv</code> (Band 4), <code>geod_shearrate</code> (Band 7), <code>geod_dilaterate</code> (Band 8), <code>ieq_n100a15</code> (Band 16).
-              </td>
-              <td>
-                Tested whether high GPS transtensional shear rate + low historical earthquake density identifies locked/under-mapped fault domains.
-              </td>
-              <td>
-                Explicitly tested on 4-quadrant geographic holdout and <strong>falsified (-9.0% Dense, -10.5% Sparse)</strong> because long-wavelength (&gt;25 km) regional strain/seismicity fields overfit training quadrants and fail to generalize to unseen quadrants. Excluded from <code>H16-1</code>!
-              </td>
-              <td><code>0.12536</code> /<br/><code>0.05818</code></td>
-              <td><code>0.16394</code> /<br/><code>0.05440</code></td>
-              <td><code>0.12358</code> /<br/><code>0.05141</code></td>
-              <td><code>0.16575</code> /<br/><code>0.06052</code></td>
-              <td><span style="color:#fda4af;"><strong><code>0.14466</code> (-8.9%)</strong> /<br/><strong><code>0.05613</code> (-10.5%)</strong></span></td>
-            </tr>
-            <tr>
-              <td><em>Comparator A:</em><br/><code>Sibling_7GEMSDOE_LidarOnly</code></td>
-              <td>1m USGS 3DEP Lidar 5-feature linear ridge score (<code>36c3a3f3</code>, Live LB = <code>0.1461</code>).</td>
-              <td>Catches exposed 1m-lidar scarps but emits <strong>0 pixels in the 24.6% lidar gap</strong> (47.4% of NE quadrant).</td>
-              <td>Reference sibling baseline.</td>
-              <td><code>0.16324</code> /<br/><code>0.07260</code></td>
-              <td><code>0.16727</code> /<br/><code>0.07236</code></td>
-              <td><code>0.14554</code> /<br/><code>0.06467</code></td>
-              <td><code>0.21976</code> /<br/><code>0.10290</code></td>
-              <td><code>0.17395</code> /<br/><code>0.07813</code></td>
-            </tr>
-            <tr>
-              <td><em>Comparator B:</em><br/><code>Baseline_Bands19_DeReg</code></td>
-              <td>13 de-regionalized GeoDAWN competition bands (<code>tmi_hg</code>, <code>grav_slope</code>, <code>elev_slope</code>, local 1.5 km residuals).</td>
-              <td>Baseline competition-data-only GBT + 1-px Hessian <code>ridge_nms</code>.</td>
-              <td>Internal ablation baseline.</td>
-              <td><code>0.13732</code> /<br/><code>0.06077</code></td>
-              <td><code>0.17787</code> /<br/><code>0.05823</code></td>
-              <td><code>0.12949</code> /<br/><code>0.06220</code></td>
-              <td><code>0.19081</code> /<br/><code>0.06975</code></td>
-              <td><code>0.15887</code> /<br/><code>0.06274</code></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- SECTION 3: IRREGULARITY FLAGS & LINE-BY-LINE VERIFIED SOURCES -->
-    <div class="card">
-      <span class="badge badge-amber">Line-by-Line Verification &amp; Irregularity Flags</span>
-      <h2 style="margin-top:8px;">3. Irregularities Flagged for Manual Review &amp; Official Verified Data Sources</h2>
-
-      <div class="flag-box">
-        <strong>FLAG-01 (Official Sample Submission Leak / Contradiction):</strong>
-        On the official DrivenData problem description page (<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">page/967</a>),
-        the organizers state that <code>sample_submission.tif</code> <em>"is an uninformative baseline that predicts total fault absence"</em>.
-        Line-by-line pixel verification in <code>scripts/prepare_data.py</code> (saved in <code>evidence/data_verification.json</code>) proves that
-        <code>sample_submission.tif</code> is in fact <strong>bit-for-bit identical to <code>(labels.tif &gt; 0)</code></strong> inside the
-        <code>5,167,373</code>-pixel footprint (<code>60,988</code> positive pixels, <code>0</code> differing pixels!). Furthermore, our group's live
-        submission <code>8GEMSDOE</code> (<code>052688ea</code>, which took <code>max(ens12, sample_submission)</code>) scored the exact same
-        <code>0.1563</code> as <code>GEMSDOE1</code> (<code>7f00890a</code>), proving that those <code>60,988</code> known catalogue pixels are masked out of
-        both $\text{TP}$ and $\text{FP}$ on the live leaderboard.
-      </div>
-
-      <div class="flag-box">
-        <strong>FLAG-02 (In-Footprint Feature NaN Traps in <code>training_features.tif</code>):</strong>
-        While <code>sample_submission.tif</code> defines <code>5,167,373</code> finite evaluation pixels, <code>training_features.tif</code>
-        contains <code>1,521</code> internal <code>NaN</code> pixels across 18 bands and <code>1,533</code> internal <code>NaN</code> pixels in Band 6
-        (<code>tc</code>), totaling <code>3,061</code> footprint pixels with at least one <code>NaN</code> feature. Any pipeline that fails to
-        impute those <code>3,061</code> pixels before inference emits in-footprint <code>NaN</code>s and triggers DrivenData's
-        <code>"Predicted values must be in range [0, 1]"</code> error. Our <code>src/gems/validator.py</code> enforces zero in-footprint
-        <code>NaN</code>s and strict <code>[0.0, 1.0]</code> clipping on every output file.
-      </div>
-
-      <div class="flag-box">
-        <strong>FLAG-03 (Cross-Fold Leakage Trap When Evaluating Longitude-Stripe OOF CNN Rasters on Quadrant Splits):</strong>
-        The pre-computed <code>context_detector_prob_*.tif</code> rasters from <code>GEMSDOE1</code> were trained on 4 longitude stripes across full
-        <code>labels.tif</code>. Evaluating a second-stage model that includes <code>context_detector_prob_*.tif</code> on a 4-quadrant split
-        inflates apparent quadrant Dense DTI to <code>0.41895</code> because 75% of each longitude stripe's training labels overlap each quadrant.
-        We flagged and eliminated this leakage in our 4-quadrant holdout evaluation (<code>scripts/run_spatial_holdout_and_build.py</code>) by evaluating
-        <code>H16-1</code> through <code>H16-5</code> strictly on leak-free physical features trained out-of-quadrant with a 1.5 km buffer.
-      </div>
-
-      <h3 style="margin-top:20px;">Line-by-Line Verified Competition &amp; External Official Data Registry</h3>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Dataset / Layer</th>
-              <th>Local Path &amp; SHA-256</th>
-              <th>Resolution &amp; Coverage</th>
-              <th>Official Free Public Source &amp; Verification Link</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>training_features.tif</code><br/>(19 GeoDAWN/INGENIOUS bands)</td>
-              <td><code>data/training_features.tif</code><br/>SHA-256: <code>63f9eef0...0bf20d</code><br/>(<code>933,216,972</code> B)</td>
-              <td>100 m &times; 100 m (EPSG:32611)<br/><code>3730 &times; 3292</code><br/><code>5,165,852</code> valid px (<code>5,165,840</code> in <code>tc</code>)</td>
-              <td>
-                <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">DrivenData GEMS Problem Description</a> &amp;
-                <a href="https://gdr.openei.org/submissions/1391" target="_blank" rel="noopener">DOE GDR #1391 (INGENIOUS Great Basin Compilation, DOI: 10.15121/1881483)</a>
-              </td>
-            </tr>
-            <tr>
-              <td><code>labels.tif</code><br/>(Public Fault Catalogue)</td>
-              <td><code>data/labels.tif</code><br/>SHA-256: <code>d8fb9bf2...9a2b2</code><br/>(<code>49,139,354</code> B)</td>
-              <td>100 m &times; 100 m (EPSG:32611)<br/><code>60,988</code> fault pixels (<code>1.180%</code> of footprint)</td>
-              <td>
-                <a href="https://www.usgs.gov/programs/earthquake-hazards/faults" target="_blank" rel="noopener">USGS Quaternary Fault &amp; Fold Database</a> &amp;
-                <a href="https://gdr.openei.org/submissions/1391" target="_blank" rel="noopener">INGENIOUS Quaternary Faults v1/v2 (GDR #1391)</a>
-              </td>
-            </tr>
-            <tr>
-              <td><code>sample_submission.tif</code><br/>(Evaluation Footprint Template)</td>
-              <td><code>data/sample_submission.tif</code><br/>SHA-256: <code>d8fb9bf2...9a2b2</code><br/>(<code>49,139,354</code> B)</td>
-              <td>100 m &times; 100 m (EPSG:32611)<br/><code>5,167,373</code> finite footprint pixels; <code>7,111,787</code> outside NaNs</td>
-              <td>
-                <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">DrivenData Competition #306 Template</a> (See <strong>FLAG-01</strong> above)
-              </td>
-            </tr>
-            <tr>
-              <td><strong>1m USGS 3DEP Lidar Scarp Derivatives</strong><br/>(12 sub-pixel scarp physics bands)</td>
-              <td><code>data/external/lidar_scarp_features_u8.tif</code><br/>SHA-256: <code>42646c49...da68a9</code><br/>(<code>61,997,295</code> B)</td>
-              <td>1 m / 4 m native &rarr; 100 m grid<br/>Covers <code>3,896,809</code> footprint px (<code>75.41%</code>; <code>24.59%</code> gap)</td>
-              <td>
-                <a href="https://www.sciencebase.gov/catalog/item/64949579d34ef77fcb0183a2" target="_blank" rel="noopener">USGS 3DEP GeoDAWN Lidar Point Cloud &amp; 1m Bare-Earth DEM (DOI: 10.5066/P9X8FB3Y)</a> &amp;
-                <a href="https://apps.nationalmap.gov/3depdem/" target="_blank" rel="noopener">USGS National Map 3DEP</a>
-              </td>
-            </tr>
-            <tr>
-              <td><strong>10m USGS 3DEP Seamless DEM Scarp Asymmetry</strong><br/>(13 channels bridging 24.6% lidar gap)</td>
-              <td><code>data/dem10/dem10_*.f32.npy</code><br/>Verified in <code>evidence/dem10_fetch_verification.json</code></td>
-              <td>1/3 arc-second (~10 m) &rarr; 100 m grid<br/><strong>100.00% footprint coverage</strong> (<code>5,167,373</code> px)</td>
-              <td>
-                <a href="https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer" target="_blank" rel="noopener">USGS 3DEP 1/3 Arc-Second ImageServer REST API</a> &amp;
-                <a href="https://doi.org/10.5066/P9MQRCBY" target="_blank" rel="noopener">USGS GeoDAWN Detrended Elevation (DOI: 10.5066/P9MQRCBY)</a>
-              </td>
-            </tr>
-            <tr>
-              <td><strong>GeoDAWN Radiometric &amp; Upward-Continued Magnetic Extensions</strong></td>
-              <td><code>data/external/geodawn_rad_u8.tif</code> &amp; <code>geodawn_extensions_u8.tif</code></td>
-              <td>100 m &times; 100 m (EPSG:32611)<br/><code>K</code>, <code>Th</code>, <code>U</code>, <code>TotalCount</code>, <code>Th/K</code>, <code>U/K</code>, <code>U/Th</code>, <code>TMI_up150</code></td>
-              <td>
-                <a href="https://doi.org/10.5066/P9Z6SA1Z" target="_blank" rel="noopener">USGS GeoDAWN Airborne Magnetic &amp; Radiometric Survey (DOI: 10.5066/P9Z6SA1Z)</a>
-              </td>
-            </tr>
-            <tr>
-              <td><strong>Official Rules &amp; Metric Literature</strong></td>
-              <td>Implemented in <code>src/gems/metric.py</code></td>
-              <td>$\text{DTI}(\alpha=0.2,\beta=0.8)$, $R=300\text{ m}$ ($3\text{ px}$); Initial ($50k) &amp; Final ($250k) Rounds</td>
-              <td>
-                <a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf" target="_blank" rel="noopener">DOE GEMS Official Rules (Sept 2026 PDF)</a> &bull;
-                <a href="https://doi.org/10.1029/2020JB021269" target="_blank" rel="noopener">Matt&eacute;o et al. (2021, JGR Solid Earth)</a> &bull;
-                <a href="https://pangea.stanford.edu/ERE/db/GeoConf/papers/SGW/2025/Hermant.pdf" target="_blank" rel="noopener">Hermant et al. (2025, 50th Stanford Geothermal Workshop)</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
+    <section class="card">
+      <h2>Official source links</h2>
+      <ul>
+        <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">DrivenData problem description, metric and submission format</a></li>
+        <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">DrivenData live public leaderboard</a></li>
+        <li><a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and" target="_blank" rel="noopener">USGS GeoDAWN data release</a> · <a href="https://data.usgs.gov/datacatalog/data/USGS:657e1d85d34e23d3533209f7" target="_blank" rel="noopener">USGS Science Data Catalog</a> · DOI <a href="https://doi.org/10.5066/P93LGLVQ">10.5066/P93LGLVQ</a></li>
+        <li><a href="https://www.usgs.gov/3d-elevation-program" target="_blank" rel="noopener">USGS 3DEP program</a> · <a href="https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer?f=pjson" target="_blank" rel="noopener">available USGS Elevation ImageServer metadata</a></li>
+        <li><a href="https://pubs.usgs.gov/publication/70202167" target="_blank" rel="noopener">USGS research on 3D structural mapping and geothermal potential</a> · <a href="https://www.usgs.gov/publications/geothermal-systems-northern-nevada" target="_blank" rel="noopener">USGS geothermal systems of northern Nevada</a></li>
+      </ul>
+      <p class="foot">This is a static GitHub Pages site. The leaderboard link is live, but the cached JSON is a timestamped snapshot rather than a continuously refreshed feed. The team has not connected an authenticated DrivenData submission account.</p>
+      <p><a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/README.md">Project brief and reproducibility steps ↗</a> · <a href="research/hypothesis_register.md">Research register</a> · <a href="leaderboard.json">Machine-readable snapshot</a></p>
+    </section>
+  </main>
   <script>
-    function copyNote(id, btn) {
-      const txt = document.getElementById(id).innerText;
-      navigator.clipboard.writeText(txt);
-      const orig = btn.innerText;
-      btn.innerText = "Copied Note to Clipboard!";
-      setTimeout(() => { btn.innerText = orig; }, 2200);
+    function copyNote() {
+      const text = document.getElementById('submission-note').innerText;
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => { document.querySelector('button[onclick^="copyNote"]').innerText = 'Copied!'; });
+      } else {
+        const area = document.createElement('textarea'); area.value = text; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove();
+      }
     }
   </script>
 </body>

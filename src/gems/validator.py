@@ -1,15 +1,17 @@
-"""Strict GeoTIFF submission validator and writer for DOE GEMS Prize (DrivenData #306).
+"""GeoTIFF structure/range validator and writer for DOE GEMS Prize (DrivenData #306).
 
-Prevents the "Predicted values must be in range [0, 1]" server rejection by enforcing:
+Checks documented submission constraints and can catch common causes of the
+"Predicted values must be in range [0, 1]" rejection. It cannot diagnose a prior
+rejection without the rejected file or guarantee acceptance by the competition server.
 1. Exact grid alignment with sample_submission.tif:
    - CRS: EPSG:32611
    - Shape: (3730, 3292)
    - Transform: (100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0)
    - Band count: 1, dtype: float32
 2. All 5,167,373 inside-footprint pixels must be finite (no NaN, no Inf) and in [0.0, 1.0].
-3. Outside-footprint pixels (7,111,787 pixels) must be either all NaN (matching
-   sample_submission.tif) or all 0.0 (all-finite variant, empirically proven on DrivenData
-   via 12GEMSDOE R7 to score identically: 0.1294 == 0.1294).
+3. The official DrivenData format says pixels outside the raster bounds must be null/NaN.
+   The validator can inspect a zero-outside diagnostic variant when explicitly requested,
+   but it is not marked official-format-compliant.
 """
 from __future__ import annotations
 
@@ -32,9 +34,14 @@ def sha256_file(path: Path | str) -> str:
 def validate_submission_tif(
     submission_path: Path | str,
     template_path: Path | str,
-    require_outside_nan: bool | None = None,
+    require_outside_nan: bool | None = True,
 ) -> dict[str, Any]:
-    """Validate a candidate submission GeoTIFF against sample_submission.tif."""
+    """Validate a candidate GeoTIFF against the template.
+
+    By default, enforce the official null/NaN outside-footprint convention. Set
+    ``require_outside_nan=False`` only to inspect the repository's zero-outside
+    diagnostic files; such files return ``official_format_compliant=False``.
+    """
     sub_p = Path(submission_path)
     tmpl_p = Path(template_path)
     if not sub_p.exists():
@@ -76,7 +83,7 @@ def validate_submission_tif(
         n_in_inf = int(np.isinf(in_vals).sum())
         if n_in_nan > 0:
             errors.append(
-                f"Found {n_in_nan} NaN pixels inside valid footprint (causes 'Predicted values must be in range [0, 1]')"
+                f"Found {n_in_nan} NaN pixels inside valid footprint (can cause 'Predicted values must be in range [0, 1]')"
             )
         if n_in_inf > 0:
             errors.append(f"Found {n_in_inf} Inf pixels inside valid footprint")
@@ -107,6 +114,7 @@ def validate_submission_tif(
     pos_in = int((in_vals > 0.0).sum())
     return {
         "valid": True,
+        "official_format_compliant": bool(out_all_nan),
         "path": str(sub_p),
         "bytes": sub_p.stat().st_size,
         "sha256": sha256_file(sub_p),

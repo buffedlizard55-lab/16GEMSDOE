@@ -31,8 +31,7 @@ def test_organizer_worked_example_exact():
 
 
 def test_catalogue_mask_neutrality():
-    """Verify that adding known-catalogue pixels under catalogue_mask leaves DTI unchanged
-    (reproducing the live-leaderboard identity 8GEMSDOE = 0.1563 == GEMSDOE1 = 0.1563)."""
+    """Unit-test the metric's optional neutral mask; this does not prove leaderboard behavior."""
     H, W = 64, 64
     valid = np.ones((H, W), dtype=bool)
     cat = np.zeros((H, W), dtype=bool)
@@ -95,67 +94,78 @@ def test_validator_rejects_in_footprint_nan_and_out_of_range(tmp_path: Path):
     with pytest.raises(ValueError, match=r"\[0, 1\]"):
         validate_submission_tif(bad_range_tif, tmpl, require_outside_nan=False)
 
+    # The official format requires null/NaN outside bounds, even if the in-footprint
+    # predictions are numerically valid. Zero-outside remains inspectable only as a diagnostic.
+    zero_outside = tmp_path / "zero_outside.tif"
+    with rasterio.open(zero_outside, "w", **profile) as dst:
+        dst.write(np.zeros(fp.shape, dtype=np.float32), 1)
+    with pytest.raises(ValueError, match="Outside-footprint pixels must all be NaN"):
+        validate_submission_tif(zero_outside, tmpl)
+    diagnostic = validate_submission_tif(zero_outside, tmpl, require_outside_nan=False)
+    assert diagnostic["valid"] is True
+    assert diagnostic["official_format_compliant"] is False
 
-def test_generated_16gemsdoe_submissions_and_evidence():
-    report_path = ROOT / "evidence" / "submission_validation_report.json"
-    holdout_path = ROOT / "evidence" / "spatial_holdout_results.json"
-    forensic_path = ROOT / "evidence" / "group_forensic_audit.json"
-    data_ver_path = ROOT / "evidence" / "data_verification.json"
 
-    assert report_path.exists()
-    assert holdout_path.exists()
-    assert forensic_path.exists()
-    assert data_ver_path.exists()
-
-    report = json.loads(report_path.read_text())
-    holdout = json.loads(holdout_path.read_text())
-    forensic = json.loads(forensic_path.read_text())
-
-    # Verify H16-1 beats baseline and all individual hypotheses on both dense and sparse 4-fold holdout
-    s_h1 = holdout["summary"]["H16_1_SeamFree_MultiScale_Synthesis"]
-    s_base = holdout["summary"]["Baseline_Bands19_DeReg"]
-    s_g7 = holdout["summary"]["Sibling_7GEMSDOE_LidarOnly_36c3a3f3"]
-    assert s_h1["mean_dense_dti"] > s_base["mean_dense_dti"]
-    assert s_h1["mean_sparse_dti"] > s_base["mean_sparse_dti"]
-    assert s_h1["mean_dense_dti"] > s_g7["mean_dense_dti"]
-    assert s_h1["mean_sparse_dti"] > s_g7["mean_sparse_dti"]
-
-    # Verify all 3 generated .tif files exist, pass strict validation, and are unique vs all 19 prior subs
-    prior_shas = {r["sha256"] for r in forensic["submissions"]}
+def test_generated_artifact_format_and_effective_uniqueness():
+    report = json.loads((ROOT / "evidence" / "submission_validation_report.json").read_text())
     tmpl = ROOT / "data" / "sample_submission.tif"
-    for key, outside_nan in [
-        ("primary_allfinite", False),
-        ("primary_nanmask", True),
-        ("pure_physical_contender", False),
-    ]:
+    names = {
+        "primary_allfinite": False,
+        "primary_nanmask": True,
+        "pure_physical_contender": False,
+    }
+    arrays = {}
+    with rasterio.open(tmpl) as src:
+        footprint = np.isfinite(src.read(1))
+
+    prior = json.loads((ROOT / "evidence" / "group_forensic_audit.json").read_text())
+    prior_shas = {row["sha256"] for row in prior["submissions"]}
+    for key, outside_nan in names.items():
         cand = report["candidates"][key]
         tif_path = ROOT / "docs" / "downloads" / cand["filename"]
         assert tif_path.exists()
         v = validate_submission_tif(tif_path, tmpl, require_outside_nan=outside_nan)
         assert v["valid"] is True
+        assert v["official_format_compliant"] is outside_nan
         assert v["in_footprint_nan_count"] == 0
         assert 0.0 <= v["in_footprint_min"] <= v["in_footprint_max"] <= 1.0
         assert v["sha256"] not in prior_shas
+        with rasterio.open(tif_path) as src:
+            arrays[key] = src.read(1)
+
+    # Encoding twins must not be represented as two distinct experiments.
+    assert np.array_equal(arrays["primary_allfinite"][footprint], arrays["primary_nanmask"][footprint])
+    # The physical contender is materially different in-footprint.
+    assert np.count_nonzero(arrays["primary_nanmask"][footprint] != arrays["pure_physical_contender"][footprint]) > 0
 
 
-def test_docs_and_readme_synchronized_with_artifacts():
-    report = json.loads((ROOT / "evidence" / "submission_validation_report.json").read_text())
+def test_h17_candidate_failed_gate_without_submission_slot():
+    result = json.loads((ROOT / "evidence" / "hypothesis_h17_1_validation.json").read_text())
+    assert result["status"] == "FAIL_HOLDOUT_GATE"
+    assert result["submission_slot_spent"] is False
+    assert result["submission_geotiff_created"] is False
+    h16 = result["results"]["H16_1_current_holdout_best"]
+    h17 = result["results"]["H17_1_candidate"]
+    assert h17["mean_dense_dti"] < h16["mean_dense_dti"]
+    assert h17["mean_sparse_dti"] < h16["mean_sparse_dti"]
+    assert result["gate"]["candidate_sparse_fold_wins"] == 0
+
+
+def test_public_docs_report_status_and_sources():
     index_html = (ROOT / "docs" / "index.html").read_text()
     exec_html = (ROOT / "docs" / "executive_summary.html").read_text()
-    readme_md = (ROOT / "README.md").read_text()
-    lb_json = json.loads((ROOT / "docs" / "leaderboard.json").read_text())
+    readme = (ROOT / "README.md").read_text()
+    hypotheses = (ROOT / "docs" / "research" / "hypothesis_register.md").read_text()
+    report = json.loads((ROOT / "evidence" / "submission_validation_report.json").read_text())
+    lb = json.loads((ROOT / "docs" / "leaderboard.json").read_text())
 
-    for key in ("primary_allfinite", "primary_nanmask", "pure_physical_contender"):
-        cand = report["candidates"][key]
-        fname = cand["filename"]
-        sha8 = cand["validation"]["sha256"][:8]
-        note = cand["drivendata_submission_note"]
-        assert fname in index_html
-        assert fname in exec_html
-        assert fname in readme_md
-        assert sha8 in index_html
-        assert sha8 in readme_md
-        assert note in index_html
-        assert note in readme_md
-        assert lb_json["submission_validation"]["candidates"][key]["validation"]["sha256"] == cand["validation"]["sha256"]
-
+    b16 = report["candidates"]["primary_nanmask"]
+    assert b16["filename"] in index_html
+    assert b16["filename"] in exec_html
+    assert b16["validation"]["sha256"][:8] in index_html
+    assert "0.3168" in index_html and "0.3168" in exec_html
+    assert "0.1563" in index_html and "same" in readme.lower()
+    assert "Standing project brief" in readme
+    assert "H17-1" in hypotheses and "USGS" in hypotheses
+    assert "FAIL_HOLDOUT_GATE" in (ROOT / "evidence" / "hypothesis_h17_1_validation.json").read_text()
+    assert lb["live_drivendata_top5"][0]["dti"] == 0.3168
