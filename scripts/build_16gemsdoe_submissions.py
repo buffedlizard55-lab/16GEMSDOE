@@ -1,24 +1,17 @@
-"""Synthesize, calibrate, and validate the unique 16GEMSDOE GeoTIFF submissions.
+"""Build experimental H16-derived GeoTIFF artifacts and record format/spatial checks.
 
-Produces:
-1. Primary Recommended Submission (All-Finite [0.0, 1.0] — Immune to DrivenData NaN range rejection):
-   docs/downloads/gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.tif
-   docs/downloads/gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.zip
-2. Footprint-NaN-Masked Twin of Primary Submission:
-   docs/downloads/gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif
-3. Pure Physical Non-CNN Discovery Submission (H16-1 Scarp + DEM10 + Strike Worm + Hydrothermal):
-   docs/downloads/gems16-h16-1-pure-physical-scarp-worm-allfinite-20260929-c16f03.tif
-
-Verifies:
-- 100% compliance with DrivenData competition format (3730x3292, EPSG:32611, float32, [0, 1] range).
-- Zero byte or pixel duplication against all 19 prior group submissions (GEMSDOE1..15GEMSDOE).
-- Algebraic DTI calibration and spatial profile across distance bands d=0, d<=3, d=4..15, d>15.
+The NaN-outside TIFF follows the documented outside-bounds convention. The all-finite
+and pure-physical files are diagnostic zero-outside variants, not format-compliant
+submission files. The NaN and all-finite primary rasters are the same prediction within
+the evaluation footprint. No live score is inferred by this script; local spatial
+profiles are descriptive and do not establish geological correctness.
 """
 from __future__ import annotations
 
 import json
 import sys
 import zipfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
@@ -27,7 +20,7 @@ from scipy.ndimage import binary_dilation, distance_transform_edt, gaussian_filt
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from gems.metric import dti_score_fast, marginal_inclusion_threshold, ridge_nms, verify_organizer_worked_example
+from gems.metric import ridge_nms, verify_organizer_worked_example
 from gems.validator import sha256_file, validate_submission_tif, write_validated_submission
 
 DATA_DIR = ROOT / "data"
@@ -71,33 +64,6 @@ def compute_spatial_profile(
     edt_ens12 = distance_transform_edt(~ens12_off)
     novel_beyond_300m_ens12 = int((off & (edt_ens12 > 3.0)).sum())
 
-    # Algebraic DTI projection calibrated on:
-    # - ens12 (166,519 px -> TP=7,616.8, Score=0.1563, D=48,732)
-    # - 7GEMSDOE (76,859 px -> TP=4,751.6, Score=0.1461, D=32,523, 61.82 TP/1k px)
-    # - Novel H16-1 gap-fill & scarp/worm ridges outside ens12 & 7GEMSDOE
-    only_ens12_part = int((off & ens12_off).sum())
-    only_g7_new = int((off & (~ens12_off) & g7_off).sum())
-    only_h16_new = int((off & (~ens12_off) & (~g7_off)).sum())
-
-    # Two-point live-leaderboard DTI calibration:
-    # Simultaneous solution matching:
-    #   (1) GEMSDOE1 / ens12: P = 166,519 px -> Live Score = 0.1563 (48.03 TP/1k px, TP = 7,998, D = 51,171)
-    #   (2) 7GEMSDOE Lidar:   P =  76,859 px -> Live Score = 0.1461 (61.82 TP/1k px, TP = 4,751, D = 32,523)
-    # Yields 0.8 * T_private = 16,201 (T_private = 20,251).
-    T_private = 20251.0
-    tp_est_central = (
-        (only_ens12_part / 1000.0) * 51.2
-        + (only_g7_new / 1000.0) * 61.8
-        + (only_h16_new / 1000.0) * 55.5
-    )
-    tp_est_cons = (
-        (only_ens12_part / 1000.0) * 48.5
-        + (only_g7_new / 1000.0) * 56.0
-        + (only_h16_new / 1000.0) * 49.0
-    )
-    dti_central = tp_est_central / (0.2 * n_off + 0.8 * T_private + 0.2 * tp_est_central)
-    dti_cons = tp_est_cons / (0.2 * n_off + 0.8 * T_private + 0.2 * tp_est_cons)
-
     return {
         "on_catalogue_px": int(on.sum()),
         "off_catalogue_px": n_off,
@@ -109,12 +75,10 @@ def compute_spatial_profile(
         "reach_300m_off_cat_px": reach_px,
         "reach_300m_off_cat_frac": round(reach_frac, 4),
         "mean_300m_kernel_weight": round(mean_w, 4),
-        "effective_kernel_lift": round(lift, 3),
+        "kernel_support_per_emitted_pixel_ratio": round(lift, 3),
         "overlap_ens12_px": inter_ens12,
         "overlap_7gemsdoe_px": inter_g7,
         "novel_beyond_300m_of_ens12_px": novel_beyond_300m_ens12,
-        "projected_live_dti_conservative": round(dti_cons, 4),
-        "projected_live_dti_central": round(dti_central, 4),
     }
 
 
@@ -159,21 +123,13 @@ def main() -> None:
     ens12_off = ens12_2d & (~labels)
     g7_off = g7_2d & (~labels)
 
-    # =========================================================================
-    # CANDIDATE 1 (Primary Weekly Submission Recommendation):
-    # H16-1 Seam-Free Multi-Scale Tectonic Ridge Synthesis (Multi-Paradigm Fusion)
-    # =========================================================================
-    # Why this maximizes P(Win):
-    # 1. Preserves the highest-confidence core ridges of ens12 (0.1563 live LB) where
-    #    corroborated by H16-1 physical scarp/worm/hydrothermal evidence or spatial context,
-    #    while pruning low-confidence near-catalogue (d<=3) false-positive halos of ens12.
-    # 2. Incorporates the 1m USGS 3DEP lidar scarp 1-px Hessian ridges (7GEMSDOE = 0.1461 live LB,
-    #    61.82 TP/1k px) corroborated by H16-1 antislope graben & relief-normalized piedmont physics.
-    # 3. Bridges the 24.6% 1m-lidar gap (1,270,564 pixels where 7GEMSDOE emitted 0 pixels!)
-    #    using H16-1 1-px Hessian ridges from 10m USGS 3DEP DEM slope asymmetry (dem10_onesided3),
-    #    1.5 km geopotential strike worms (H16-2), and hydrothermal alteration conduits (H16-4).
-    # 4. Zeroes out on-catalogue pixels (labels > 0) since 8GEMSDOE proved known catalogue
-    #    pixels are masked during evaluation, keeping 100% of our budget strictly off-catalogue.
+    # Experimental composite mask, built from OOF model surfaces and historical
+    # prediction masks. This is a reproducible artifact, not a live-score or
+    # submission recommendation; it has not itself passed the spatial holdout gate.
+    # The local catalogue mask is applied explicitly as a design choice. The
+    # historical 8GEMSDOE comparison does not establish how the evaluator treats
+    # catalogue pixels.
+
 
     # Extract 1-px Hessian directional ridges of our H16-1 calibrated multi-scale surface
     h16_1_ridge = ridge_nms(p_h16_1_2d, footprint, sigma=1.0)
@@ -196,30 +152,32 @@ def main() -> None:
         out.ravel()[sel] = True
         return out
 
-    # Component A: Pruned high-confidence ens12 tectonic backbone (148,000 px)
-    # Prunes the weakest 18,519 off-catalogue pixels of ens12 (near-catalogue noise & uncorroborated
-    # speckles), saving 3,704 in FP denominator penalty while retaining 100% of corroborated core ridges.
+    # Component A: retain up to 148,000 ens12 off-catalogue pixels ranked by
+    # the composite OOF/context score below. This is a fixed design choice; no
+    # true-positive or score benefit is inferred from the ranking.
     ens12_joint_score = 0.55 * p_h16_1_2d + 0.45 * ctx_2d + 0.30 * g7_off.astype(np.float32) + 0.05 * np.minimum(dist_cat, 10.0)
     ens12_keep = select_top_k_mask(ens12_off, ens12_joint_score, 148000)
 
     # Distance from retained ens12 core (so we only add novel ridges outside ens12's immediate trace!)
     edt_ens12_keep = distance_transform_edt(~ens12_keep)
 
-    # Component B: High-precision 1m-lidar 1-px Hessian scarp ridges outside ens12 (24,000 px)
-    # Selects the top 24,000 novel 7GEMSDOE + H16-1 scarp ridge pixels (edt >= 2 px from ens12_keep)
-    # whose marginal TP density (~61.8 TP/1k px) strictly exceeds tau* = 44.5 TP/1k px.
+    # Component B: select up to 24,000 7GEMSDOE pixels outside the retained
+    # ens12 mask, ranked by the H16-1/context score. This thresholding is a
+    # hypothesis choice, not a measured marginal-TP comparison.
     g7_cand = g7_off & (~ens12_keep) & (edt_ens12_keep >= 2.0) & (dist_cat > 2.0)
     g7_rank_score = p_h16_1_2d + 0.35 * ctx_2d
     g7_novel = select_top_k_mask(g7_cand, g7_rank_score, 24000)
 
-    # Component C: H16-1 Seam-Free Gap-Fill & Subsurface Worm/Hydrothermal 1-px Ridges
-    # (c1) Inside the 24.6% 1m-lidar gap (~lid_ok_2d) where 7GEMSDOE emitted 0 pixels (18,500 px):
+    # Component C: add H16-1/joint-surface ridges in lidar-gap cells, then add
+    # corroborated ridges within the lidar-covered area. Selection sizes below
+    # are fixed design parameters, not validated performance estimates.
+    # (c1) 18,500 candidate ridges in the local 1m-lidar data gap:
     cand_gap_pool = (
         off_mask & (~lid_ok_2d) & (~ens12_keep) & (edt_ens12_keep >= 2.0) & (h16_1_ridge | joint_ridge) & (dist_cat > 2.5)
     )
     h16_gap_ridges = select_top_k_mask(cand_gap_pool, joint_surface, 18500)
 
-    # (c2) Inside lidar coverage, top 7,500 highest-confidence H16-1 antislope/piedmont + worm 1-px ridges:
+    # (c2) In lidar-covered cells, select up to 7,500 intersecting H16-1 and joint ridges:
     edt_so_far = distance_transform_edt(~(ens12_keep | g7_novel))
     cand_lid_pool = (
         off_mask & lid_ok_2d & (~ens12_keep) & (~g7_novel) & (edt_so_far >= 2.5) & (h16_1_ridge & joint_ridge) & (dist_cat > 3.0)
@@ -229,13 +187,10 @@ def main() -> None:
     primary_bin = (ens12_keep | g7_novel | h16_gap_ridges | h16_lid_ridges) & off_mask
     primary_f32 = primary_bin.astype(np.float32)
 
-    # =========================================================================
-    # CANDIDATE 2 (Pure Non-CNN Physical Discovery Contender):
-    # 100% Independent of ens12 — Pure H16-1 (1m Lidar + 10m DEM + Strike Worm + Hydro)
-    # =========================================================================
-    # Matches 7GEMSDOE's ~2.0% 1-px ridge density inside the 75.4% lidar footprint (~78k px)
-    # AND extends that exact ~2.0% 1-px ridge density across the 24.6% 1m-lidar gap (~26k px)
-    # using our 4-quadrant holdout winner p_h16_1_2d (10m DEM + 1.5km strike worms + hydro)!
+    # Experimental physical-feature alternative. It uses the local catalogue mask,
+    # lidar scarp mask, and H16-1 OOF surface; it is therefore neither fully
+    # independent of prior submissions nor validated by the H16-1 holdout score.
+    # The pixel budgets below define a distinct candidate recipe only.
     pure_lid_pool = off_mask & lid_ok_2d & (g7_off | h16_1_ridge) & (dist_cat > 1.5)
     pure_lid_score = p_h16_1_2d + 0.30 * g7_off.astype(np.float32)
     k_lid = 82000
@@ -273,10 +228,11 @@ def main() -> None:
         pure_phys_f32, DATA_DIR / "sample_submission.tif", p2_pure_path, outside_nan=False
     )
 
-    # Create a .zip package of the Primary All-Finite .tif for fast browser upload
-    p1_zip_path = DOWNLOADS_DIR / "gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.zip"
+    # Package only the outside-NaN variant, which follows the documented
+    # outside-bounds convention. The all-finite zero-outside file is diagnostic.
+    p1_zip_path = DOWNLOADS_DIR / "gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.zip"
     with zipfile.ZipFile(p1_zip_path, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
-        zf.write(p1_allfinite_path, arcname=p1_allfinite_path.name)
+        zf.write(p1_nanmask_path, arcname=p1_nanmask_path.name)
 
     # Profile both candidates and verify 100% uniqueness against all 19 historical group submissions
     prof_primary = compute_spatial_profile(primary_bin, footprint, labels, dist_cat, ens12_off, g7_off)
@@ -291,38 +247,47 @@ def main() -> None:
     prof_primary["h16_1_lidar_novel_px"] = int(h16_lid_ridges.sum())
     prof_pure["emitted_in_24pct_lidar_gap_px"] = int((pure_phys_bin & gap_mask).sum())
 
-    # Verify uniqueness against all 19 prior submissions in group_forensic_audit.json
+    # Check exact bytes against the recorded historic submissions. Equal pixel
+    # counts are not evidence of distinct predictions, so do not treat them as a
+    # uniqueness test. The all-finite and NaN-outside primary files intentionally
+    # share the same in-footprint prediction and are not separate experiments.
     forensic = json.loads((EVIDENCE_DIR / "group_forensic_audit.json").read_text())
     prior_shas = {r["sha256"]: r["repo"] for r in forensic["submissions"]}
-    prior_off_counts = {r["off_catalogue_pixels"]: r["repo"] for r in forensic["submissions"]}
 
+    generated_shas = [rep_p1_allfinite["sha256"], rep_p1_nanmask["sha256"], rep_p2_pure["sha256"]]
     uniqueness_checks = {
-        "primary_allfinite_sha256_unique": rep_p1_allfinite["sha256"] not in prior_shas,
-        "primary_nanmask_sha256_unique": rep_p1_nanmask["sha256"] not in prior_shas,
-        "pure_physical_sha256_unique": rep_p2_pure["sha256"] not in prior_shas,
-        "primary_off_catalogue_px_unique": prof_primary["off_catalogue_px"] not in prior_off_counts,
-        "pure_physical_off_catalogue_px_unique": prof_pure["off_catalogue_px"] not in prior_off_counts,
-        "min_hamming_distance_vs_ens12_px": int(np.logical_xor(primary_bin, ens12_off).sum()),
-        "min_hamming_distance_vs_7gemsdoe_px": int(np.logical_xor(primary_bin, g7_off).sum()),
+        "generated_artifact_sha256s_pairwise_unique": len(set(generated_shas)) == len(generated_shas),
+        "primary_allfinite_sha256_unique_vs_history": rep_p1_allfinite["sha256"] not in prior_shas,
+        "primary_nanmask_sha256_unique_vs_history": rep_p1_nanmask["sha256"] not in prior_shas,
+        "pure_physical_sha256_unique_vs_history": rep_p2_pure["sha256"] not in prior_shas,
+        "primary_variants_share_prediction_array": True,
+        "primary_vs_pure_physical_hamming_distance_px": int(np.logical_xor(primary_bin, pure_phys_bin).sum()),
+        "primary_vs_ens12_hamming_distance_px": int(np.logical_xor(primary_bin, ens12_off).sum()),
+        "primary_vs_7gemsdoe_hamming_distance_px": int(np.logical_xor(primary_bin, g7_off).sum()),
     }
     assert all(
-        [
-            uniqueness_checks["primary_allfinite_sha256_unique"],
-            uniqueness_checks["primary_nanmask_sha256_unique"],
-            uniqueness_checks["pure_physical_sha256_unique"],
-        ]
-    ), "Duplicate SHA-256 detected!"
+        uniqueness_checks[key]
+        for key in (
+            "generated_artifact_sha256s_pairwise_unique",
+            "primary_allfinite_sha256_unique_vs_history",
+            "primary_nanmask_sha256_unique_vs_history",
+            "pure_physical_sha256_unique_vs_history",
+        )
+    ), "A generated artifact duplicates a recorded historical file by SHA-256."
 
     report = {
-        "generated_at_utc": "2026-09-29T22:15:00Z",
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "submission_recommendation": "No artifact is recommended for a live submission until the exact candidate passes the spatially blocked holdout gate. H17-1 failed; current artifacts are for reproducible review only.",
+        "interpretation_limits": [
+            "Spatial profiles and catalogue-distance bands describe predictions; they are not true-positive estimates and do not predict leaderboard DTI.",
+            "All-finite zero-outside variants are diagnostic and do not follow the required outside-bounds null convention.",
+            "The primary NaN-outside and all-finite files share the same in-footprint prediction and are not distinct experiments."
+        ],
         "organizer_metric_worked_example": verify_organizer_worked_example(),
         "uniqueness_audit": uniqueness_checks,
         "candidates": {
             "primary_allfinite": {
                 "filename": p1_allfinite_path.name,
-                "zip_filename": p1_zip_path.name,
-                "zip_size_bytes": p1_zip_path.stat().st_size,
-                "zip_sha256": sha256_file(p1_zip_path),
                 "drivendata_submission_note": (
                     "16GEMSDOE | H16-1 Seam-Free Multi-Scale Tectonic Ridge Synthesis "
                     "(1m 3DEP Lidar Antislope/Piedmont Scarp + 10m 3DEP DEM Asymmetry Gap-Fill + "
@@ -334,6 +299,9 @@ def main() -> None:
             },
             "primary_nanmask": {
                 "filename": p1_nanmask_path.name,
+                "zip_filename": p1_zip_path.name,
+                "zip_size_bytes": p1_zip_path.stat().st_size,
+                "zip_sha256": sha256_file(p1_zip_path),
                 "drivendata_submission_note": (
                     "16GEMSDOE | H16-1 Seam-Free Multi-Scale Tectonic Ridge Synthesis "
                     "(Footprint-Valid [0,1], Outside-NaN Twin | 1px Hessian ridge_nms | ID: b16f02)"
@@ -345,8 +313,8 @@ def main() -> None:
                 "filename": p2_pure_path.name,
                 "drivendata_submission_note": (
                     "16GEMSDOE | H16-1 Pure Physical Multi-Scale Scarp-Worm-Hydrothermal Ridge "
-                    "(Zero-CNN 4-Quadrant Holdout Winner 0.2127 DTI | 1m Lidar + 10m DEM + "
-                    "Strike Worms + Hydrothermal | All-Finite [0,1] float32 | ID: c16f03)"
+                    "(Experimental physical-only variant; 1m Lidar + 10m DEM + Strike Worms + "
+                    "Hydrothermal | Diagnostic all-finite [0,1] float32 | ID: c16f03)"
                 ),
                 "validation": rep_p2_pure,
                 "spatial_profile": prof_pure,
@@ -358,18 +326,14 @@ def main() -> None:
     out_path.write_text(json.dumps(report, indent=2) + "\n")
     print(f"Wrote {out_path}")
     print(
-        f"Primary (a16f01): off_cat={prof_primary['off_catalogue_px']:,} px, "
+        f"Primary (a16f01; diagnostic all-finite variant): off_cat={prof_primary['off_catalogue_px']:,} px, "
         f"Reach300m={prof_primary['reach_300m_off_cat_frac']*100:.2f}%, "
-        f"Lift={prof_primary['effective_kernel_lift']:.2f}x, "
-        f"GapFill={prof_primary['emitted_in_24pct_lidar_gap_px']:,} px, "
-        f"Proj DTI={prof_primary['projected_live_dti_conservative']:.4f}–{prof_primary['projected_live_dti_central']:.4f}"
+        f"Kernel-support ratio={prof_primary['kernel_support_per_emitted_pixel_ratio']:.2f}, "
+        f"GapFill={prof_primary['emitted_in_24pct_lidar_gap_px']:,} px. No DTI is projected."
     )
     print(
-        f"Pure Physical (c16f03): off_cat={prof_pure['off_catalogue_px']:,} px, "
-        f"Reach300m={prof_pure['reach_300m_off_cat_frac']*100:.2f}%, "
-        f"Lift={prof_pure['effective_kernel_lift']:.2f}x, "
-        f"GapFill={prof_pure['emitted_in_24pct_lidar_gap_px']:,} px, "
-        f"Proj DTI={prof_pure['projected_live_dti_conservative']:.4f}–{prof_pure['projected_live_dti_central']:.4f}"
+        f"Pure physical diagnostic (c16f03): off_cat={prof_pure['off_catalogue_px']:,} px, "
+        f"Reach300m={prof_pure['reach_300m_off_cat_frac']*100:.2f}%. No DTI is projected."
     )
 
 

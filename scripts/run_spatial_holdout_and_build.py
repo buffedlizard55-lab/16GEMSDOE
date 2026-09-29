@@ -1,5 +1,8 @@
-"""Run the 4-fold Spatially-Blocked Geographic Holdout for Hypotheses H16-1..H16-5,
-calibrate against all 18 real leaderboard outcomes, and build the validated 16GEMSDOE submission.
+"""Run the four-quadrant spatial holdout for the existing H16 hypotheses.
+
+This script evaluates transfer to held-out portions of the known catalogue and a
+synthetic sparse-component proxy. It does not evaluate hidden leaderboard labels,
+calibrate a private score, or spend a DrivenData submission slot.
 """
 from __future__ import annotations
 
@@ -451,7 +454,32 @@ if __name__ == "__main__":
         sib_g7_2d = (np.nan_to_num(src.read(1), nan=0.0) > 0.5) & footprint
 
     BUDGET_FRAC = 0.025
-    results = {"folds": {}, "summary": {}}
+    data_ver = json.loads((EVIDENCE_DIR / "data_verification.json").read_text())
+    results = {
+        "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "evaluation_scope": (
+            "Spatial-transfer proxy on held-out portions of the known fault catalogue; "
+            "sparse scores use a deterministic 20%-of-components simulation. Not the hidden competition test set."
+        ),
+        "methodology": {
+            "split": "four contiguous NW/NE/SW/SE geographic quadrants from footprint row/column medians",
+            "buffer_pixels": 15,
+            "training_sampling": "up to 40,000 known-catalogue positives and 120,000 negatives outside a 3-pixel known-catalogue collar per fold",
+            "classifier": "HistGradientBoostingClassifier; max_iter=150, max_leaf_nodes=31, min_samples_leaf=80, learning_rate=0.06, l2_regularization=2.0",
+            "prediction_budget_per_fold": BUDGET_FRAC,
+            "sparse_proxy": "deterministic 20% subset of connected held-out catalogue components; remaining held-out components treated as neutral for sparse false-positive calculation",
+            "random_seed": SEED,
+            "note": "The holdout does not reproduce private test geography, hidden faults, or leaderboard scoring conditions. Scores are not predictions of competition DTI.",
+        },
+        "input_sha256": {
+            key: value["sha256"]
+            for key, value in data_ver["rasters"].items()
+            if key in ("training_features.tif", "labels.tif", "sample_submission.tif")
+        },
+        "submission_slot_spent": False,
+        "folds": {},
+        "summary": {},
+    }
 
     # Precompute quadrant bounding-box slices & held-out truth masks once
     quads = []

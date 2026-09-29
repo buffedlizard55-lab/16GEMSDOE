@@ -1,4 +1,22 @@
 {
+  "generated_utc": "2026-09-29T23:50:11+00:00",
+  "evaluation_scope": "Spatial-transfer proxy on held-out portions of the known fault catalogue; sparse scores use a deterministic 20%-of-components simulation. Not the hidden competition test set.",
+  "methodology": {
+    "split": "four contiguous NW/NE/SW/SE geographic quadrants from footprint row/column medians",
+    "buffer_pixels": 15,
+    "training_sampling": "up to 40,000 known-catalogue positives and 120,000 negatives outside a 3-pixel known-catalogue collar per fold",
+    "classifier": "HistGradientBoostingClassifier; max_iter=150, max_leaf_nodes=31, min_samples_leaf=80, learning_rate=0.06, l2_regularization=2.0",
+    "prediction_budget_per_fold": 0.025,
+    "sparse_proxy": "deterministic 20% subset of connected held-out catalogue components; remaining held-out components treated as neutral for sparse false-positive calculation",
+    "random_seed": 20260929,
+    "note": "The holdout does not reproduce private test geography, hidden faults, or leaderboard scoring conditions. Scores are not predictions of competition DTI."
+  },
+  "input_sha256": {
+    "training_features.tif": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "labels.tif": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+    "sample_submission.tif": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc"
+  },
+  "submission_slot_spent": false,
   "folds": {
     "Baseline_Bands19_DeReg": {
       "NW": {

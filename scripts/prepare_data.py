@@ -41,19 +41,19 @@ EXPECTED = {
     },
     "external/lidar_scarp_features_u8.tif": {
         "sha256": "d580bb8bdcdb941e32fefb8b38044bc5bf04e199bf2e83498c3576e6fc465568",
-        "bytes": 37417594,
+        "bytes": 36943606,
         "count": 12,
         "dtype": "uint8",
     },
     "external/geodawn_rad_u8.tif": {
         "sha256": "c22420f75999030d7cc65c9e31e50d232ea6158423bca051613a18a8b20ba682",
-        "bytes": 26630445,
+        "bytes": 26612970,
         "count": 4,
         "dtype": "uint8",
     },
     "external/geodawn_extensions_u8.tif": {
         "sha256": "a35a9c6d2a14786f4dab85481ee59769213072f5dab5b2535ea82ae4d9bb7d9b",
-        "bytes": 26528550,
+        "bytes": 27132925,
         "count": 4,
         "dtype": "uint8",
     },
@@ -86,6 +86,8 @@ def main() -> None:
         actual_bytes = p.stat().st_size
         if actual_sha != spec["sha256"]:
             sys.exit(f"SHA-256 mismatch for {rel}: {actual_sha} != {spec['sha256']}")
+        if actual_bytes != spec["bytes"]:
+            sys.exit(f"File-size mismatch for {rel}: {actual_bytes} != {spec['bytes']}")
         with rasterio.open(p) as src:
             assert src.shape == (3730, 3292), f"Unexpected shape for {rel}: {src.shape}"
             assert str(src.crs) == "EPSG:32611", f"Unexpected CRS for {rel}: {src.crs}"
@@ -121,9 +123,10 @@ def main() -> None:
             {
                 "id": "FLAG-01",
                 "finding": (
-                    "Official sample_submission.tif is bit-for-bit identical to (labels.tif > 0) "
-                    "inside the 5,167,373-pixel footprint (60,988 positive pixels), contradicting "
-                    "the problem description page statement that it 'predicts total fault absence'."
+                    "The locally bridged sample_submission.tif positive mask equals (labels.tif > 0) "
+                    "inside the 5,167,373-pixel footprint (60,988 positive pixels). This conflicts "
+                    "with the official problem page describing an all-absence sample. The private "
+                    "DrivenData download was not independently retrieved here, so provenance/cause remain unresolved."
                 ),
                 "measured": {
                     "sample_submission_positives": int(sub_pos.sum()),
