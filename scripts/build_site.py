@@ -254,6 +254,14 @@ def check_list(c: dict) -> str:
     others = [o for o in c.get("similar_to_other_candidates", []) if o["jaccard_positive"] >= 0.2]
     if others:
         items.append("<li class=\"soft\"><strong>Overlap with the other candidates:</strong> " + ", ".join(f'{esc(o["key"])} (Jaccard {o["jaccard_positive"]:.2f})' for o in others) + ".</li>")
+    sc = next((r for r in (scan or {}).get("candidates_vs_found", []) if r["key"] == c["key"]), None)
+    if sc and sc["verdict"] != "DISTINCT":
+        cls_nf = "soft" if sc["verdict"] == "OVERLAP" else "no"
+        items.append(f'<li class="{cls_nf}"><strong>Newer group file ({esc(scan["generated_utc"][:10])} scan):</strong> {esc(sc["verdict"]).lower().replace("_", "-")}, '
+                     f'Jaccard {sc["jaccard_positive"]:.2f} with <code>{esc(sc["nearest_repo"])}/{esc(sc["nearest_path"])}</code>, published after the registry was built '
+                     f'(not known to have been uploaded). The same idea may already have been tried: check before spending a slot.</li>')
+    elif sc:
+        items.append(f'<li><strong>Newer group files ({esc(scan["generated_utc"][:10])} scan):</strong> distinct, most similar Jaccard {sc["jaccard_positive"]:.2f}.</li>')
     h = c["holdout"]
     g = c["holdout_gate_vs_h16_1"]
     if not c.get("gate_eligible", True):
@@ -410,7 +418,25 @@ def build_results() -> str:
     sp_tbl = table(["Geometry statistic", "Spearman ρ with public score", "p"], sp_rows)
     scan_html = ""
     if scan:
-        scan_html = f'<h2>New files found in group repositories</h2><p class="small muted">Last scan {esc(scan["generated_utc"])}: {len(scan["unregistered"])} unregistered GeoTIFF(s) in public group repos; {sum(1 for u in scan["unregistered"] if u["verdict"] != "DISTINCT")} overlap an earlier file.</p>'
+        unreg = scan["unregistered"]
+        dups = [u for u in unreg if u["verdict"] in ("DUPLICATE", "NEAR_DUPLICATE")]
+        unreadable = [u for u in unreg if u["verdict"] in ("ERROR", "NOT_A_SUBMISSION_GRID")]
+        cap = " <strong>The file cap was reached, so some files were not scanned.</strong>" if scan.get("cap_reached") else ""
+        scan_html = (f'<h2>New files found in group repositories</h2><p class="small muted">Last scan {esc(scan["generated_utc"])}: {len(unreg)} unregistered GeoTIFF(s) '
+                     f'in public group repos (of {scan.get("found_total", len(unreg))} found); {len(dups)} duplicate or near-duplicate a registered file; '
+                     f'{len(unreadable)} could not be analysed.{cap}</p>')
+        if scan.get("warnings"):
+            scan_html += '<div class="alert"><strong>The scan has blind spots:</strong><ul>' + "".join(f"<li>{esc(w)}</li>" for w in scan["warnings"]) + "</ul></div>"
+        if dups:
+            scan_html += table(["Repository", "File", "Verdict", "Nearest registered file", "Jaccard", "Its public score"],
+                               [[esc(u["repo"]), f'<code>{esc(u["path"])}</code>', esc(u["verdict"].lower().replace("_", "-")), esc(str(u["nearest_id"])),
+                                 f'{u["nearest_jaccard"]:.2f}', "—" if u.get("nearest_lb_score") is None else f'{u["nearest_lb_score"]:.4f}'] for u in dups])
+        cvf = scan.get("candidates_vs_found", [])
+        if cvf:
+            scan_html += ('<h3>Our ready-to-upload candidates against the newly found files</h3>' + table(
+                ["Candidate", "Verdict", "Most similar newly found file", "Jaccard"],
+                [[esc(r["key"]), esc(r["verdict"].lower().replace("_", "-")),
+                  "—" if not r["nearest_path"] else f'<code>{esc(r["nearest_repo"])}/{esc(r["nearest_path"])}</code>', f'{r["jaccard_positive"]:.2f}'] for r in cvf]))
     body = f"""
 <h1>Results — the leaderboard and the group's own submissions</h1>
 <p class="lead">A single manual snapshot ({lb["snapshot_utc"].replace("T", " ")[:16]} UTC) and the forensic audit of every registered file. Scores change; the <a href="{COMP}leaderboard/" rel="noopener">live page</a> is authoritative.</p>
