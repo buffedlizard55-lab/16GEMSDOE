@@ -97,7 +97,8 @@ def main() -> None:
         labels = (s.read(1) > 0) & footprint
     dist_cat = distance_transform_edt(~labels).astype(np.float32)
     n_lab = int(labels.sum())
-    bounds_poly = gpd.GeoSeries.from_xy([243350, 572550, 572550, 243350], [4135550, 4135550, 4508550, 4508550], crs=32611)
+    from shapely.geometry import box
+    grid_box = box(243350, 4135550, 572550, 4508550)
 
     def read_any(zip_path: Path):
         """Read every layer in a zip (shapefile or file-gdb); return {layer_name: GeoDataFrame}."""
@@ -158,7 +159,7 @@ def main() -> None:
                                       "columns": [c for c in gdf.columns][:25]}
                 if gdf.geom_type.astype(str).str.contains("Line").any():
                     g = to_utm(gdf[gdf.geom_type.astype(str).str.contains("Line")])
-                    g = g[g.intersects(bounds_poly.union_all() if hasattr(bounds_poly, "union_all") else bounds_poly.unary_union)]
+                    g = g[g.intersects(grid_box)]
                     merged = g if merged is None else gpd.GeoDataFrame(__import__("pandas").concat([merged, g]), crs=32611)
             if merged is not None and len(merged):
                 v["lines_in_grid_bounds"] = int(len(merged))
@@ -231,10 +232,14 @@ def main() -> None:
                 gt = sorted(gdf.geom_type.dropna().unique().tolist())
                 info = {"rows": int(len(gdf)), "geom_types": gt, "columns": list(gdf.columns)[:30]}
                 if any("Line" in t for t in gt):
-                    txt_cols = [c for c in gdf.columns if gdf[c].dtype == object]
-                    fault = gdf[txt_cols].apply(lambda s: s.astype(str).str.contains("fault", case=False, na=False)).any(axis=1) if txt_cols else None
-                    if fault is not None:
-                        info["rows_mentioning_fault"] = int(fault.sum())
+                    for col in ("DESCRIPT", "SYMBOL", "MISC", "GEOM"):
+                        if col in gdf.columns:
+                            vc = gdf[col].astype(str).value_counts().head(40)
+                            info[f"top_{col}"] = {str(k): int(v) for k, v in vc.items()}
+                    txt_cols = [c for c in gdf.columns if c != "geometry" and str(gdf[c].dtype) in ("object", "str", "string")]
+                    if txt_cols:
+                        fault = gdf[txt_cols].apply(lambda s_: s_.astype(str).str.contains("fault|thrust", case=False, na=False)).any(axis=1)
+                        info["rows_mentioning_fault_or_thrust"] = int(fault.sum())
                         if fault.any():
                             merged.append(to_utm(gdf[fault]))
                 st["layers"][lname] = info
@@ -242,7 +247,7 @@ def main() -> None:
         if merged:
             import pandas as pd
             allf = gpd.GeoDataFrame(pd.concat(merged), crs=32611)
-            allf = allf[allf.intersects(bounds_poly.union_all() if hasattr(bounds_poly, "union_all") else bounds_poly.unary_union)]
+            allf = allf[allf.intersects(grid_box)]
             R = raster_lines(allf, True)
             res["fault_lines_in_grid"] = int(len(allf))
             res["sgmc_fault_pixels_in_footprint"] = int(R.sum())
