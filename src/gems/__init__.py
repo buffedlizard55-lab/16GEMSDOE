@@ -10,18 +10,18 @@ from .metric import (
     ridge_nms,
     verify_organizer_worked_example,
 )
-from .validator import validate_submission_tif, write_validated_submission
+from .submission import check_variants, write_submission
 
 __all__ = [
     "ALPHA",
     "BETA",
     "RADIUS_PX",
+    "check_variants",
     "dti_components_exact",
     "dti_score_fast",
     "dti_score_masked",
     "marginal_inclusion_threshold",
     "ridge_nms",
     "verify_organizer_worked_example",
-    "validate_submission_tif",
-    "write_validated_submission",
+    "write_submission",
 ]

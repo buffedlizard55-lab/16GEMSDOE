@@ -38,6 +38,7 @@ def dti_components_exact(
     catalogue_mask: np.ndarray | None = None,
     alpha: float = ALPHA,
     beta: float = BETA,
+    mask_predictions: bool = False,
 ) -> dict[str, float]:
     """Compute exact distance-weighted Tversky index components for arbitrary p(x) in [0, 1].
 
@@ -47,12 +48,17 @@ def dti_components_exact(
     truth : 2D binary/boolean array of scored ground-truth fault pixels G
     valid_mask : optional 2D boolean footprint mask
     catalogue_mask : optional 2D boolean mask of known catalogue pixels that are neutral
-                     in false-positive calculation per official forum ruling 11516/2 & 11516/4.
+                     in false-positive calculation per DrivenData staff (forum topic 11516, posts 2 and 4).
+    mask_predictions : if True, predictions ON masked pixels are also dropped from the true-positive term. Staff said it
+                     "should not matter whether these known faults are included with predictions or not"; this stricter
+                     reading makes that literally true. Default False keeps the protocol under which H16-1 was registered.
     """
     H, W = truth.shape
     p = np.nan_to_num(pred, nan=0.0).astype(np.float64)
     if valid_mask is not None:
         p = np.where(valid_mask, p, 0.0)
+    if mask_predictions and catalogue_mask is not None:
+        p = np.where(catalogue_mask, 0.0, p)
     g_mask = (truth > 0) if valid_mask is None else ((truth > 0) & valid_mask)
     yy, xx = np.nonzero(g_mask)
     n_truth = int(len(yy))
@@ -109,9 +115,15 @@ def dti_score_fast(
     truth_binary: np.ndarray,
     valid_mask: np.ndarray | None = None,
     catalogue_mask: np.ndarray | None = None,
+    mask_predictions: bool = False,
 ) -> dict[str, float]:
-    """Fast exact DTI for binary {0, 1} predictions using Euclidean distance transforms."""
+    """Fast exact DTI for binary {0, 1} predictions using Euclidean distance transforms.
+
+    ``mask_predictions`` as in :func:`dti_components_exact` (opt-in; default keeps the registered protocol).
+    """
     p = (np.nan_to_num(pred_binary, nan=0.0) > 0.5)
+    if mask_predictions and catalogue_mask is not None:
+        p = p & ~catalogue_mask
     g = (truth_binary > 0)
     if valid_mask is not None:
         p = p & valid_mask
@@ -173,15 +185,11 @@ def marginal_inclusion_threshold(current_dti: float, alpha: float = ALPHA) -> fl
 
 
 def verify_organizer_worked_example() -> dict[str, float | bool]:
-    """Reproduce the organizer's 5x5 worked example from page/967 (TP_w=3.00, FP_w=1.89, FN_w=2.00 -> 0.60)."""
-    # Ground truth: 5 pixels in a vertical line (column 2, rows 0..4)
-    truth = np.zeros((5, 5), dtype=np.uint8)
-    truth[:, 2] = 1
+    """Evaluate the DTI formula on the organizer's PUBLISHED component values and confirm 0.60.
 
-    # Predicted pixels matching the organizer schematic:
-    # 3 pixels on or adjacent to the vertical line giving TP_w = 3.00, FP_w = 1.89, FN_w = 2.00
-    # Specifically, in the organizer diagram:
-    # TP_w = 3.00, FP_w = 1.89, FN_w = 2.00 => DTI = 3.00 / (3.00 + 0.2*1.89 + 0.8*2.00) = 3.00 / 4.978 = 0.60265 (~0.60)
+    DrivenData page 967 gives TP_w = 3.00, FP_w = 1.89, FN_w = 2.00 and DTI = 0.60. The schematic raster behind those numbers
+    is an image (not available as text), so this checks the formula arithmetic only; it does not rebuild the raster.
+    """
     tp_w, fp_w, fn_w = 3.00, 1.89, 2.00
     dti_formula = tp_w / (tp_w + ALPHA * fp_w + BETA * fn_w)
     return {
