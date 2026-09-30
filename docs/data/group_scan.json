@@ -1,9 +1,9 @@
 {
-  "generated_utc": "2026-09-30T04:23:45+00:00",
+  "generated_utc": "2026-09-30T11:23:29+00:00",
   "repos_scanned": 19,
-  "tif_blobs_seen": 209,
+  "tif_blobs_seen": 212,
   "registered_entries": 21,
-  "found_total": 42,
+  "found_total": 44,
   "cap_reached": false,
   "unregistered": [
     {
@@ -229,7 +229,20 @@
     },
     {
       "repo": "17GEMSDOE",
-      "path": "docs/downloads/17GEMSDOE_A-verified-01563-support_78107192_20260930T014142Z.tif",
+      "path": "docs/downloads/17GEMSDOE_A-verified-01563-support_c5ea501e_20260930T021105Z.tif",
+      "bytes": 987669,
+      "git_blob_sha1": "44e9eff97b00210902f747338b79b5a2becd7bcb",
+      "format_ok": true,
+      "hard_failures": [],
+      "verdict": "DUPLICATE",
+      "nearest_id": "5GEMSDOE",
+      "nearest_jaccard": 1.0,
+      "nearest_lb_score": 0.1563,
+      "scored_positive_pixels": 166519
+    },
+    {
+      "repo": "17GEMSDOE",
+      "path": "docs/downloads/17GEMSDOE_A-verified-01563-support_nanfootprint_20260930T021105Z.tif",
       "bytes": 1763547,
       "git_blob_sha1": "468e16da4040d85c58b0239a12b6658ec06c6fef",
       "format_ok": true,
@@ -242,16 +255,29 @@
     },
     {
       "repo": "17GEMSDOE",
-      "path": "docs/downloads/17GEMSDOE_A-verified-01563-support_allfinite_20260930T014142Z.tif",
-      "bytes": 987669,
-      "git_blob_sha1": "44e9eff97b00210902f747338b79b5a2becd7bcb",
+      "path": "docs/downloads/17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.tif",
+      "bytes": 886556,
+      "git_blob_sha1": "af9ba1b6cd288f0fdc79cc3c035c59f751b4c0e4",
       "format_ok": true,
       "hard_failures": [],
-      "verdict": "DUPLICATE",
-      "nearest_id": "5GEMSDOE",
-      "nearest_jaccard": 1.0,
-      "nearest_lb_score": 0.1563,
-      "scored_positive_pixels": 166519
+      "verdict": "DISTINCT",
+      "nearest_id": "6GEMSDOE",
+      "nearest_jaccard": 0.34397,
+      "nearest_lb_score": 0.0286,
+      "scored_positive_pixels": 152231
+    },
+    {
+      "repo": "17GEMSDOE",
+      "path": "docs/downloads/17GEMSDOE_F-ensemble-2pct_20260930T050626Z.tif",
+      "bytes": 1597278,
+      "git_blob_sha1": "ab2cedff6f0a8b5c6ed8da1737ab000a9056725a",
+      "format_ok": true,
+      "hard_failures": [],
+      "verdict": "DISTINCT",
+      "nearest_id": "6GEMSDOE",
+      "nearest_jaccard": 0.35128,
+      "nearest_lb_score": 0.0286,
+      "scored_positive_pixels": 90746
     },
     {
       "repo": "5GEMSDOE",
@@ -558,13 +584,13 @@
       "key": "h18-3a",
       "file": "gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-nan.tif",
       "verdict": "DISTINCT",
-      "nearest_repo": "GEMSDOE2",
-      "nearest_path": "docs/gemsdoe2-extension-arm-ad5ba911.tif",
-      "nearest_git_blob_sha1": "8580ff86bf9be00f95774cb4c66b0e83b35c414c",
-      "jaccard_positive": 0.0748,
-      "shared_positive": 28298,
+      "nearest_repo": "17GEMSDOE",
+      "nearest_path": "docs/downloads/17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.tif",
+      "nearest_git_blob_sha1": "af9ba1b6cd288f0fdc79cc3c035c59f751b4c0e4",
+      "jaccard_positive": 0.09144,
+      "shared_positive": 22984,
       "candidate_positive": 122120,
-      "found_positive": 284497
+      "found_positive": 152231
     },
     {
       "key": "h16-1",
