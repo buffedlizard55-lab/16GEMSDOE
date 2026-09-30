@@ -1,193 +1,868 @@
 {
-  "generated_at_utc": "2026-09-29T23:54:14+00:00",
-  "submission_recommendation": "No artifact is recommended for a live submission until the exact candidate passes the spatially blocked holdout gate. H17-1 failed; current artifacts are for reproducible review only.",
-  "interpretation_limits": [
-    "Spatial profiles and catalogue-distance bands describe predictions; they are not true-positive estimates and do not predict leaderboard DTI.",
-    "All-finite zero-outside variants are diagnostic and do not follow the required outside-bounds null convention.",
-    "The primary NaN-outside and all-finite files share the same in-footprint prediction and are not distinct experiments."
-  ],
-  "organizer_metric_worked_example": {
-    "TP_w": 3.0,
-    "FP_w": 1.89,
-    "FN_w": 2.0,
-    "DTI_exact": 0.6027,
-    "DTI_rounded_2dec": 0.6,
-    "matches_0_60": true
+  "generated_utc": "2026-09-30T02:28:54+00:00",
+  "git_commit": "aa504ca8f1",
+  "template_sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+  "rolling_limit": "3 submissions per rolling 7-day window per entity (official rules 3.2/3.4; staff: forum topic 11524 post 2)",
+  "claims": {
+    "score_predicted": false,
+    "statement": "No file has been live-scored. Holdout numbers recover KNOWN faults and cannot measure precision on the hidden NEW faults."
   },
-  "uniqueness_audit": {
-    "generated_artifact_sha256s_pairwise_unique": true,
-    "primary_allfinite_sha256_unique_vs_history": true,
-    "primary_nanmask_sha256_unique_vs_history": true,
-    "pure_physical_sha256_unique_vs_history": true,
-    "primary_variants_share_prediction_array": true,
-    "primary_vs_pure_physical_hamming_distance_px": 206462,
-    "primary_vs_ens12_hamming_distance_px": 68519,
-    "primary_vs_7gemsdoe_hamming_distance_px": 207951
-  },
-  "candidates": {
-    "primary_allfinite": {
-      "filename": "gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.tif",
-      "drivendata_submission_note": "16GEMSDOE | H16-1 Seam-Free Multi-Scale Tectonic Ridge Synthesis (1m 3DEP Lidar Antislope/Piedmont Scarp + 10m 3DEP DEM Asymmetry Gap-Fill + 1.5km Strike Geopotential Worms + Hydrothermal Conduits + OOF Spatial Context | 1px Hessian ridge_nms | All-Finite [0,1] float32 | ID: a16f01)",
-      "validation": {
-        "valid": true,
-        "official_format_compliant": false,
-        "path": "/home/user/16GEMSDOE/docs/downloads/gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.tif",
-        "bytes": 778668,
-        "sha256": "7da9fe49482c9a826ff11a51b27a054b4cdbe4b4160513389c2c0bd6b37b5eeb",
-        "crs": "EPSG:32611",
-        "shape": [
-          3730,
-          3292
-        ],
-        "transform": [
-          100.0,
-          0.0,
-          243350.0,
-          0.0,
-          -100.0,
-          4508550.0
-        ],
-        "dtype": "float32",
-        "footprint_pixels": 5167373,
-        "outside_pixels": 7111787,
-        "in_footprint_nan_count": 0,
-        "in_footprint_min": 0.0,
-        "in_footprint_max": 1.0,
-        "positive_pixels": 198000,
-        "positive_fraction_of_footprint": 0.038317,
-        "sum_mass": 198000.0,
-        "outside_mode": "zero_allfinite"
+  "candidates": [
+    {
+      "key": "h18-3a",
+      "hid": "H18-3a",
+      "title": "H16-1 surface \u00d7 catalogue complexity prior",
+      "one_liner": "Topography + geophysics detector (out-of-fold), boosted where known faults end or intersect at km scale; thin ridges, 2.5 % of pixels per quadrant.",
+      "content_id": "c502dfab",
+      "files": {
+        "tif": {
+          "name": "gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-nan.tif",
+          "bytes": 1708516,
+          "sha256": "92904a5bfd84c8bd1141683fc5d29817aa4de71574d8caff5b40f7ed0072a5b8",
+          "href": "downloads/gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-nan.tif"
+        },
+        "zip": {
+          "name": "gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-nan.zip",
+          "bytes": 451750,
+          "sha256": "7f4e080dc03c08a3faca15c9ce27e9cd872d8141edfa52db3469dd79e780124e",
+          "href": "downloads/gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-nan.zip"
+        },
+        "tif_allfinite": {
+          "name": "gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-allfinite.tif",
+          "bytes": 935036,
+          "sha256": "703ea58b0e49479d57acb9293d748d861b07eba80898aa6bc0ed07595bc1dc91",
+          "href": "downloads/gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-allfinite.tif"
+        }
       },
-      "spatial_profile": {
-        "on_catalogue_px": 0,
-        "off_catalogue_px": 198000,
-        "off_d_le_3_px": 19725,
-        "off_d_4_15_px": 78575,
-        "off_d_gt_15_px": 99700,
-        "far_field_frac_gt_3": 0.9004,
-        "deep_basin_frac_gt_15": 0.5035,
-        "reach_300m_off_cat_px": 1406701,
-        "reach_300m_off_cat_frac": 0.2755,
-        "mean_300m_kernel_weight": 0.1431,
-        "kernel_support_per_emitted_pixel_ratio": 3.69,
-        "overlap_ens12_px": 148000,
-        "overlap_7gemsdoe_px": 33454,
-        "novel_beyond_300m_of_ens12_px": 30998,
-        "emitted_in_24pct_lidar_gap_px": 54172,
-        "ens12_pruned_px": 148000,
-        "g7_novel_scarp_px": 24000,
-        "h16_1_gapfill_px": 18500,
-        "h16_1_lidar_novel_px": 7500
-      }
-    },
-    "primary_nanmask": {
-      "filename": "gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif",
-      "zip_filename": "gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.zip",
-      "zip_size_bytes": 755768,
-      "zip_sha256": "f0eceee549c3a96fece178b83efc6e443c281dd631c441e1813da054a81703ed",
-      "drivendata_submission_note": "16GEMSDOE | H16-1 Seam-Free Multi-Scale Tectonic Ridge Synthesis (Footprint-Valid [0,1], Outside-NaN Twin | 1px Hessian ridge_nms | ID: b16f02)",
-      "validation": {
-        "valid": true,
+      "note": "16GEMSDOE H18-3a | topo+geophysics OOF surface x fault endpoint/junction prior, thin ridges 2.5%/quadrant | id c502dfab | not yet live-scored",
+      "checks_official_format": {
+        "file": "gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-nan.tif",
+        "bytes": 1708516,
+        "sha256": "92904a5bfd84c8bd1141683fc5d29817aa4de71574d8caff5b40f7ed0072a5b8",
+        "ok_to_upload": true,
+        "hard_failures": [],
         "official_format_compliant": true,
-        "path": "/home/user/16GEMSDOE/docs/downloads/gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif",
-        "bytes": 849871,
-        "sha256": "78b2aebe410e016d76c1cf15760561d7699346647955039bcc0b8adce87af30a",
-        "crs": "EPSG:32611",
-        "shape": [
-          3730,
-          3292
-        ],
-        "transform": [
-          100.0,
-          0.0,
-          243350.0,
-          0.0,
-          -100.0,
-          4508550.0
-        ],
-        "dtype": "float32",
-        "footprint_pixels": 5167373,
-        "outside_pixels": 7111787,
-        "in_footprint_nan_count": 0,
-        "in_footprint_min": 0.0,
-        "in_footprint_max": 1.0,
-        "positive_pixels": 198000,
-        "positive_fraction_of_footprint": 0.038317,
-        "sum_mass": 198000.0,
-        "outside_mode": "nan"
+        "in_footprint_positive_pixels": 122120,
+        "in_footprint_mass": 122120.0,
+        "checks": {
+          "single_band": {
+            "pass": true,
+            "hard": true,
+            "detail": "count=1"
+          },
+          "dtype_float32": {
+            "pass": true,
+            "hard": true,
+            "detail": "dtypes=('float32',)"
+          },
+          "crs_epsg_32611": {
+            "pass": true,
+            "hard": true,
+            "detail": "EPSG:32611"
+          },
+          "shape_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(3730, 3292) vs (3730, 3292)"
+          },
+          "geotransform_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0)"
+          },
+          "footprint_all_finite": {
+            "pass": true,
+            "hard": true,
+            "detail": "0 NaN/Inf inside the 5,167,373-pixel footprint"
+          },
+          "footprint_range_0_1": {
+            "pass": true,
+            "hard": true,
+            "detail": "min=0 max=1"
+          },
+          "outside_is_nan_official_text": {
+            "pass": true,
+            "hard": false,
+            "detail": "7,111,787 of 7,111,787 outside pixels are NaN"
+          },
+          "nodata_tag_is_nan": {
+            "pass": true,
+            "hard": false,
+            "detail": "nodata=nan"
+          },
+          "variant_nan_aware_whole_array": {
+            "pass": true,
+            "hard": true,
+            "detail": "np.nanmin/np.nanmax over the whole array"
+          },
+          "variant_masked_read": {
+            "pass": true,
+            "hard": true,
+            "detail": "rasterio read(masked=True).compressed()"
+          },
+          "variant_strict_whole_array_no_nan_allowed": {
+            "pass": false,
+            "hard": false,
+            "detail": "((a>=0)&(a<=1)).all() over the whole array - fails for ANY NaN, including the official sample's NaN outside"
+          },
+          "profile_matches_official_sample": {
+            "pass": true,
+            "hard": false,
+            "detail": "driver/dtype/nodata/size/crs/transform equal to template; compress=lzw (template lzw)"
+          }
+        }
       },
-      "spatial_profile": {
-        "on_catalogue_px": 0,
-        "off_catalogue_px": 198000,
-        "off_d_le_3_px": 19725,
-        "off_d_4_15_px": 78575,
-        "off_d_gt_15_px": 99700,
-        "far_field_frac_gt_3": 0.9004,
-        "deep_basin_frac_gt_15": 0.5035,
-        "reach_300m_off_cat_px": 1406701,
-        "reach_300m_off_cat_frac": 0.2755,
-        "mean_300m_kernel_weight": 0.1431,
-        "kernel_support_per_emitted_pixel_ratio": 3.69,
-        "overlap_ens12_px": 148000,
-        "overlap_7gemsdoe_px": 33454,
-        "novel_beyond_300m_of_ens12_px": 30998,
-        "emitted_in_24pct_lidar_gap_px": 54172,
-        "ens12_pruned_px": 148000,
-        "g7_novel_scarp_px": 24000,
-        "h16_1_gapfill_px": 18500,
-        "h16_1_lidar_novel_px": 7500
-      }
-    },
-    "pure_physical_contender": {
-      "filename": "gems16-h16-1-pure-physical-scarp-worm-allfinite-20260929-c16f03.tif",
-      "drivendata_submission_note": "16GEMSDOE | H16-1 Pure Physical Multi-Scale Scarp-Worm-Hydrothermal Ridge (Experimental physical-only variant; 1m Lidar + 10m DEM + Strike Worms + Hydrothermal | Diagnostic all-finite [0,1] float32 | ID: c16f03)",
-      "validation": {
-        "valid": true,
+      "checks_allfinite_twin": {
+        "file": "gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-allfinite.tif",
+        "bytes": 935036,
+        "sha256": "703ea58b0e49479d57acb9293d748d861b07eba80898aa6bc0ed07595bc1dc91",
+        "ok_to_upload": true,
+        "hard_failures": [],
         "official_format_compliant": false,
-        "path": "/home/user/16GEMSDOE/docs/downloads/gems16-h16-1-pure-physical-scarp-worm-allfinite-20260929-c16f03.tif",
-        "bytes": 564499,
-        "sha256": "91f3dd7a0bb947e623f2c5660f5741bde099f69cb94a5bcc083c060dd5cd06cc",
-        "crs": "EPSG:32611",
-        "shape": [
-          3730,
-          3292
-        ],
-        "transform": [
-          100.0,
-          0.0,
-          243350.0,
-          0.0,
-          -100.0,
-          4508550.0
-        ],
-        "dtype": "float32",
-        "footprint_pixels": 5167373,
-        "outside_pixels": 7111787,
-        "in_footprint_nan_count": 0,
-        "in_footprint_min": 0.0,
-        "in_footprint_max": 1.0,
-        "positive_pixels": 108500,
-        "positive_fraction_of_footprint": 0.020997,
-        "sum_mass": 108500.0,
-        "outside_mode": "zero_allfinite"
+        "in_footprint_positive_pixels": 122120,
+        "in_footprint_mass": 122120.0,
+        "checks": {
+          "single_band": {
+            "pass": true,
+            "hard": true,
+            "detail": "count=1"
+          },
+          "dtype_float32": {
+            "pass": true,
+            "hard": true,
+            "detail": "dtypes=('float32',)"
+          },
+          "crs_epsg_32611": {
+            "pass": true,
+            "hard": true,
+            "detail": "EPSG:32611"
+          },
+          "shape_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(3730, 3292) vs (3730, 3292)"
+          },
+          "geotransform_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0)"
+          },
+          "footprint_all_finite": {
+            "pass": true,
+            "hard": true,
+            "detail": "0 NaN/Inf inside the 5,167,373-pixel footprint"
+          },
+          "footprint_range_0_1": {
+            "pass": true,
+            "hard": true,
+            "detail": "min=0 max=1"
+          },
+          "outside_is_nan_official_text": {
+            "pass": false,
+            "hard": false,
+            "detail": "0 of 7,111,787 outside pixels are NaN"
+          },
+          "nodata_tag_is_nan": {
+            "pass": false,
+            "hard": false,
+            "detail": "nodata=None"
+          },
+          "variant_nan_aware_whole_array": {
+            "pass": true,
+            "hard": true,
+            "detail": "np.nanmin/np.nanmax over the whole array"
+          },
+          "variant_masked_read": {
+            "pass": true,
+            "hard": true,
+            "detail": "rasterio read(masked=True).compressed()"
+          },
+          "variant_strict_whole_array_no_nan_allowed": {
+            "pass": true,
+            "hard": false,
+            "detail": "((a>=0)&(a<=1)).all() over the whole array - fails for ANY NaN, including the official sample's NaN outside"
+          },
+          "profile_matches_official_sample": {
+            "pass": false,
+            "hard": false,
+            "detail": "driver/dtype/nodata/size/crs/transform equal to template; compress=lzw (template lzw)"
+          }
+        }
       },
-      "spatial_profile": {
-        "on_catalogue_px": 0,
-        "off_catalogue_px": 108500,
-        "off_d_le_3_px": 10513,
-        "off_d_4_15_px": 38427,
-        "off_d_gt_15_px": 59560,
-        "far_field_frac_gt_3": 0.9031,
-        "deep_basin_frac_gt_15": 0.5489,
-        "reach_300m_off_cat_px": 947162,
-        "reach_300m_off_cat_frac": 0.1855,
-        "mean_300m_kernel_weight": 0.0895,
-        "kernel_support_per_emitted_pixel_ratio": 4.214,
-        "overlap_ens12_px": 14606,
-        "overlap_7gemsdoe_px": 58305,
-        "novel_beyond_300m_of_ens12_px": 37715,
-        "emitted_in_24pct_lidar_gap_px": 26500
-      }
+      "uniqueness": {
+        "verdict": "DISTINCT",
+        "candidate_positive_scored_pixels": 122120,
+        "nearest": [
+          {
+            "id": "GEMSDOE10-H16",
+            "lb_score": 0.0461,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.11223,
+            "a_positive": 122120,
+            "b_positive": 283532,
+            "shared_positive": 40934,
+            "frac_a_in_b": 0.33519,
+            "frac_b_in_a": 0.14437
+          },
+          {
+            "id": "11GEMSDOE",
+            "lb_score": 0.0202,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.10646,
+            "a_positive": 122120,
+            "b_positive": 282538,
+            "shared_positive": 38934,
+            "frac_a_in_b": 0.31882,
+            "frac_b_in_a": 0.1378
+          },
+          {
+            "id": "6GEMSDOE",
+            "lb_score": 0.0286,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.10058,
+            "a_positive": 122120,
+            "b_positive": 131416,
+            "shared_positive": 23171,
+            "frac_a_in_b": 0.18974,
+            "frac_b_in_a": 0.17632
+          },
+          {
+            "id": "GEMSDOE10-H20",
+            "lb_score": 0.0921,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.08073,
+            "a_positive": 122120,
+            "b_positive": 143657,
+            "shared_positive": 19854,
+            "frac_a_in_b": 0.16258,
+            "frac_b_in_a": 0.1382
+          },
+          {
+            "id": "GEMSDOE3-3",
+            "lb_score": 0.1152,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.07567,
+            "a_positive": 122120,
+            "b_positive": 155021,
+            "shared_positive": 19497,
+            "frac_a_in_b": 0.15965,
+            "frac_b_in_a": 0.12577
+          }
+        ],
+        "threshold_near_duplicate_jaccard": 0.8,
+        "note": "Only pixels outside the known-fault mask and inside the footprint can change a score (DrivenData forum topic 11516 posts 2 and 4)."
+      },
+      "scored_pixels_predicted": 122120,
+      "share_of_footprint_pct": 2.363,
+      "holdout": {
+        "mean_dense_dti": 0.21319,
+        "mean_sparse_dti": 0.09401,
+        "fold_dense": [
+          0.20839,
+          0.23871,
+          0.15356,
+          0.25209
+        ],
+        "fold_sparse": [
+          0.10112,
+          0.08631,
+          0.07762,
+          0.11098
+        ]
+      },
+      "holdout_gate_vs_h16_1": {
+        "passed": true,
+        "rules": {
+          "mean_dense_improves": true,
+          "mean_sparse_improves": true,
+          "sparse_fold_wins_ge_3_of_4": true,
+          "no_fold_loses_more_than_0_01": true
+        },
+        "sparse_fold_wins": 4,
+        "dense_fold_wins": 2,
+        "worst_fold_delta_dense": -0.00108,
+        "worst_fold_delta_sparse": 0.00251,
+        "delta_mean_dense": 0.00047,
+        "delta_mean_sparse": 0.0086
+      },
+      "gate_eligible": true,
+      "caveat": "Passed the pre-registered gate, but a plain fault-density prior gives almost the same lift (exploratory control), so the gain is best explained by fault clustering, not by a structural-setting mechanism. The proxy rewards clustering by construction. The holdout figure uses the quadrant-wise information rule; the published file applies the same operator with every catalogued fault known.",
+      "similar_to_other_candidates": [
+        {
+          "key": "h16-1",
+          "jaccard_positive": 0.40114
+        },
+        {
+          "key": "sgmc-gap",
+          "jaccard_positive": 0.01011
+        }
+      ]
+    },
+    {
+      "key": "h16-1",
+      "hid": "H16-1",
+      "title": "H16-1 surface (current holdout best)",
+      "one_liner": "Topography + geophysics detector (out-of-fold), thin ridges, 2.5 % of pixels per quadrant. The benchmark every new idea must beat.",
+      "content_id": "df20f65e",
+      "files": {
+        "tif": {
+          "name": "gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-nan.tif",
+          "bytes": 1718028,
+          "sha256": "055309694ed499ca3d87e76b3f5e81c292aef6e39c418d33ff5a817aa1309bea",
+          "href": "downloads/gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-nan.tif"
+        },
+        "zip": {
+          "name": "gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-nan.zip",
+          "bytes": 502786,
+          "sha256": "202aee9037db0edf51861cc5a7ec8f38d99f1cd48fab0375db7736de1227e428",
+          "href": "downloads/gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-nan.zip"
+        },
+        "tif_allfinite": {
+          "name": "gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-allfinite.tif",
+          "bytes": 942922,
+          "sha256": "fde9fbd2270a5ae5cb4606f33dbc19eed096a0dc27e382baf6dd5d1dd82c8dda",
+          "href": "downloads/gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-allfinite.tif"
+        }
+      },
+      "note": "16GEMSDOE H16-1 | topo+geophysics OOF surface, thin ridges 2.5%/quadrant (holdout benchmark) | id df20f65e | not yet live-scored",
+      "checks_official_format": {
+        "file": "gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-nan.tif",
+        "bytes": 1718028,
+        "sha256": "055309694ed499ca3d87e76b3f5e81c292aef6e39c418d33ff5a817aa1309bea",
+        "ok_to_upload": true,
+        "hard_failures": [],
+        "official_format_compliant": true,
+        "in_footprint_positive_pixels": 123939,
+        "in_footprint_mass": 123939.0,
+        "checks": {
+          "single_band": {
+            "pass": true,
+            "hard": true,
+            "detail": "count=1"
+          },
+          "dtype_float32": {
+            "pass": true,
+            "hard": true,
+            "detail": "dtypes=('float32',)"
+          },
+          "crs_epsg_32611": {
+            "pass": true,
+            "hard": true,
+            "detail": "EPSG:32611"
+          },
+          "shape_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(3730, 3292) vs (3730, 3292)"
+          },
+          "geotransform_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0)"
+          },
+          "footprint_all_finite": {
+            "pass": true,
+            "hard": true,
+            "detail": "0 NaN/Inf inside the 5,167,373-pixel footprint"
+          },
+          "footprint_range_0_1": {
+            "pass": true,
+            "hard": true,
+            "detail": "min=0 max=1"
+          },
+          "outside_is_nan_official_text": {
+            "pass": true,
+            "hard": false,
+            "detail": "7,111,787 of 7,111,787 outside pixels are NaN"
+          },
+          "nodata_tag_is_nan": {
+            "pass": true,
+            "hard": false,
+            "detail": "nodata=nan"
+          },
+          "variant_nan_aware_whole_array": {
+            "pass": true,
+            "hard": true,
+            "detail": "np.nanmin/np.nanmax over the whole array"
+          },
+          "variant_masked_read": {
+            "pass": true,
+            "hard": true,
+            "detail": "rasterio read(masked=True).compressed()"
+          },
+          "variant_strict_whole_array_no_nan_allowed": {
+            "pass": false,
+            "hard": false,
+            "detail": "((a>=0)&(a<=1)).all() over the whole array - fails for ANY NaN, including the official sample's NaN outside"
+          },
+          "profile_matches_official_sample": {
+            "pass": true,
+            "hard": false,
+            "detail": "driver/dtype/nodata/size/crs/transform equal to template; compress=lzw (template lzw)"
+          }
+        }
+      },
+      "checks_allfinite_twin": {
+        "file": "gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-allfinite.tif",
+        "bytes": 942922,
+        "sha256": "fde9fbd2270a5ae5cb4606f33dbc19eed096a0dc27e382baf6dd5d1dd82c8dda",
+        "ok_to_upload": true,
+        "hard_failures": [],
+        "official_format_compliant": false,
+        "in_footprint_positive_pixels": 123939,
+        "in_footprint_mass": 123939.0,
+        "checks": {
+          "single_band": {
+            "pass": true,
+            "hard": true,
+            "detail": "count=1"
+          },
+          "dtype_float32": {
+            "pass": true,
+            "hard": true,
+            "detail": "dtypes=('float32',)"
+          },
+          "crs_epsg_32611": {
+            "pass": true,
+            "hard": true,
+            "detail": "EPSG:32611"
+          },
+          "shape_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(3730, 3292) vs (3730, 3292)"
+          },
+          "geotransform_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0)"
+          },
+          "footprint_all_finite": {
+            "pass": true,
+            "hard": true,
+            "detail": "0 NaN/Inf inside the 5,167,373-pixel footprint"
+          },
+          "footprint_range_0_1": {
+            "pass": true,
+            "hard": true,
+            "detail": "min=0 max=1"
+          },
+          "outside_is_nan_official_text": {
+            "pass": false,
+            "hard": false,
+            "detail": "0 of 7,111,787 outside pixels are NaN"
+          },
+          "nodata_tag_is_nan": {
+            "pass": false,
+            "hard": false,
+            "detail": "nodata=None"
+          },
+          "variant_nan_aware_whole_array": {
+            "pass": true,
+            "hard": true,
+            "detail": "np.nanmin/np.nanmax over the whole array"
+          },
+          "variant_masked_read": {
+            "pass": true,
+            "hard": true,
+            "detail": "rasterio read(masked=True).compressed()"
+          },
+          "variant_strict_whole_array_no_nan_allowed": {
+            "pass": true,
+            "hard": false,
+            "detail": "((a>=0)&(a<=1)).all() over the whole array - fails for ANY NaN, including the official sample's NaN outside"
+          },
+          "profile_matches_official_sample": {
+            "pass": false,
+            "hard": false,
+            "detail": "driver/dtype/nodata/size/crs/transform equal to template; compress=lzw (template lzw)"
+          }
+        }
+      },
+      "uniqueness": {
+        "verdict": "DISTINCT",
+        "candidate_positive_scored_pixels": 123939,
+        "nearest": [
+          {
+            "id": "candidate:h18-3a",
+            "lb_score": null,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.40114,
+            "a_positive": 123939,
+            "b_positive": 122120,
+            "shared_positive": 70445,
+            "frac_a_in_b": 0.56838,
+            "frac_b_in_a": 0.57685
+          },
+          {
+            "id": "GEMSDOE10-H16",
+            "lb_score": 0.0461,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.08642,
+            "a_positive": 123939,
+            "b_positive": 283532,
+            "shared_positive": 32413,
+            "frac_a_in_b": 0.26152,
+            "frac_b_in_a": 0.11432
+          },
+          {
+            "id": "7GEMSDOE",
+            "lb_score": 0.1461,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.08251,
+            "a_positive": 123939,
+            "b_positive": 76859,
+            "shared_positive": 15305,
+            "frac_a_in_b": 0.12349,
+            "frac_b_in_a": 0.19913
+          },
+          {
+            "id": "6GEMSDOE",
+            "lb_score": 0.0286,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.07592,
+            "a_positive": 123939,
+            "b_positive": 131416,
+            "shared_positive": 18018,
+            "frac_a_in_b": 0.14538,
+            "frac_b_in_a": 0.13711
+          },
+          {
+            "id": "GEMSDOE2",
+            "lb_score": 0.156,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.07531,
+            "a_positive": 123939,
+            "b_positive": 175949,
+            "shared_positive": 21002,
+            "frac_a_in_b": 0.16945,
+            "frac_b_in_a": 0.11936
+          }
+        ],
+        "threshold_near_duplicate_jaccard": 0.8,
+        "note": "Only pixels outside the known-fault mask and inside the footprint can change a score (DrivenData forum topic 11516 posts 2 and 4)."
+      },
+      "scored_pixels_predicted": 123939,
+      "share_of_footprint_pct": 2.398,
+      "holdout": {
+        "mean_dense_dti": 0.21272,
+        "mean_sparse_dti": 0.08541,
+        "fold_dense": [
+          0.20774,
+          0.23898,
+          0.15464,
+          0.24951
+        ],
+        "fold_sparse": [
+          0.089,
+          0.07794,
+          0.06622,
+          0.10847
+        ]
+      },
+      "holdout_gate_vs_h16_1": null,
+      "gate_eligible": true,
+      "caveat": "It is the benchmark itself, so it has no gate result; it has never been live-scored. Hidden-set performance is unknown.",
+      "similar_to_other_candidates": [
+        {
+          "key": "h18-3a",
+          "jaccard_positive": 0.40114
+        },
+        {
+          "key": "sgmc-gap",
+          "jaccard_positive": 0.01106
+        }
+      ]
+    },
+    {
+      "key": "sgmc-gap",
+      "hid": "H18-4",
+      "title": "USGS geologic-map faults absent from the catalogue (external data)",
+      "one_liner": "Faults from the USGS State Geologic Map Compilation (Nevada and California) lying >300 m from every catalogue fault, thinned to 1-pixel lines. No model, no training.",
+      "content_id": "aef8f42c",
+      "files": {
+        "tif": {
+          "name": "gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-nan.tif",
+          "bytes": 1620132,
+          "sha256": "736f62c2da585677ef472cab0f9bc63bd15c50c340beb4a0f4627fafd3d1c853",
+          "href": "downloads/gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-nan.tif"
+        },
+        "zip": {
+          "name": "gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-nan.zip",
+          "bytes": 298024,
+          "sha256": "3edab370ce1ea6b55d67c8227addbe91c3091b62ea1d62fd20313b8eacdf41a7",
+          "href": "downloads/gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-nan.zip"
+        },
+        "tif_allfinite": {
+          "name": "gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-allfinite.tif",
+          "bytes": 852968,
+          "sha256": "4151c2e438758c4a216a8a597b381e851a5a8e9f358b3fcffd62c01b627142cc",
+          "href": "downloads/gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-allfinite.tif"
+        }
+      },
+      "note": "16GEMSDOE H18-4 | USGS SGMC geologic-map faults >300 m from catalogue, 1-px lines (external-data probe) | id aef8f42c | not yet live-scored",
+      "checks_official_format": {
+        "file": "gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-nan.tif",
+        "bytes": 1620132,
+        "sha256": "736f62c2da585677ef472cab0f9bc63bd15c50c340beb4a0f4627fafd3d1c853",
+        "ok_to_upload": true,
+        "hard_failures": [],
+        "official_format_compliant": true,
+        "in_footprint_positive_pixels": 57783,
+        "in_footprint_mass": 57783.0,
+        "checks": {
+          "single_band": {
+            "pass": true,
+            "hard": true,
+            "detail": "count=1"
+          },
+          "dtype_float32": {
+            "pass": true,
+            "hard": true,
+            "detail": "dtypes=('float32',)"
+          },
+          "crs_epsg_32611": {
+            "pass": true,
+            "hard": true,
+            "detail": "EPSG:32611"
+          },
+          "shape_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(3730, 3292) vs (3730, 3292)"
+          },
+          "geotransform_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0)"
+          },
+          "footprint_all_finite": {
+            "pass": true,
+            "hard": true,
+            "detail": "0 NaN/Inf inside the 5,167,373-pixel footprint"
+          },
+          "footprint_range_0_1": {
+            "pass": true,
+            "hard": true,
+            "detail": "min=0 max=1"
+          },
+          "outside_is_nan_official_text": {
+            "pass": true,
+            "hard": false,
+            "detail": "7,111,787 of 7,111,787 outside pixels are NaN"
+          },
+          "nodata_tag_is_nan": {
+            "pass": true,
+            "hard": false,
+            "detail": "nodata=nan"
+          },
+          "variant_nan_aware_whole_array": {
+            "pass": true,
+            "hard": true,
+            "detail": "np.nanmin/np.nanmax over the whole array"
+          },
+          "variant_masked_read": {
+            "pass": true,
+            "hard": true,
+            "detail": "rasterio read(masked=True).compressed()"
+          },
+          "variant_strict_whole_array_no_nan_allowed": {
+            "pass": false,
+            "hard": false,
+            "detail": "((a>=0)&(a<=1)).all() over the whole array - fails for ANY NaN, including the official sample's NaN outside"
+          },
+          "profile_matches_official_sample": {
+            "pass": true,
+            "hard": false,
+            "detail": "driver/dtype/nodata/size/crs/transform equal to template; compress=lzw (template lzw)"
+          }
+        }
+      },
+      "checks_allfinite_twin": {
+        "file": "gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-allfinite.tif",
+        "bytes": 852968,
+        "sha256": "4151c2e438758c4a216a8a597b381e851a5a8e9f358b3fcffd62c01b627142cc",
+        "ok_to_upload": true,
+        "hard_failures": [],
+        "official_format_compliant": false,
+        "in_footprint_positive_pixels": 57783,
+        "in_footprint_mass": 57783.0,
+        "checks": {
+          "single_band": {
+            "pass": true,
+            "hard": true,
+            "detail": "count=1"
+          },
+          "dtype_float32": {
+            "pass": true,
+            "hard": true,
+            "detail": "dtypes=('float32',)"
+          },
+          "crs_epsg_32611": {
+            "pass": true,
+            "hard": true,
+            "detail": "EPSG:32611"
+          },
+          "shape_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(3730, 3292) vs (3730, 3292)"
+          },
+          "geotransform_matches_template": {
+            "pass": true,
+            "hard": true,
+            "detail": "(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0)"
+          },
+          "footprint_all_finite": {
+            "pass": true,
+            "hard": true,
+            "detail": "0 NaN/Inf inside the 5,167,373-pixel footprint"
+          },
+          "footprint_range_0_1": {
+            "pass": true,
+            "hard": true,
+            "detail": "min=0 max=1"
+          },
+          "outside_is_nan_official_text": {
+            "pass": false,
+            "hard": false,
+            "detail": "0 of 7,111,787 outside pixels are NaN"
+          },
+          "nodata_tag_is_nan": {
+            "pass": false,
+            "hard": false,
+            "detail": "nodata=None"
+          },
+          "variant_nan_aware_whole_array": {
+            "pass": true,
+            "hard": true,
+            "detail": "np.nanmin/np.nanmax over the whole array"
+          },
+          "variant_masked_read": {
+            "pass": true,
+            "hard": true,
+            "detail": "rasterio read(masked=True).compressed()"
+          },
+          "variant_strict_whole_array_no_nan_allowed": {
+            "pass": true,
+            "hard": false,
+            "detail": "((a>=0)&(a<=1)).all() over the whole array - fails for ANY NaN, including the official sample's NaN outside"
+          },
+          "profile_matches_official_sample": {
+            "pass": false,
+            "hard": false,
+            "detail": "driver/dtype/nodata/size/crs/transform equal to template; compress=lzw (template lzw)"
+          }
+        }
+      },
+      "uniqueness": {
+        "verdict": "DISTINCT",
+        "candidate_positive_scored_pixels": 57783,
+        "nearest": [
+          {
+            "id": "GEMSDOE4",
+            "lb_score": 0.0343,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.04432,
+            "a_positive": 57783,
+            "b_positive": 258323,
+            "shared_positive": 13415,
+            "frac_a_in_b": 0.23216,
+            "frac_b_in_a": 0.05193
+          },
+          {
+            "id": "GEMSDOE3-3",
+            "lb_score": 0.1152,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.03961,
+            "a_positive": 57783,
+            "b_positive": 155021,
+            "shared_positive": 8108,
+            "frac_a_in_b": 0.14032,
+            "frac_b_in_a": 0.0523
+          },
+          {
+            "id": "GEMSDOE3-2",
+            "lb_score": 0.083,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.01266,
+            "a_positive": 57783,
+            "b_positive": 155021,
+            "shared_positive": 2660,
+            "frac_a_in_b": 0.04603,
+            "frac_b_in_a": 0.01716
+          },
+          {
+            "id": "candidate:h16-1",
+            "lb_score": null,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.01106,
+            "a_positive": 57783,
+            "b_positive": 123939,
+            "shared_positive": 1988,
+            "frac_a_in_b": 0.0344,
+            "frac_b_in_a": 0.01604
+          },
+          {
+            "id": "GEMSDOE3-1",
+            "lb_score": 0.1193,
+            "identical_on_scored_pixels": false,
+            "jaccard_positive": 0.01088,
+            "a_positive": 57783,
+            "b_positive": 155021,
+            "shared_positive": 2291,
+            "frac_a_in_b": 0.03965,
+            "frac_b_in_a": 0.01478
+          }
+        ],
+        "threshold_near_duplicate_jaccard": 0.8,
+        "note": "Only pixels outside the known-fault mask and inside the footprint can change a score (DrivenData forum topic 11516 posts 2 and 4)."
+      },
+      "scored_pixels_predicted": 57783,
+      "share_of_footprint_pct": 1.118,
+      "holdout": {
+        "mean_dense_dti": 0.18272,
+        "mean_sparse_dti": 0.08289,
+        "fold_dense": [
+          0.24718,
+          0.21643,
+          0.08987,
+          0.17739
+        ],
+        "fold_sparse": [
+          0.14315,
+          0.0863,
+          0.04061,
+          0.06152
+        ]
+      },
+      "holdout_gate_vs_h16_1": {
+        "passed": false,
+        "rules": {
+          "mean_dense_improves": false,
+          "mean_sparse_improves": false,
+          "sparse_fold_wins_ge_3_of_4": false,
+          "no_fold_loses_more_than_0_01": false
+        },
+        "sparse_fold_wins": 2,
+        "dense_fold_wins": 1,
+        "worst_fold_delta_dense": -0.07212,
+        "worst_fold_delta_sparse": -0.04695,
+        "delta_mean_dense": -0.03,
+        "delta_mean_sparse": -0.00252
+      },
+      "gate_eligible": false,
+      "caveat": "NOT gate-eligible and needs an explicit owner decision: the holdout cannot measure whether geologic-map faults are NEW faults (its hidden faults are Quaternary catalogue faults, which geologic maps include). SGMC is nominally 1:1,000,000, so positions may be hundreds of metres off. Spending a slot on it is a measurement, not a validated bet.",
+      "similar_to_other_candidates": [
+        {
+          "key": "h18-3a",
+          "jaccard_positive": 0.01011
+        },
+        {
+          "key": "h16-1",
+          "jaccard_positive": 0.01106
+        }
+      ]
     }
-  }
+  ]
 }
