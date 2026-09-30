@@ -1,7 +1,7 @@
 name: external-verification
 # Verifies data provenance and external-data hypotheses against OFFICIAL open-data hosts (GDR, USGS).
 # Runs on GitHub-hosted runners because the agent sandbox cannot reach these hosts.
-# Results are committed back to the triggering branch (evidence/ci/).  No DrivenData host is contacted
+# Results are committed back to the triggering branch (evidence/ci/ plus the rebuilt docs/, because docs/audit.html shows the run time).  No DrivenData host is contacted
 # (DrivenData Terms of Use prohibit automated access: https://www.drivendata.org/termsofuse/).
 on:
   workflow_dispatch:
@@ -12,6 +12,9 @@ on:
       - '.github/workflows/external-verification.yml'
 permissions:
   contents: write
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -25,10 +28,15 @@ jobs:
         run: pip install numpy scipy rasterio geopandas pyogrio shapely pyproj pandas
       - name: Run verification
         run: python scripts/ci_external_verify.py
+      - name: Rebuild the site so it shows the new results
+        run: |
+          pip install "$(grep -i '^markdown==' requirements.txt)"
+          python scripts/build_site.py
       - name: Commit results back to this branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add evidence/ci/
+          git add evidence/ci/ docs/ index.html
           git commit -m "ci: external verification results [skip ci]" || echo "nothing to commit"
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
           git push origin "HEAD:${GITHUB_REF_NAME}"
