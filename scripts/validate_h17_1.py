@@ -14,15 +14,13 @@ from pathlib import Path
 
 import numpy as np
 import rasterio
-from scipy.ndimage import binary_dilation, gaussian_filter, uniform_filter
+from scipy.ndimage import binary_dilation, gaussian_filter
 from sklearn.ensemble import HistGradientBoostingClassifier
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from gems.metric import dti_score_fast, ridge_nms
-
-DATA = ROOT / "data"
-EVIDENCE = ROOT / "evidence"
+from gems.paths import DATA_DIR as DATA, EVIDENCE_DIR as EVIDENCE  # noqa: E402
 SEED = 20260929
 
 
@@ -228,7 +226,6 @@ def main() -> None:
         train_idx = np.concatenate([pos, neg])
         y_train = np.r_[np.ones(len(pos), dtype=np.int8), np.zeros(len(neg), dtype=np.int8)]
         weight = np.where(y_train == 1, 0.5 / len(pos), 0.5 / len(neg)) * len(train_idx)
-        cols = base_cols + h17_cols
         x_train = np.column_stack([feats_file[c][train_idx] for c in base_cols] + [h17[c][train_idx] for c in h17_cols])
         clf = HistGradientBoostingClassifier(
             max_iter=150,

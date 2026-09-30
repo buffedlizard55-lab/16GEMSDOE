@@ -17,8 +17,8 @@ import numpy as np
 import rasterio
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = ROOT / "data"
-EVIDENCE_DIR = ROOT / "evidence"
+sys.path.insert(0, str(ROOT / "src"))
+from gems.paths import DATA_DIR, EVIDENCE_DIR  # noqa: E402
 
 EXPECTED = {
     "training_features.tif": {
