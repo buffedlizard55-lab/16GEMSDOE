@@ -105,7 +105,7 @@
 <td>USGS SGMC fault lines (NV, CA)</td>
 <td>bedrock/older faults drawn on state geologic maps that are absent from the Quaternary catalogue</td>
 <td>82,808 SGMC fault pixels lie &gt;300 m from every catalogued fault; if experts used geologic maps these are candidates.</td>
-<td>Uses an independent official map, not a model.</td>
+<td>Uses an independent official map, not a model. <strong>Not new to the group:</strong> GEMSDOE3 already rasterised the same SGMC faults (Jaccard 0.63 with our file; flag F22).</td>
 <td>Medium; data staged by CI (obtainable)</td>
 <td>Explored; <strong>not gate-eligible</strong> (proxy cannot test "new")</td>
 </tr>
@@ -230,7 +230,7 @@
 <ol>
 <li><strong>H18-3a</strong> — the only candidate that passed the pre-registered gate; distinct from all 21 registered files (max Jaccard 0.11).</li>
 <li><strong>H16-1</strong> — the benchmark, never live-scored. Uploading it beside H18-3a is a clean A/B on the real leaderboard for the clustering prior, and the first calibration of whether the holdout predicts the public score.</li>
-<li><strong>H18-4 SGMC gap</strong> — <em>owner decision</em>: it cannot pass the gate by construction, so it is a measurement, not a validated bet. It is the most different candidate from every registered file.</li>
+<li><strong>H18-4 SGMC gap</strong> — <em>owner decision</em>: it cannot pass the gate by construction, so it is a measurement, not a validated bet. It is the most different candidate from every <em>registered</em> file, but it is the same idea as GEMSDOE3's unregistered <code>gapfinder-v2-sgmc-gap</code> file (Jaccard 0.63, flag F22): upload at most one of the two.</li>
 </ol>
 <p>The limit is three per <strong>rolling</strong> week per entity; choose the single final submission only after live scores are in.</p>
 <h3 id="6b-decision-rules-for-the-first-live-scores-written-before-any-live-result-exists">6b. Decision rules for the first live scores (written before any live result exists)</h3>
@@ -338,5 +338,5 @@
 </ul>
 <h2 id="hypotheses-that-are-proposed-but-not-run-here-need-new-external-data-obtainability-checked-in-the-register">Hypotheses that are proposed but <em>not</em> run here (need new external data; obtainability checked in the register)</h2>
 <p>H18-4 geologic-map (SGMC) faults as a bedrock-fault prior; H18-5 thermal-feature anchoring (GDR INGENIOUS springs/wells, sinter/tufa, Quaternary volcanics); H18-6 cultural-lineament (road) suppression for DEM-based detectors.</p></div></details>
-<footer><p>Built 2026-09-30 03:57 UTC from commit <code>13f979372</code>. No score is predicted anywhere on this site; holdout figures measure recovery of <em>known</em> faults. Sources and irregularities: <a href="audit.html">Audit</a>. Project brief: <a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/README.md">README</a>.</p></footer></main>
+<footer><p>Built 2026-09-30 04:24 UTC from commit <code>ca165f528</code>. No score is predicted anywhere on this site; holdout figures measure recovery of <em>known</em> faults. Sources and irregularities: <a href="audit.html">Audit</a>. Project brief: <a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/README.md">README</a>.</p></footer></main>
 <script src="js/site.js"></script></body></html>
