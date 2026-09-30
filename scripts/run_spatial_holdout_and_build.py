@@ -11,7 +11,6 @@ import json
 import os
 import sys
 import time
-import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -20,7 +19,6 @@ import numpy as np
 import rasterio
 from scipy.ndimage import (
     binary_dilation,
-    distance_transform_edt,
     gaussian_filter,
     label as ndi_label,
     maximum_filter,
@@ -30,12 +28,9 @@ from sklearn.ensemble import HistGradientBoostingClassifier
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from gems.metric import dti_score_fast, marginal_inclusion_threshold, ridge_nms, verify_organizer_worked_example
-from gems.validator import sha256_file, validate_submission_tif, write_validated_submission
+from gems.paths import AUDIT_CLONES, DATA_DIR, EVIDENCE_DIR  # noqa: E402
+from gems.metric import dti_score_fast, ridge_nms  # noqa: E402
 
-DATA_DIR = ROOT / "data"
-EVIDENCE_DIR = ROOT / "evidence"
-DOWNLOADS_DIR = ROOT / "docs" / "downloads"
 SEED = 20260929
 
 
@@ -104,7 +99,6 @@ def build_feature_matrix_on_footprint(footprint: np.ndarray) -> tuple[dict[str, 
         print(f"  [Cache] Loading precomputed footprint features from {cache_path}...")
         loaded = np.load(cache_path)
         return {k: loaded[k] for k in loaded.files}, fp_idx
-    N = len(fp_idx)
     feats: dict[str, np.ndarray] = {}
 
     def to_fp(arr2d: np.ndarray) -> np.ndarray:
@@ -450,7 +444,7 @@ if __name__ == "__main__":
     oof_probs["H16_1_SeamFree_MultiScale_Synthesis"] = p_h16_1
 
     # Also evaluate sibling comparators on the exact same 4 geographic folds:
-    with rasterio.open("/tmp/audit/7GEMSDOE/downloads/gems7-lidarscarp-ridge-top2pct-36c3a3f341c8.tif") as src:
+    with rasterio.open(AUDIT_CLONES / "7GEMSDOE/downloads/gems7-lidarscarp-ridge-top2pct-36c3a3f341c8.tif") as src:
         sib_g7_2d = (np.nan_to_num(src.read(1), nan=0.0) > 0.5) & footprint
 
     BUDGET_FRAC = 0.025

@@ -1,0 +1,17 @@
+run_at_utc: 2026-09-30T00:58:41Z
+runner: 4 vCPU; 15989 MB RAM; 87G free; Python 3.12.3
+--- HEAD requests (follow redirects) ---
+200 len=0 type=text/html; charset=UTF-8  https://gdr.openei.org/submissions/1391
+200 len=0 type=application/octet-stream  https://gdr.openei.org/files/1391/qfaults_ingenious_nad83conus117_2023-06-27.zip
+200 len=0 type=application/octet-stream  https://gdr.openei.org/files/1391/wellspringdata.gdb.zip
+200 len=0 type=application/octet-stream  https://gdr.openei.org/files/1391/paleo_geothermal_regional.zip
+200 len=0 type=application/octet-stream  https://gdr.openei.org/files/1391/great_basin_q_volcanics.zip
+200 len=0 type=  https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7
+200 len=0 type=text/html; charset=utf-8  https://data.usgs.gov/datacatalog/data/USGS:657e1d85d34e23d3533209f7
+200 len=0 type=image/tiff  https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/current/n39w119/USGS_13_n39w119.tif
+200 len=0 type=text/plain;charset=UTF-8  https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer?f=pjson
+200 len=0 type=text/html; charset=UTF-8  https://mrdata.usgs.gov/geology/state/
+404 len=0 type=text/html  https://www2.census.gov/geo/tiger/TIGER2023/PRISMROADS/
+200 len=0 type=text/html;charset=utf-8  https://doi.org/10.5066/P93LGLVQ
+200 len=0 type=application/json  https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&minmagnitude=2
+200 len=0 type=text/html  https://pypi.org/simple/numpy/

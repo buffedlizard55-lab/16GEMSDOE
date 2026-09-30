@@ -1,53 +1,117 @@
-# New-hypothesis register — DOE GEMS
+# Hypothesis register v2 — DOE GEMS (2026-09-30)
 
-**Status:** preregistered candidates; only H17-1 is being tested in this pass. No weekly DrivenData submission has been made or authorized.  
-**Evidence cutoff:** 2026-09-29 (UTC).  
-**Decision rule:** a candidate is not promotion-ready unless it improves both dense and sparse DTI over the reproducible H16-1 four-quadrant spatial holdout, improves sparse DTI in at least 3/4 folds, and does not lose more than 0.01 DTI in any fold. Holdout scores are a proxy from known mapped faults, not a prediction of hidden leaderboard performance.
+**Labels used on this page.** **OBSERVED** = read from a cited source. **COMPUTED** = calculated here from files in this repository (path given). **INFERENCE** = reasoning, not established fact. Numbers on this page are filled from the evidence JSON when the site is built, so they cannot drift from the evidence.
 
-## What the historical scores do—and do not—tell us
+## 1. What the official sources say that changes the strategy (OBSERVED)
 
-The two 0.1563 entries are not two independent experiments: the `GEMSDOE1` and `5GEMSDOE` repositories contain the same submission path and Git blob object (`812e61b74050d1350cc2bde1fab0c76ead32e0c4`); independently hashing the checked-out GeoTIFF bytes gives SHA-256 `7f00890a62878d612fb5eef67a9a364a2df819433dde74b6762ce4fc0fc4fe15` for both. The displayed equal scores therefore follow from uploading an identical file, not evidence that separate methods converged.
+| # | Fact | Source |
+|---|---|---|
+| 1 | Known USGS/INGENIOUS fault pixels are **masked pixel-exactly** in both prize rounds; predictions on them can never score. | [DrivenData staff, forum 11516 #2 and #4](https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516/4) |
+| 2 | A prediction near a known fault but far from a new-fault pixel is **fully penalised** (no buffer for known faults). New-fault pixels *can* lie within 300 m of a known trace ("corrections"). | same, post #4 |
+| 3 | "New fault" = any fault pixel not already captured by USGS/INGENIOUS, **including newly mapped geometry of an existing fault system**. | [forum 11536 #2](https://community.drivendata.org/t/where-do-you-draw-the-line/11536/2) |
+| 4 | The organizers will not reveal what data or fault types the test faults come from; Phase 2 labels are built by expert review of **all** submissions. | [forum 11527 #7](https://community.drivendata.org/t/how-were-the-new-test-faults-identified-data-sources-and-fault-types/11527/7) |
+| 5 | The USGS Quaternary database holds faults with evidence of coseismic surface deformation in the past 1.6 million years. | [USGS](https://www.usgs.gov/tools/interactive-us-fault-map) |
+| 6 | USGS Quaternary faults can be up to ~400 m from lidar-based labels; database mapping density is heterogeneous. | [Hermant et al. 2025](https://pangea.stanford.edu/ERE/db/GeoConf/papers/SGW/2025/Hermant.pdf) |
+| 7 | Step-overs/relay ramps host ~32 % and fault terminations ~25 % of categorised Great Basin geothermal systems. | [Faulds & Hinz 2015 (OSTI)](https://www.osti.gov/servlets/purl/1724082) |
+| 8 | Fault intersections and terminations locate upflow along faults. | [Siler et al. 2019 (USGS)](https://pubs.usgs.gov/publication/70202167) |
+| 9 | A ~15 km left-step between range-front faults hosts numerous ENE-striking intra-basin faults. | [USGS, Earney et al. 2024](https://www.usgs.gov/publications/geophysical-modeling-a-possible-blind-geothermal-system-near-battle-mountain-nv) |
 
-`8GEMSDOE` is different at the file level. Re-reading its `8GEMSDOE_Hedge-v2_submission.tif` against the checked-out `ens12` file and the local catalogue confirms it is pixelwise `max(ens12, catalogue)`; its off-catalogue mask is identical to `ens12`. Its reported 0.1563 is consistent with known-catalogue pixels being neutralized during scoring, but the four-decimal public score alone does **not** prove the evaluator's masking implementation. Treat that mechanism as a strong inference, not an official rule.
+**INFERENCE from 1–6:** the catalogue is a hazard-oriented Quaternary database, so faults that are older, shorter, secondary, buried or mis-located are plausibly what the experts add. Nothing official confirms which of these dominate the test set.
 
-The 0.3049 top score in the request is a stale snapshot. The public DrivenData leaderboard page returned rank 1 `DARD`, 0.3168, when checked for this review. The live page is authoritative; the score and rank can change.
+## 2. What the group's own leaderboard history says (COMPUTED)
 
-## Ranked candidate hypotheses
+Source: [`evidence/submission_similarity.json`](https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/submission_similarity.json) (21 registered files, all Git-blob hashes verified against the live repositories).
 
-Ranks express prior expectation, not measured outcome. “Improvement” is directional and deliberately not a fabricated numerical score. All hypotheses use only files already placed locally unless marked otherwise. Expected gains are relative to the current H16-1 method and must be earned in spatial validation.
+* **One prediction, four entries.** GEMSDOE1, 5GEMSDOE and 8GEMSDOE are identical on every scored pixel (the first two are byte-identical); GEMSDOE2 overlaps them at Jaccard {{dup_gemsdoe2_jaccard}}. That is 4 of the 18 scored entries (LB 0.1563/0.1560).
+* **Why it keeps happening.** The ens12 file (blob `812e61b740…`) sits at {{ens12_copies}} paths across {{ens12_repos}} repositories: each new repo was seeded from earlier repos' evidence folders whose default `submission.tif` *is* ens12.
+* **A second repeated idea.** 6GEMSDOE, 11GEMSDOE and GEMSDOE10-H16 independently tried near-catalogue top-k predictions (45–68 % within 300 m of known faults) and scored 0.0286, 0.0202 and 0.0461.
+* **No geometry statistic explains the score.** Rank correlations over {{corr_n}} unique scored contents: near-catalogue fraction ρ = {{corr_near}}, far-field fraction ρ = {{corr_far}}; none significant. The hunch "far-field is better" is **not** supported by this sample.
 
-| Rank | Candidate / prior expected improvement | New geologic hypothesis and targeted physical signature | Exact input layers | Why it may find uncatalogued faults | Difference from prior work | Cost / data status |
-|---|---|---|---|---|---|---|
-| **1** | **H17-1: cross-sensor potential-field edge agreement** — medium, uncertain upside; highest priority to test | A previously unmapped fault/contact may create a locally coincident, spatially coherent edge in magnetic and gravity fields. Test multi-scale gradients of reduced-to-pole magnetic anomaly and isostatic gravity; derive normalized gradient magnitudes, parallel-normal agreement, and cross-sensor edge-coincidence scores. | `training_features.tif`: `rtp` (band 2), `iso_grav_anom` (band 13), with `tmi_hg` (band 3) and `iso_grav_anom_hg` (band 18) as derivative checks. | A structure visible in both independent potential-field products but absent from the known USGS/INGENIOUS fault raster is a candidate unmapped structure; the competition explicitly says public fault data are incomplete. | No existing arm computes an explicit magnetic–gravity gradient-orientation/co-location interaction. H16-2 uses a directional strike-worm filter on individual fields; H16-1 fuses existing context; H16-4 targets radiometric/conductivity/hydrothermal proxies. | **Medium** engineering; **no new data**. These bands are in the locally verified 19-band competition raster. Validate first. |
-| **2** | **H17-2: intrabasin drainage deflection / knickzone traces** — low-to-medium; potentially complementary in lidar gaps | Blind normal faults may perturb channels across basin fill. Look for aligned channel-profile knickpoints, abrupt channel deflections, and paired upstream/downstream elevation breaks using flow accumulation, longitudinal profile curvature, and channel sinuosity at 10–30 m scales. | Raw elevation, derivatives, and flow routing from USGS 3DEP DEM; the existing 10 m channel cache has slope/curvature/asymmetry summaries, not a complete hydro-conditioned channel network. | Basin-interior faults can lack a prominent range-front scarp; channel offsets may preserve geomorphic expression away from mapped catalogue traces. This is a testable geomorphic proxy, not a guarantee that every knickpoint is tectonic. | Distinct from the current scarp-index / antislope / piedmont detector: it follows drainage-network geometry and stream-profile discontinuities rather than local scarp amplitude or curvature. | **High** engineering; raw DEM is an extra retrieval. Official free source is USGS 3DEP Elevation ImageServer (`https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer`); USGS describes it as a DEM service and the National Map catalog lists no fee. Endpoint availability is checked in this review; no new DEM tiles are needed for H17-1. Validate spatially before use. |
-| **3** | **H17-3: strain/seismic lineament coherence** — low-to-medium, high uncertainty | Fault-related deformation may appear as elongated, directionally coherent strain-rate gradients or seismic-density edges, rather than simply high strain or event count. Test multi-scale structure-tensor coherence and aligned gradients in second strain invariant, shear/dilatation rate, and earthquake intensity/distance surfaces. | `training_features.tif`: `geod_2ndinv` (4), `geod_shearrate` (7), `geod_dilaterate` (8), `ieq_n100a15` (16), and `deq_n100a15` (10). | A coherent deformation/seismic lineament not represented in the existing fault catalogue could mark a mapped-data gap. It can also reflect non-fault processes or smoothing, so the test must preserve geography holdout. | H16-5 fed these layers primarily as scalar features and scored below the baseline holdout. This would test a new directional-coherence/gradient representation, not re-run that scalar model. | **Medium** engineering; **no new data**. Existing bands are locally verified. Lower prior expectation because the scalar H16-5 experiment was weak; only proceed if the distinct transform helps blocked folds. |
-| **4** | **H17-4: lithology-adjusted multi-element radiometric alteration** — low, uncertain | Hydrothermal fluid–rock alteration may cause joint K, U, and Th compositional departures. Test centered-log-ratio / robust local anomalies in K, Th, U and their spatial coherence, with lithologic-background normalization; avoid treating a single high K/Th ratio as uniquely hydrothermal. | GeoDAWN radiometric channels in `data/external/geodawn_rad_u8.tif` (K, Th, U, TC) plus existing `geodawn_extensions_u8.tif` (Th/K, U/K, U/Th). | A coherent alteration signature may extend beyond known fault traces and help identify structurally controlled geothermal systems. Radiometric response is surface/lithology dependent and is not direct proof of a fault. | Different from H16-4's simple K/Th, conductivity, and demagnetization proxies and from `15GEMSDOE`'s reported alteration–magnetic conjunction: this specifically tests multivariate compositional log-ratios conditioned on local lithologic background. | **Low-to-medium** engineering; **no new data**. Local stacks are checksum-verified. Keep low priority until H17-1 and spatial calibration are complete. |
-| **5** | **H17-5: basement/contact lineament concordance** — low | Faults at basin margins or intrabasin steps may coincide with a boundary in basement depth and electrical conductivity. Test multi-scale, polarity-aware gradients of depth-to-base-surface and conductivity with gravity-edge concordance. | `depth_to_base_surf` (15), `cond_surf` (17), `iso_grav_anom` (13), and `iso_grav_anom_hg` (18). | A concealed basin-fill/basement boundary or internal basin step could be structurally controlled and not present in a surface fault catalogue. | The existing code uses depth-base gradient as one baseline feature and a local conductivity anomaly in H16-4; it does not explicitly test a joint, polarity-aware basement/conductivity boundary interaction. | **Low-to-medium** engineering; **no new data**. All needed bands are in the locally verified competition stack. Lower expected gain due overlap with current scalar features. |
+## 3. Ranked hypotheses
 
-### H17-1 validation protocol and gate
+**Five candidate geological hypotheses** (H18-3a, H18-3b, H18-4, H18-5, H18-6) and **one methodological fusion arm** (H18-1) are listed. Rank = directional prior on DTI gain *and* cost. "Tested" rows report measured holdout results (Section 4); nothing else is quantified.
 
-1. Use the same four contiguous NW/NE/SW/SE geographic folds, 15-pixel spatial buffer, negative-sampling collar, 40,000-positive/120,000-negative sampling, classifier settings, ridge-NMS postprocess, and per-fold 2.5% prediction budget as the existing holdout script.
-2. Compare H17-1 to both the feature-only baseline and the current H16-1 OOF synthesis. Evaluate dense held-out catalogue pixels and a deterministic 20%-of-components sparse-label proxy with the same DTI implementation.
-3. Publish fold-level and mean dense/sparse DTI, exact data hashes, transform definition, random seed, and the pass/fail gate. Do not select/tune thresholds using held-out labels.
-4. No DrivenData submission slot is spent by local validation. If H17-1 fails any gate, record the failure and do not promote it. Even a pass does not establish a leaderboard improvement; the hidden label set remains unavailable.
+| Rank | ID | Layers | Physical signature | Why it could find a fault missing from the catalogue | Differs from repo work | Cost / data | Status |
+|---|---|---|---|---|---|---|---|
+| 1 | **H18-3a** structural-discontinuity density prior | catalogue geometry (`labels.tif`) + H16-1 surface | smoothed density of fault **endpoints and junctions** (σ = 5 km) | Unmapped secondary faults (horse-tails, relay-breaching faults, damage zones) concentrate where mapped faults end or cross (Faulds & Hinz; Siler et al.). | No earlier arm uses catalogue geometry at km scale. | Low; no new data | **Tested — passed gate**, with caveat (Section 4) |
+| 2 | **H18-4** geologic-map fault gap | USGS SGMC fault lines (NV, CA) | bedrock/older faults drawn on state geologic maps that are absent from the Quaternary catalogue | {{sgmc_off_px}} SGMC fault pixels lie >300 m from every catalogued fault; if experts used geologic maps these are candidates. | Uses an independent official map, not a model. | Medium; data staged by CI (obtainable) | Explored; **not gate-eligible** (proxy cannot test "new") |
+| 3 | **H18-5** thermal-anchor linking | GDR springs/wells, sinter/tufa, Quaternary volcanics | hot springs and vents mark active fluid conduits | {{springs_far_pct}} % of footprint springs are >3 km from any catalogued fault: candidate unmapped conduits. | No geothermal point data used before. | Medium; data obtainable (CI) | Premise measured; operator not built |
+| 4 | **H18-6** cultural-lineament suppression | Census TIGER roads/rails | roads, rails and canals create scarp-like lineaments in DEM detectors | Removes false positives rather than finding faults. | Not used before. | Low–medium; obtainable ([TIGER2023 `ROADS/`, `PRISECROADS/`, `RAILS/`](https://www2.census.gov/geo/tiger/TIGER2023/)) | Proposed only |
+| 5 | H18-1 product-of-experts fusion | OOF scarp arm × geophysics arm | joint presence of independent evidence | No label prior exists for new faults, so require agreement. | H16-1 blends arithmetically. | Very low | **Tested — failed** |
+| 6 | H18-3b/c oblique-strike prior | catalogue strike field + ridge strike | cross-faults oblique to range fronts (USGS Argenta Rise) | Step-over intra-basin faults strike obliquely. | New orientation operator. | Low | **Tested — failed**; the mirrored parallel prior also failed (post-hoc) |
 
-## Trusted sources checked for this register
+Carried over from the prior register and **not** run in this pass (ranked below the above because they overlap existing scalar features or need heavy raw-DEM work): H17-2 drainage deflection/knickzones, H17-3 strain/seismic lineament coherence, H17-4 multi-element radiometric alteration, H17-5 basement/contact concordance. H17-1 (magnetic–gravity edge agreement) was tested earlier and failed.
 
-- [DrivenData problem description and competition structure](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/) — defines incomplete public faults, target, feature layers, metric, and submission format.
-- [DrivenData live leaderboard](https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/) — public scores change over time; checked in this review, rank 1 was 0.3168.
-- [USGS GeoDAWN data release](https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and) and [USGS Science Data Catalog record](https://data.usgs.gov/datacatalog/data/USGS:657e1d85d34e23d3533209f7) — official description of the airborne magnetic/radiometric products and their geologic/geothermal purpose. Correct DOI shown by USGS: [10.5066/P93LGLVQ](https://doi.org/10.5066/P93LGLVQ).
-- [USGS, Three-dimensional geologic mapping to assess geothermal potential](https://pubs.usgs.gov/publication/70202167) — describes fault intersections and terminations as factors examined for upflow in Basin-and-Range geothermal systems.
-- [USGS, Geothermal systems of northern Nevada](https://www.usgs.gov/publications/geothermal-systems-northern-nevada) — reports fault-controlled circulation and basin-margin settings; use as regional context, not a pixel-level prediction guarantee.
-- [USGS, Geophysical modeling of a possible blind geothermal system near Battle Mountain, Nevada](https://www.usgs.gov/publications/geophysical-modeling-a-possible-blind-geothermal-system-near-battle-mountain-nv) — documents joint gravity/magnetic/geologic work on possible blind resources.
-- [USGS official GeoDAWN release page](https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and) — states airborne lidar was collected with 3DEP over a similar extent.
-- [USGS 3DEP Elevation ImageServer](https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer) and [USGS 3DEP program](https://www.usgs.gov/3d-elevation-program) — official elevation source for H17-2. The data are free; H17-2 is proposed as a future experiment, not as already downloaded or validated.
-- [USGS airborne radiometric alteration mapping example](https://www.usgs.gov/publications/airborne-radiometric-data-map-alteration-porphyry-copper-systems-elkhorn-district-mt) — supports the use of K/Th/U ratios as a mineral-alteration proxy in another geologic setting; it does not establish geothermal-fault discrimination in GeoDAWN.
-- [USGS lidar topography fault mapping example](https://www.usgs.gov/data/quaternary-fault-mapping-zapata-and-blanca-sections-sangre-de-cristo-fault-zone-high) — confirms that high-resolution topography and derivatives can support fault-scarp mapping; not direct validation for this region.
+## 4. Validation — pre-registered, then controlled
 
-## Irregularities and limits
+Protocol, constants and information rule: [`preregistration_h18.md`](https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/docs/research/preregistration_h18.md) (committed before any result). Evaluator: `src/gems/holdout.py`, verified to reproduce H16-1 exactly. Baseline H16-1: dense {{h16_dense}} / sparse {{h16_sparse}}.
 
-- The requester reported a top score of 0.3049; the public leaderboard currently returns 0.3168 for rank 1. These are time-specific snapshots, not contradictory fixed facts.
-- The current working tree's input rasters were retrieved from the team's hash-pinned public GitHub bridge. The DrivenData dataset tab is login-gated, so the original private download itself cannot be independently retrieved from this unauthenticated environment. Hashes prove consistency with the team's pinned files, not independent provenance from DrivenData.
-- The README and site previously cited `10.5066/P9Z6SA1Z` for GeoDAWN and a ScienceBase item `64949579d34ef77fcb0183a2`; the official USGS record returned the GeoDAWN DOI `10.5066/P93LGLVQ`, and the cited lidar ScienceBase URL returned “Not Found” in this review. Do not rely on the broken lidar item/DOI claim; use the official GeoDAWN and 3DEP catalog/service links above until a specific lidar release is confirmed.
-- The local `sample_submission.tif` has the exact same positive mask as the local `labels.tif` inside its finite footprint (60,988 positive pixels). This conflicts with the DrivenData page's statement that the sample template predicts total fault absence. It is a verified local-file observation but its cause is unresolved; do not describe the team-bridge copy as the official original without independent download verification.
-- Spatial holdout DTI measures transfer to held-out portions of the *known* catalogue and a synthetic sparse-component proxy. It cannot estimate the hidden competition DTI or establish a rank increase.
+{{h18_table}}
+
+**Gate rule:** higher mean dense **and** sparse DTI than H16-1; higher sparse DTI in ≥ 3/4 folds; no fold losing > 0.01.
+
+### Controls run after the pass (exploratory, not gate-eligible)
+{{explore_table}}
+
+**Reading the controls (INFERENCE, stated plainly).** The endpoint/junction prior beats the baseline in {{draws_beat_base}}/5 re-drawn sparse proxies (mean {{rd_3a}} vs {{rd_base}}). A *plain fault-density* prior, with no endpoint or junction information, recovers most of that lift ({{rd_dens}}), so the gain is mainly **fault clustering**; the structural increment is small but consistent (3a beats density in {{draws_beat_dens}}/5). The random-20 %-of-components proxy rewards clustering by construction, and known faults are masked in the real scoring, so this is necessary evidence, **not** evidence of a leaderboard gain.
+
+### Does any proxy predict the public score? (post-hoc calibration on the group's own files)
+The group's {{calib_n}} distinct scored files have real public scores, so the evaluator itself can be evaluated: rank-correlate each file's DTI against a proxy truth (known faults masked) with its public score.
+
+{{calib_table}}
+
+**Reading it (INFERENCE).** The known-fault proxy that holdout gating rests on has **no detectable rank relationship** with the public score of our own files (ρ = {{calib_dense_rho}}, p = {{calib_dense_p}}); it is also contaminated for files trained on the catalogue, so this does not prove the spatial holdout is useless, only that it cannot be *validated* with these files. The SGMC-gap truth does somewhat better (ρ = {{calib_gap_rho}}, p = {{calib_gap_p}}) but is weak, and is driven by far-field-heavy files that still scored poorly. **Treat every holdout number as weak evidence and use the first live A/B to recalibrate.** On the SGMC-gap scale the new candidates sit at H16-1 {{calib_h161}} and H18-3a {{calib_h183a}}, bracketing ens12 ({{calib_ens12}}); that is descriptive, not a forecast.
+
+### Signal attribution across the group's scored files (exploratory, hypothesis generation only)
+For each distinct scored file, the mean percentile rank of every feature channel at its scored pixels was correlated with the public score ({{attr_n}} files, {{attr_m}} comparisons; [`evidence/lb_signal_attribution.json`](https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/lb_signal_attribution.json)). **Nothing is significant after correction** (Bonferroni p < {{attr_bonf}}; best uncorrected p = {{attr_bestp}}, and about {{attr_fp}} false positives are expected at p < 0.05). The only pattern worth a pre-registered test is directional: files enriched in 1 m-lidar scarp indices (`lid1m_antislope` ρ = {{attr_antislope}}, `lid1m_tect_vs_fluv` ρ = {{attr_tectfluv}}) tend to score higher, and files enriched on steep basement-depth gradients, i.e. basin margins (`depth_base_grad` ρ = {{attr_depth}}), tend to score lower. **INFERENCE, not a finding:** emphasising tectonic-scarp topography and de-emphasising already-catalogued basin-margin structure may be worth a matched-budget experiment.
+
+### Metric-rule sensitivity (post-hoc check of an implementation assumption)
+Staff wording ("it should not matter whether these known faults are included with predictions or not") implies predictions on known-fault pixels cannot score at all. The registered evaluator made them neutral for false positives but still let them earn true-positive credit. Re-scoring six sparse proxies (the registered draw plus five re-draws) with those predictions dropped changes any arm's mean sparse DTI by at most {{sens_max}}, and the conclusions are unchanged: H18-3a beats H16-1 in {{sens_beat_base}}/6 draws and the plain-density control in {{sens_beat_dens}}/6 ([`evidence/hypothesis_h18_sensitivity.json`](https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/hypothesis_h18_sensitivity.json)).
+
+### SGMC exploratory arm (external data; bias warning)
+{{sgmc_table}}
+
+SGMC alone reaches sparse {{sgmc_gap_sparse}} with no training, but adding it to H16-1 raises the dense proxy and lowers the sparse proxy, so it fails the "both must improve" rule. The proxy's hidden faults are Quaternary catalogue faults, which geologic maps tend to include; it therefore **cannot** tell whether SGMC faults are *new* faults.
+
+## 5. External data needed, and whether it is obtainable (checked)
+
+| Data | Free official source | Licence | Obtainable? | Evidence |
+|---|---|---|---|---|
+| Geologic-map faults (H18-4) | [USGS SGMC state shapefiles](https://mrdata.usgs.gov/geology/state/) (`NV.zip`, `CA.zip`) | USGS public data | **Yes** — downloaded 69 MB + 25 MB on a GitHub runner; nominal scale 1:1,000,000 | [`evidence/ci/external_verification.json`](https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/ci/external_verification.json) |
+| Springs, wells, sinter/tufa, volcanics, 2 m probes (H18-5) | [GDR 1391 INGENIOUS](https://gdr.openei.org/submissions/1391) | CC BY 4.0 | **Yes** — all downloaded on a runner | same file |
+| Structural inventory of 426 geothermal systems (H18-5) | [OSTI/GDR 355](https://www.osti.gov/dataexplorer/biblio/dataset/1148722) | DOE open | Record read; file not yet downloaded | — |
+| Roads/rails (H18-6) | [Census TIGER/Line 2023](https://www2.census.gov/geo/tiger/TIGER2023/) | public domain | **Listed** at the official Census directory (listing read 2026-09-30; path names corrected from an earlier typo). A file download has **not** been tested yet | [S36](audit.html) |
+| Raw 10 m DEM (H17-2) | [USGS 3DEP tiles](https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/current/n39w119/USGS_13_n39w119.tif) | public domain | **Yes** from runners (HTTP 200, `image/tiff`); **not** from the agent sandbox | [`evidence/ci/egress_probe.txt`](https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/ci/egress_probe.txt) |
+
+All of these hosts are blocked from the agent sandbox but open from GitHub-hosted runners, which is why verification runs in CI and commits its results back.
+
+## 6. Recommended use of the three weekly slots
+
+1. **H18-3a** — the only candidate that passed the pre-registered gate; distinct from all 21 registered files (max Jaccard {{cand_max_jaccard}}).
+2. **H16-1** — the benchmark, never live-scored. Uploading it beside H18-3a is a clean A/B on the real leaderboard for the clustering prior, and the first calibration of whether the holdout predicts the public score.
+3. **H18-4 SGMC gap** — *owner decision*: it cannot pass the gate by construction, so it is a measurement, not a validated bet. It is the most different candidate from every registered file.
+
+The limit is three per **rolling** week per entity; choose the single final submission only after live scores are in.
+
+### 6b. Decision rules for the first live scores (written before any live result exists)
+These are **proposed decision rules, not evidence**; the thresholds are judgement calls recorded now so they cannot be bent after seeing scores.
+
+| Live outcome (public score) | Interpretation | Next action |
+|---|---|---|
+| #1 H18-3a > #2 H16-1 by ≥ 0.005 | the clustering prior transfers to new faults | adopt it; pre-register a small grid over σ and λ on the holdout *before* using a slot |
+| \|#1 − #2\| < 0.005 | the prior neither helps nor hurts on the public set | keep H16-1 as the base; spend effort on signal quality, not priors |
+| #1 < #2 by ≥ 0.005 | the holdout proxy rewards clustering that the real test does not | down-weight the sparse proxy; add a catalogue-distance-profile constraint to the gate |
+| #3 (SGMC gap) ≥ 0.10 | public geologic-map faults overlap the expert labels strongly | add higher-resolution map data (NBMG quadrangles), combine with detectors under the marginal bar τ |
+| #3 between 0.03 and 0.10 | partial overlap | use SGMC only as a corroboration weight on detector output |
+| #3 < 0.03 | geologic-map faults are not what the experts added | drop H18-4 |
+| both #1 and #2 below the best historical 0.1563 | topography/geophysics OOF surfaces are not beating the CNN ensemble | fuse with ens12 only after a marginal-precision test (next row) |
+
+**Marginal-precision test for unions.** A candidate set *S* added to a scored file with public score *s* helps only if its kernel-weighted true-positive gain per unit of false-positive mass exceeds τ = 0.2·s / (1 − 0.2·s) (τ = 0.0323 at s = 0.1563). The cheapest way to measure it is a paired upload of the base and base ∪ *S*; do that only for a set large enough to move a four-decimal score.
+
+**Cadence.** The allowance is three uploads per *rolling* seven days per entity: upload #1 and #2 first, hold the third slot for the follow-up the table selects (or #3 if the owner decides), and never upload a file the uniqueness gate calls a duplicate.
+
+## 7. Limits
+
+* The holdout recovers **known** faults; the real scoring ignores them. Proxy gains are necessary, not sufficient.
+* No score is predicted anywhere in this repository.
+* Hypotheses that assume the test faults are geologic-map faults, thermal-conduit faults, or step-over faults are **untested assumptions**; the organizers disclose nothing about the test set.

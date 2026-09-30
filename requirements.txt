@@ -1,0 +1,10 @@
+# Pinned to the versions used to produce the committed evidence and site (Python 3.11/3.12).
+numpy==2.4.6
+scipy==1.17.1
+rasterio==1.4.4
+scikit-learn==1.9.1
+scikit-image==0.26.0
+Markdown==3.11
+# tests / lint
+pytest==9.1.1
+pyflakes==4.0.0
