@@ -1,122 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>16GEMSDOE — Executive Summary & Submission Guide</title>
-  <style>
-    :root { --bg:#0b1020; --panel:#131c33; --panel2:#182442; --line:#2a3b68; --text:#eef3ff; --muted:#a6b6d9; --blue:#38bdf8; --green:#10b981; --amber:#f59e0b; --rose:#f43f5e; --mono:ui-monospace,SFMono-Regular,Consolas,monospace; --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
-    * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--text); font:16px/1.65 var(--sans); }
-    .wrap { max-width:1080px; margin:auto; padding:24px 18px 64px; }
-    .nav,.card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:18px; }
-    .nav { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
-    h1,h2,h3 { line-height:1.25; } h1 { font-size:clamp(1.65rem,4vw,2.4rem); margin:.2em 0 .5em; } h2 { font-size:1.35rem; margin:.1em 0 .6em; } h3 { font-size:1.08rem; }
-    a { color:var(--blue); } .muted { color:var(--muted); } .badge { display:inline-block; border:1px solid var(--amber); border-radius:999px; padding:3px 10px; color:#fcd34d; font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
-    .alert { border-left:5px solid var(--rose); background:rgba(244,63,94,.09); padding:14px 16px; border-radius:4px 10px 10px 4px; margin:14px 0; }
-    .info { border-left:5px solid var(--amber); background:rgba(245,158,11,.08); padding:14px 16px; border-radius:4px 10px 10px 4px; margin:14px 0; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; }
-    .tile { background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:15px; }
-    code,.note { font-family:var(--mono); font-size:.9em; background:rgba(255,255,255,.07); padding:2px 5px; border-radius:5px; overflow-wrap:anywhere; }
-    .note { display:block; background:#080d1a; border:1px solid var(--line); color:#bae6fd; padding:12px; margin:10px 0; }
-    .btn { display:inline-block; background:var(--green); color:#04130d; text-decoration:none; font-weight:800; padding:10px 14px; border-radius:9px; margin:5px 8px 5px 0; }
-    .btn.secondary { background:var(--panel2); color:var(--text); border:1px solid var(--line); }
-    table { width:100%; border-collapse:collapse; font-size:.94rem; } th,td { text-align:left; vertical-align:top; padding:10px; border-bottom:1px solid var(--line); } th { color:#93c5fd; background:var(--panel2); }
-    ol li,ul li { margin:0 0 8px; } .small { font-size:.9rem; }
-  </style>
-</head>
-<body>
-  <main class="wrap">
-    <nav class="nav" aria-label="Main navigation">
-      <strong>16GEMSDOE — DOE GEMS</strong>
-      <div><a href="index.html">Main research &amp; download hub</a> &nbsp;|&nbsp; <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">Live leaderboard ↗</a></div>
-    </nav>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Executive summary · 16GEMSDOE</title><meta name="description" content="Exactly how to submit to the DOE GEMS Prize, with a local pre-upload checker.">
+<link rel="stylesheet" href="assets/site.css"></head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="in"><a class="brand" href="index.html">16GEMSDOE</a><nav class="main" aria-label="Main"><a href="index.html">Home</a><a href="executive_summary.html" aria-current="page">Executive summary</a><a href="results.html">Results</a><a href="research.html">Research</a><a href="knowledge.html">Knowledge</a><a href="audit.html">Audit</a><a href="https://github.com/buffedlizard55-lab/16GEMSDOE" rel="noopener">GitHub</a></nav></div></header>
+<div class="strip"><div class="in"><span>DOE GEMS Prize · DrivenData #306</span><span>Ends <strong>Dec 3, 2026 23:59 UTC</strong> · <strong id="countdown" data-end="2026-12-03T23:59:00Z"></strong></span><span>Limit: <strong>3 uploads / rolling 7 days</strong></span><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" rel="noopener">Competition</a></div></div>
+<main id="main" class="wrap">
+<h1>Executive summary — how to make a submission</h1>
+<p class="lead">Five steps, about two minutes. Everything here is taken from the official pages linked in the <a href="audit.html">Audit</a>; the upload form's wording is quoted from the project owner because the form is behind a DrivenData login.</p>
+<div class="card"><h2 style="margin-top:0">TL;DR</h2><ol class="steps">
+<li><strong>Download</strong> a file from the <a href="index.html">Home page</a> (recommended: Upload #1).</li>
+<li><strong>Check</strong> it in the <a href="#checker">checker</a> below (optional but free).</li>
+<li>Open the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" rel="noopener">competition</a> <span class="arr" aria-hidden="true"></span> <strong>Submit</strong> (sidebar) <span class="arr" aria-hidden="true"></span> <strong>Make new submission</strong>.</li>
+<li><strong>File to submit:</strong> choose the .tif (or the ZIP). <strong>Note (optional):</strong> paste the note from the card.</li>
+<li>Submit, wait for the public score, then <a href="#record">record it</a>.</li></ol></div>
 
-    <section class="card">
-      <span class="badge">Decision status: no new candidate passed</span>
-      <h1>Executive summary and submission walkthrough</h1>
-      <div class="alert"><strong>Do not treat any current 16GEMSDOE artifact as a proven leaderboard improvement.</strong> The downloadable files below pass local checks, but none has a live DrivenData score. Our preregistered new candidate H17-1 failed the spatial-holdout gate. No slot was spent. The NaN-outside file is supplied so the site has a correctly formatted example available; downloading it is not a recommendation to upload it.</div>
-      <p class="muted">The goal is fault discovery, not just leaderboard optimization. The official challenge describes the public catalogue as incomplete and evaluates hidden expert-mapped faults. Our spatial holdout is only a proxy on mapped faults and cannot predict hidden-set performance.</p>
-    </section>
+<h2>The form, field by field</h2>
+<div class="tw"><table class=""><thead><tr><th>Field on the DrivenData page</th><th>What to put</th><th>Source</th></tr></thead><tbody><tr><td><strong>File to submit</strong></td><td>A single-band GeoTIFF (<code>.tif</code>) <em>or</em> a <code>.zip</code> containing exactly one GeoTIFF. It must match the submission format's CRS, shape and geotransform.</td><td>Form text as quoted by the project owner</td></tr><tr><td><strong>Note (optional)</strong></td><td>A short comment that tells submissions apart later (DrivenData's own example: <em>clustering with k=25</em>). Use the note printed on each card, e.g. <code>16GEMSDOE H18-3a | topo+geophysics OOF surface x fault endpoint/junction prior, thin ridges 2.5%/quadrant | id c502dfab | not yet live-scored</code></td><td>Form text as quoted by the project owner</td></tr><tr><td>Name</td><td>The file name already carries the hypothesis, date and an 8-character hash of the <em>scored</em> content, so two different predictions can never share a name and identical predictions always do.</td><td>This repository (<code>gems.submission.make_filename</code>)</td></tr></tbody></table></div>
 
-    <section class="card">
-      <h2>Why did multiple submissions score 0.1563?</h2>
-      <table>
-        <thead><tr><th>Entries</th><th>Verified comparison</th><th>Conclusion</th></tr></thead>
-        <tbody>
-          <tr><td><strong>GEMSDOE1 and 5GEMSDOE</strong></td><td>Same 570,890-byte GeoTIFF and same SHA-256: <code>7f00890a62878d612fb5eef67a9a364a2df819433dde74b6762ce4fc0fc4fe15</code>.</td><td>They uploaded the same prediction. They are not independent experiments.</td></tr>
-          <tr><td><strong>8GEMSDOE</strong></td><td>Its different file equals <code>max(ens12, catalogue)</code>; all differences from ens12 are on the known catalogue mask and its off-catalogue mask is identical.</td><td>Its reported same score is consistent with known catalogue pixels being neutral, but the public score rounded to four decimals does not prove the evaluator rule.</td></tr>
-          <tr><td><strong>12GEMSDOE NaN / all-finite pair</strong></td><td>Different outside-footprint encoding; same in-footprint predictions.</td><td>Not two scientifically unique submissions. Do not upload both.</td></tr>
-        </tbody>
-      </table>
-      <p>Details and sources: <a href="research/hypothesis_register.md">hypothesis register</a> and <a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/group_forensic_audit.json">forensic audit JSON ↗</a>.</p>
-    </section>
+<h2>What the file must satisfy (official) and how ours does</h2>
+<div class="tw"><table class=""><thead><tr><th>Requirement (DrivenData page 967)</th><th>Our files</th></tr></thead><tbody><tr><td>Same projected CRS as training data (EPSG:32611)</td><td><span class="tick" role="img" aria-label="yes"></span>verified by re-reading the file</td></tr><tr><td>Same resolution (100 m) and same bounds/shape (3,292 × 3,730)</td><td><span class="tick" role="img" aria-label="yes"></span>geotransform equals the template's</td></tr><tr><td>Data outside the bounds is null or NaN</td><td><span class="tick" role="img" aria-label="yes"></span>NaN on all 7,111,787 outside pixels; nodata tag = NaN</td></tr><tr><td>Single layer, datatype float32, values between 0 and 1</td><td><span class="tick" role="img" aria-label="yes"></span>finite on all 5,167,373 footprint pixels; min 0, max 1</td></tr></tbody></table></div>
+<p class="small muted">Raster profile also mirrors the official sample (LZW, 1-row strips, nodata NaN). Repositories behind scored group entries publish files in every other encoding too (deflate, predictor 3, tiled, zero outside), so encoding is unlikely to decide acceptance (assuming the published file is the uploaded one).</p>
 
-    <section class="card">
-      <h2>Leaderboard and holdout snapshot</h2>
-      <div class="grid">
-        <div class="tile"><strong>Public leaderboard</strong><p>On 2026-09-29 at approximately 23:45 UTC, the official page showed rank 1 at <strong>0.3168</strong>. The 0.3049 in the request was a prior snapshot. Scores change; check the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">live leaderboard</a>.</p></div>
-        <div class="tile"><strong>Current local holdout best</strong><p>H16-1: <strong>0.21272 dense / 0.08541 sparse-proxy</strong>. These are known-catalogue spatial-transfer scores, not live competition or hidden-test scores.</p></div>
-        <div class="tile"><strong>New H17-1 test</strong><p>Magnetic–gravity edge agreement: <strong>0.15759 dense / 0.06227 sparse-proxy</strong>. It lost in all four folds and failed the preregistered gate. <a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/hypothesis_h17_1_validation.json">Full fold report ↗</a>.</p></div>
-      </div>
-    </section>
+<h2 id="checker-title">Pre-upload checker (runs in your browser)</h2>
+<div id="checker" class="card"><div class="drop"><p><strong>Drop a .tif here</strong> or choose a file</p><p><input type="file" accept=".tif,.tiff,image/tiff" aria-label="Choose a GeoTIFF to check"></p><p class="small muted">Nothing is uploaded; the file is read locally. ZIPs: unzip first.</p></div><div class="out" aria-live="polite"></div></div>
 
-    <section class="card">
-      <h2>Downloadable GeoTIFF and truthful submission note</h2>
-      <p class="muted">This example meets the official outside-footprint null/NaN requirement and local checks for CRS/grid/band/value range. It has <strong>not</strong> been proven to improve leaderboard score. Its in-footprint predictions are identical to the all-finite <code>a16f01</code> file; the two are format twins, not separate experiments. Use at most one.</p>
-      <div class="grid">
-        <div class="tile">
-          <h3>Footprint-valid NaN-outside GeoTIFF — ID b16f02</h3>
-          <p>File: <code>gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif</code><br>SHA-256: <code>78b2aebe410e016d76c1cf15760561d7699346647955039bcc0b8adce87af30a</code></p>
-          <a class="btn" href="downloads/gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif" download>Download .tif (850 KB)</a>
-          <span class="note" id="submission-note">16GEMSDOE | H16-1 ridge synthesis, NaN outside footprint, float32 [0,1] | ID: b16f02</span>
-          <button class="btn secondary" type="button" onclick="copyNote()">Copy experiment note</button>
-        </div>
-        <div class="tile">
-          <h3>Strict submission format (from DrivenData)</h3>
-          <ul>
-            <li>Single-band 32-bit float GeoTIFF.</li>
-            <li>Same CRS (EPSG:32611), 100 m resolution, bounds and grid as the template.</li>
-            <li>Prediction values in the evaluation footprint must be within <code>[0,1]</code>.</li>
-            <li>Pixels outside the bounds must be null/NaN.</li>
-            <li>DrivenData accepts a single <code>.tif</code> or a <code>.zip</code> containing a single GeoTIFF.</li>
-          </ul>
-          <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">Review official problem description and format ↗</a>
-        </div>
-      </div>
-    </section>
+<h2 id="triage">If DrivenData says “Predicted values must be in range [0, 1]”</h2>
+<ol class="steps">
+<li><strong>Drop the exact uploaded file into the checker.</strong> A red ✖ on “No NaN/Inf inside the footprint” or “Every footprint value within [0, 1]” names the fault. NaNs inside the footprint are a likely cause: all 19 input layers have 3,061–3,073 invalid pixels <em>inside</em> the scored area (<a href="audit.html#F05">flag F05</a>), and models propagate them.</li>
+<li><strong>If everything is ✔,</strong> the file meets every published rule. We could not reproduce the error with any file ever published on this site (<a href="audit.html#F13">flag F13</a>), and the repositories behind the group's <em>scored</em> entries publish files in every encoding (NaN-outside and zero-outside, LZW and deflate, striped and tiled) — assuming the published file is what was uploaded.</li>
+<li><strong>Try the all-finite fallback</strong> (same in-footprint prediction, zeros outside). It carries the same content id, so it is not a new experiment.</li>
+<li><strong>Still rejected?</strong> Email <a href="mailto:info@drivendata.org">info@drivendata.org</a> (technical help, per the forum header) with the file name, SHA-256, time and a screenshot. Rules questions: <a href="mailto:gemsprize@nlr.gov">gemsprize@nlr.gov</a>.</li>
+<li><strong>Do not</strong> rescale or edit values to “get it through”: that changes the prediction. Whether a rejected upload counts against the weekly allowance is not stated in the sources read; ask DrivenData.</li></ol>
 
-    <section class="card">
-      <h2>How to make a submission</h2>
-      <ol>
-        <li>Choose one format-validated GeoTIFF from the main hub. Do not treat NaN/zero outside-footprint twins as distinct predictions.</li>
-        <li>Use a unique name and short comment that accurately identifies the method and does not claim a score that is unknown. The note above can be copied; edit the ID/comment when choosing a genuinely different experiment.</li>
-        <li>Open the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/" target="_blank" rel="noopener">DrivenData submission page ↗</a>, select the <code>.tif</code> (or accepted single-TIFF ZIP), paste the comment, and submit.</li>
-        <li>After the public score appears, record it with filename, SHA-256, score, timestamp, and experiment note in the project audit. Check the official page/account for current submission limits before upload.</li>
-      </ol>
-      <div class="info"><strong>About the previous “Predicted values must be in range [0, 1]” error:</strong> without the rejected file, the exact cause cannot be established. An in-footprint NaN, an actual value below 0 or above 1, or another input/format issue may cause rejection. The local validator catches in-footprint NaN and out-of-range values; the pipeline must sanitize source-feature NaNs before inference. The validator does not prove that a file will score well.</div>
-    </section>
+<h2>Rules that affect how you use the slots</h2>
+<ul>
+<li><strong>Three uploads per rolling 7 days</strong> per entity (<a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf" rel="noopener">rules §3.2/3.4</a>; staff: <a href="https://community.drivendata.org/t/weekly-submissions/11524/2">forum 11524 #2</a>).</li>
+<li><strong>One final submission per entity.</strong> Choose it before Dec 3, 2026 23:59 UTC, without seeing private-set scores; team members cannot each submit a separate final.</li>
+<li><strong>Accounts are personal</strong> (<a href="https://www.drivendata.org/termsofuse/">Terms of Use</a>). Do not pool accounts to multiply the limit; see <a href="audit.html#F08">F08</a>.</li>
+<li><strong>Disclose generative-AI use</strong> in any prize narrative (<a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf" rel="noopener">rules §3.2</a>).</li>
+<li>Known-fault pixels are masked; a prediction near a known fault but far from a new fault is fully penalised (<a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516/4" rel="noopener">staff</a>).</li></ul>
 
-    <section class="card">
-      <h2>Verified source links and limitations</h2>
-      <ul>
-        <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">DrivenData official problem description</a> — objective, DTI metric, data layers, and submission format.</li>
-        <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">DrivenData public leaderboard</a> — live score source.</li>
-        <li><a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and" target="_blank" rel="noopener">USGS GeoDAWN release</a> — official survey description; DOI <a href="https://doi.org/10.5066/P93LGLVQ">10.5066/P93LGLVQ</a>.</li>
-        <li><a href="https://www.usgs.gov/3d-elevation-program" target="_blank" rel="noopener">USGS 3DEP</a> and <a href="https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer?f=pjson" target="_blank" rel="noopener">available Elevation ImageServer metadata</a>.</li>
-      </ul>
-      <p class="small muted">The private competition data tab requires DrivenData login. This workspace placed files from the team’s public, SHA-pinned GitHub bridge; hashes verify that bridge copy, not independent retrieval from DrivenData. The local bridged sample template has the same positive mask as its local labels, despite the official page describing an all-absence sample. That provenance/data discrepancy remains flagged in the audit. No login credentials or competition submission account are available to this project.</p>
-      <p><a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/README.md">Project charter and next steps ↗</a> · <a href="research/hypothesis_register.md">Ranked new hypothesis register</a> · <a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/data_verification.json">Input verification evidence ↗</a></p>
-    </section>
-  </main>
-  <script>
-    function copyNote() {
-      const text = document.getElementById('submission-note').innerText;
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(() => { document.querySelector('button[onclick="copyNote()"]' ).innerText = 'Copied!'; });
-      } else {
-        const input = document.createElement('textarea'); input.value = text; document.body.appendChild(input); input.select(); document.execCommand('copy'); input.remove();
-      }
-    }
-  </script>
-</body>
-</html>
+<h2 id="record">After the score appears</h2>
+<p>Record it so the next session can learn from it (this is the one step that cannot be automated — DrivenData's Terms of Use forbid bots, and scores live behind login):</p>
+<p><code>python scripts/record_score.py &lt;candidate-key&gt; &lt;score&gt;</code> (candidate keys: <code>h18-3a</code>, <code>h16-1</code>, <code>sgmc-gap</code>; the score is whatever DrivenData shows) updates <code>registry/submissions.json</code> and the site data; then commit. The A/B pair (#1 vs #2) is the first calibration of whether the holdout proxy predicts the public score.</p>
+
+<footer><p>Built 2026-09-30 03:49 UTC from commit <code>e15145f45</code>. No score is predicted anywhere on this site; holdout figures measure recovery of <em>known</em> faults. Sources and irregularities: <a href="audit.html">Audit</a>. Project brief: <a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/README.md">README</a>.</p></footer></main>
+<script src="js/site.js"></script><script src="js/gems-tiff.js"></script><script src="js/check.js"></script></body></html>

@@ -1,136 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="16GEMSDOE research, submission artifacts, holdout results, and audit for DrivenData DOE GEMS." />
-  <title>16GEMSDOE — DOE GEMS Research & Submission Hub</title>
-  <style>
-    :root { --bg:#09101e; --panel:#121d31; --panel2:#192842; --line:#304461; --text:#edf5ff; --muted:#a9bbd2; --blue:#65c9ff; --green:#45d6a3; --amber:#ffca68; --red:#ff8292; --mono:ui-monospace,SFMono-Regular,Consolas,monospace; --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
-    * { box-sizing:border-box; } body { margin:0; background:radial-gradient(ellipse at top,#13223a 0,#09101e 48rem); color:var(--text); font:16px/1.6 var(--sans); }
-    .wrap { max-width:1160px; margin:auto; padding:22px 18px 70px; }
-    .nav { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:13px 17px; background:rgba(18,29,49,.92); border:1px solid var(--line); border-radius:12px; margin-bottom:18px; }
-    .nav-links { display:flex; flex-wrap:wrap; gap:14px; } a { color:var(--blue); } .nav a { text-decoration:none; font-weight:700; }
-    .hero,.card { background:rgba(18,29,49,.94); border:1px solid var(--line); border-radius:16px; padding:22px; margin-bottom:18px; box-shadow:0 16px 40px rgba(0,0,0,.18); }
-    .hero { border-color:rgba(255,130,146,.58); background:linear-gradient(135deg,rgba(255,130,146,.08),rgba(18,29,49,.96) 44%); }
-    .badge { display:inline-flex; padding:4px 10px; border-radius:999px; font-size:.76rem; font-weight:850; text-transform:uppercase; letter-spacing:.045em; border:1px solid currentColor; color:var(--amber); background:rgba(255,202,104,.08); }
-    h1 { font-size:clamp(1.75rem,4vw,2.7rem); line-height:1.15; margin:.45em 0; } h2 { font-size:1.35rem; margin:0 0 12px; } h3 { font-size:1.03rem; margin:0 0 8px; }
-    p { margin:.55em 0; } .muted { color:var(--muted); } .danger { color:var(--red); } .good { color:var(--green); }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; } .tile { background:var(--panel2); border:1px solid var(--line); border-radius:12px; padding:16px; }
-    .tile.primary { border-color:var(--green); } .stat { font:800 1.55rem var(--mono); color:var(--green); display:block; margin:4px 0; }
-    code,.mono { font: .9em var(--mono); background:rgba(255,255,255,.07); border-radius:5px; padding:2px 5px; overflow-wrap:anywhere; }
-    .note { display:block; font: .86rem/1.55 var(--mono); color:#d2efff; background:#08101c; border:1px solid var(--line); border-radius:8px; padding:11px; margin:11px 0; overflow-wrap:anywhere; }
-    .btn { display:inline-flex; justify-content:center; align-items:center; gap:7px; padding:10px 14px; border-radius:9px; font-weight:800; text-decoration:none; border:1px solid var(--line); background:var(--panel2); color:var(--text); cursor:pointer; }
-    .btn.main { background:var(--green); color:#06160f; border-color:var(--green); } .btn:hover { filter:brightness(1.08); }
-    .alert { border-left:4px solid var(--amber); background:rgba(255,202,104,.07); border-radius:4px 9px 9px 4px; padding:12px 15px; margin:12px 0; }
-    .table-wrap { overflow-x:auto; } table { border-collapse:collapse; width:100%; font-size:.93rem; } th,td { text-align:left; vertical-align:top; padding:10px; border-bottom:1px solid var(--line); } th { background:var(--panel2); color:#bfe4ff; }
-    ul,ol { padding-left:22px; } li { margin-bottom:7px; } .foot { color:var(--muted); font-size:.9rem; }
-    @media(max-width:620px) { .hero,.card { padding:17px; } .nav { align-items:flex-start; } th,td { min-width:120px; } }
-  </style>
-</head>
-<body>
-  <main class="wrap">
-    <header class="nav">
-      <strong>16GEMSDOE · DOE GEMS / DrivenData #306</strong>
-      <nav class="nav-links" aria-label="Main navigation">
-        <a href="executive_summary.html">Executive summary &amp; how to submit</a>
-        <a href="research/hypothesis_register.md">Hypothesis register</a>
-        <a href="leaderboard.json">Audit JSON</a>
-        <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">Live leaderboard ↗</a>
-      </nav>
-    </header>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Download your GEMS submission · 16GEMSDOE</title><meta name="description" content="Download a validated GEMS GeoTIFF, check it, and upload it with a unique name and note.">
+<link rel="stylesheet" href="assets/site.css"></head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="in"><a class="brand" href="index.html">16GEMSDOE</a><nav class="main" aria-label="Main"><a href="index.html" aria-current="page">Home</a><a href="executive_summary.html">Executive summary</a><a href="results.html">Results</a><a href="research.html">Research</a><a href="knowledge.html">Knowledge</a><a href="audit.html">Audit</a><a href="https://github.com/buffedlizard55-lab/16GEMSDOE" rel="noopener">GitHub</a></nav></div></header>
+<div class="strip"><div class="in"><span>DOE GEMS Prize · DrivenData #306</span><span>Ends <strong>Dec 3, 2026 23:59 UTC</strong> · <strong id="countdown" data-end="2026-12-03T23:59:00Z"></strong></span><span>Limit: <strong>3 uploads / rolling 7 days</strong></span><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" rel="noopener">Competition</a></div></div>
+<main id="main" class="wrap">
+<h1>Download a submission file. Check it. Upload it.</h1>
+<p class="lead">Each file below is a single-band float32 GeoTIFF in the exact format DrivenData describes, re-read and verified, unique against all 21 files in the group registry (every GeoTIFF the group's pages offered), with a unique name and a ready-to-paste note.</p>
+<div class="alert ok"><strong>Fastest path:</strong> click <strong>Download</strong> on Upload #1 <span class="arr" aria-hidden="true"></span> open the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/" rel="noopener">DrivenData submission page</a> <span class="arr" aria-hidden="true"></span> choose the file <span class="arr" aria-hidden="true"></span> paste the note <span class="arr" aria-hidden="true"></span> submit. Exact steps and the error-triage guide are on the <a href="executive_summary.html">Executive summary</a>. The three weekly slots are a <em>rolling</em> 7-day allowance.</div>
+<div class="grid g2"><article class="card cand rec" id="cand-h18-3a">
+<span class="badge b-ok">Upload #1 · recommended (passed the gate)</span>
+<h3>H16-1 surface × catalogue complexity prior</h3>
+<p class="muted">Topography + geophysics detector (out-of-fold), boosted where known faults end or intersect at km scale; thin ridges, 2.5 % of pixels per quadrant.</p>
+<div class="row"><a class="btn primary" href="downloads/gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-nan.tif" download><svg class="ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Download submission (.tif · 1.7 MB)</a>
+<a class="btn" href="downloads/gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-nan.zip" download>ZIP (0.5 MB)</a>
+<a class="btn" href="downloads/gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-allfinite.tif" download title="Same prediction, zeros outside the footprint. Use only if the form rejects the NaN version.">All-finite fallback</a></div>
+<dl class="kv"><dt>File name</dt><dd><code id="fn-h18-3a">gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-nan.tif</code> <button class="btn" type="button" data-copy="fn-h18-3a">Copy</button></dd>
+<dt>Note to paste</dt><dd><code class="note" id="note-h18-3a">16GEMSDOE H18-3a | topo+geophysics OOF surface x fault endpoint/junction prior, thin ridges 2.5%/quadrant | id c502dfab | not yet live-scored</code> <button class="btn" type="button" data-copy="note-h18-3a">Copy note</button></dd>
+<dt>Scored pixels</dt><dd>122,120 (2.363 % of footprint) · content id <code>c502dfab</code></dd>
+<dt>SHA-256</dt><dd><code>92904a5bfd84c8bd1141683fc5d29817aa4de71574d8caff5b40f7ed0072a5b8</code></dd></dl>
+<ul class="check"><li class=""><strong>Format:</strong> all 9 hard requirements pass: single band, float32, EPSG:32611, 3292 × 3730, finite values in [0, 1] on all 5,167,373 footprint pixels, read back with three different range-check implementations.</li><li class=""><strong>Official convention:</strong> NaN on all 7,111,787 outside pixels and nodata = NaN, matching the official sample's raster profile.</li><li class=""><strong>Unique:</strong> distinct against all 21 files in the group registry — the most similar is <code>GEMSDOE10-H16</code> (Jaccard overlap 0.11; duplicate threshold 0.80).</li><li class="soft"><strong>Overlap with the other candidates:</strong> h16-1 (Jaccard 0.40).</li><li class="soft"><strong>Holdout proxy (known faults):</strong> dense 0.213 / sparse 0.094 <span class="badge b-ok">gate passed</span></li><li class="soft"><strong>Not live-scored.</strong> No leaderboard score is predicted.</li></ul>
+<div class="alert info"><strong>Caveat.</strong> Passed the pre-registered gate, but a plain fault-density prior gives almost the same lift (exploratory control), so the gain is best explained by fault clustering, not by a structural-setting mechanism. The proxy rewards clustering by construction. The holdout figure uses the quadrant-wise information rule; the published file applies the same operator with every catalogued fault known.</div>
+<details><summary>All format checks for this file</summary><div class="tw"><table class=""><thead><tr><th>Check</th><th>Kind</th><th>Result</th><th>Detail</th></tr></thead><tbody><tr><td>single band</td><td>hard requirement</td><td>✔ pass</td><td>count=1</td></tr><tr><td>dtype float32</td><td>hard requirement</td><td>✔ pass</td><td>dtypes=(&#x27;float32&#x27;,)</td></tr><tr><td>crs epsg 32611</td><td>hard requirement</td><td>✔ pass</td><td>EPSG:32611</td></tr><tr><td>shape matches template</td><td>hard requirement</td><td>✔ pass</td><td>(3730, 3292) vs (3730, 3292)</td></tr><tr><td>geotransform matches template</td><td>hard requirement</td><td>✔ pass</td><td>(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0)</td></tr><tr><td>footprint all finite</td><td>hard requirement</td><td>✔ pass</td><td>0 NaN/Inf inside the 5,167,373-pixel footprint</td></tr><tr><td>footprint range 0 1</td><td>hard requirement</td><td>✔ pass</td><td>min=0 max=1</td></tr><tr><td>outside is nan official text</td><td>advisory</td><td>✔ pass</td><td>DrivenData: data outside the bounds is null or NaN.</td></tr><tr><td>nodata tag is nan</td><td>advisory</td><td>✔ pass</td><td>The official sample declares nodata = NaN.</td></tr><tr><td>variant nan aware whole array</td><td>hard requirement</td><td>✔ pass</td><td>np.nanmin/np.nanmax over the whole array</td></tr><tr><td>variant masked read</td><td>hard requirement</td><td>✔ pass</td><td>rasterio read(masked=True).compressed()</td></tr><tr><td>variant strict whole array no nan allowed</td><td>advisory</td><td>○ n/a</td><td>Would reject ANY NaN, including the official sample&#x27;s NaN outside; shown only for completeness.</td></tr><tr><td>profile matches official sample</td><td>advisory</td><td>✔ pass</td><td>Driver, dtype, nodata, size, CRS and transform equal the template&#x27;s.</td></tr></tbody></table></div></details>
+</article><article class="card cand " id="cand-h16-1">
+<span class="badge b-info">Upload #2 · A/B benchmark</span>
+<h3>H16-1 surface (current holdout best)</h3>
+<p class="muted">Topography + geophysics detector (out-of-fold), thin ridges, 2.5 % of pixels per quadrant. The benchmark every new idea must beat.</p>
+<div class="row"><a class="btn primary" href="downloads/gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-nan.tif" download><svg class="ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Download submission (.tif · 1.7 MB)</a>
+<a class="btn" href="downloads/gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-nan.zip" download>ZIP (0.5 MB)</a>
+<a class="btn" href="downloads/gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-allfinite.tif" download title="Same prediction, zeros outside the footprint. Use only if the form rejects the NaN version.">All-finite fallback</a></div>
+<dl class="kv"><dt>File name</dt><dd><code id="fn-h16-1">gems16-h16-1-topo-geophys-baseline-ridges-20260930-df20f65e-nan.tif</code> <button class="btn" type="button" data-copy="fn-h16-1">Copy</button></dd>
+<dt>Note to paste</dt><dd><code class="note" id="note-h16-1">16GEMSDOE H16-1 | topo+geophysics OOF surface, thin ridges 2.5%/quadrant (holdout benchmark) | id df20f65e | not yet live-scored</code> <button class="btn" type="button" data-copy="note-h16-1">Copy note</button></dd>
+<dt>Scored pixels</dt><dd>123,939 (2.398 % of footprint) · content id <code>df20f65e</code></dd>
+<dt>SHA-256</dt><dd><code>055309694ed499ca3d87e76b3f5e81c292aef6e39c418d33ff5a817aa1309bea</code></dd></dl>
+<ul class="check"><li class=""><strong>Format:</strong> all 9 hard requirements pass: single band, float32, EPSG:32611, 3292 × 3730, finite values in [0, 1] on all 5,167,373 footprint pixels, read back with three different range-check implementations.</li><li class=""><strong>Official convention:</strong> NaN on all 7,111,787 outside pixels and nodata = NaN, matching the official sample's raster profile.</li><li class=""><strong>Unique:</strong> distinct against all 21 files in the group registry — the most similar is <code>GEMSDOE10-H16</code> (Jaccard overlap 0.09; duplicate threshold 0.80).</li><li class="soft"><strong>Overlap with the other candidates:</strong> h18-3a (Jaccard 0.40).</li><li class="soft"><strong>Holdout proxy (known faults):</strong> dense 0.213 / sparse 0.085 <span class="badge b-info">benchmark</span></li><li class="soft"><strong>Not live-scored.</strong> No leaderboard score is predicted.</li></ul>
+<div class="alert info"><strong>Caveat.</strong> It is the benchmark itself, so it has no gate result; it has never been live-scored. Hidden-set performance is unknown.</div>
+<details><summary>All format checks for this file</summary><div class="tw"><table class=""><thead><tr><th>Check</th><th>Kind</th><th>Result</th><th>Detail</th></tr></thead><tbody><tr><td>single band</td><td>hard requirement</td><td>✔ pass</td><td>count=1</td></tr><tr><td>dtype float32</td><td>hard requirement</td><td>✔ pass</td><td>dtypes=(&#x27;float32&#x27;,)</td></tr><tr><td>crs epsg 32611</td><td>hard requirement</td><td>✔ pass</td><td>EPSG:32611</td></tr><tr><td>shape matches template</td><td>hard requirement</td><td>✔ pass</td><td>(3730, 3292) vs (3730, 3292)</td></tr><tr><td>geotransform matches template</td><td>hard requirement</td><td>✔ pass</td><td>(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0)</td></tr><tr><td>footprint all finite</td><td>hard requirement</td><td>✔ pass</td><td>0 NaN/Inf inside the 5,167,373-pixel footprint</td></tr><tr><td>footprint range 0 1</td><td>hard requirement</td><td>✔ pass</td><td>min=0 max=1</td></tr><tr><td>outside is nan official text</td><td>advisory</td><td>✔ pass</td><td>DrivenData: data outside the bounds is null or NaN.</td></tr><tr><td>nodata tag is nan</td><td>advisory</td><td>✔ pass</td><td>The official sample declares nodata = NaN.</td></tr><tr><td>variant nan aware whole array</td><td>hard requirement</td><td>✔ pass</td><td>np.nanmin/np.nanmax over the whole array</td></tr><tr><td>variant masked read</td><td>hard requirement</td><td>✔ pass</td><td>rasterio read(masked=True).compressed()</td></tr><tr><td>variant strict whole array no nan allowed</td><td>advisory</td><td>○ n/a</td><td>Would reject ANY NaN, including the official sample&#x27;s NaN outside; shown only for completeness.</td></tr><tr><td>profile matches official sample</td><td>advisory</td><td>✔ pass</td><td>Driver, dtype, nodata, size, CRS and transform equal the template&#x27;s.</td></tr></tbody></table></div></details>
+</article></div>
+<article class="card cand " id="cand-sgmc-gap">
+<span class="badge b-warn">Upload #3 · external-data probe — owner decision</span>
+<h3>USGS geologic-map faults absent from the catalogue (external data)</h3>
+<p class="muted">Faults from the USGS State Geologic Map Compilation (Nevada and California) lying &gt;300 m from every catalogue fault, thinned to 1-pixel lines. No model, no training.</p>
+<div class="row"><a class="btn primary" href="downloads/gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-nan.tif" download><svg class="ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Download submission (.tif · 1.6 MB)</a>
+<a class="btn" href="downloads/gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-nan.zip" download>ZIP (0.3 MB)</a>
+<a class="btn" href="downloads/gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-allfinite.tif" download title="Same prediction, zeros outside the footprint. Use only if the form rejects the NaN version.">All-finite fallback</a></div>
+<dl class="kv"><dt>File name</dt><dd><code id="fn-sgmc-gap">gems16-h18-4-usgs-geologic-map-faults-gap-20260930-aef8f42c-nan.tif</code> <button class="btn" type="button" data-copy="fn-sgmc-gap">Copy</button></dd>
+<dt>Note to paste</dt><dd><code class="note" id="note-sgmc-gap">16GEMSDOE H18-4 | USGS SGMC geologic-map faults &gt;300 m from catalogue, 1-px lines (external-data probe) | id aef8f42c | not yet live-scored</code> <button class="btn" type="button" data-copy="note-sgmc-gap">Copy note</button></dd>
+<dt>Scored pixels</dt><dd>57,783 (1.118 % of footprint) · content id <code>aef8f42c</code></dd>
+<dt>SHA-256</dt><dd><code>736f62c2da585677ef472cab0f9bc63bd15c50c340beb4a0f4627fafd3d1c853</code></dd></dl>
+<ul class="check"><li class=""><strong>Format:</strong> all 9 hard requirements pass: single band, float32, EPSG:32611, 3292 × 3730, finite values in [0, 1] on all 5,167,373 footprint pixels, read back with three different range-check implementations.</li><li class=""><strong>Official convention:</strong> NaN on all 7,111,787 outside pixels and nodata = NaN, matching the official sample's raster profile.</li><li class=""><strong>Unique:</strong> distinct against all 21 files in the group registry — the most similar is <code>GEMSDOE4</code> (Jaccard overlap 0.04; duplicate threshold 0.80).</li><li class="soft"><strong>Holdout proxy (known faults):</strong> dense 0.183 / sparse 0.083 <span class="badge b-warn">not gate-eligible</span></li><li class="soft"><strong>Not live-scored.</strong> No leaderboard score is predicted.</li></ul>
+<div class="alert "><strong>Caveat.</strong> NOT gate-eligible and needs an explicit owner decision: the holdout cannot measure whether geologic-map faults are NEW faults (its hidden faults are Quaternary catalogue faults, which geologic maps include). SGMC is nominally 1:1,000,000, so positions may be hundreds of metres off. Spending a slot on it is a measurement, not a validated bet.</div>
+<details><summary>All format checks for this file</summary><div class="tw"><table class=""><thead><tr><th>Check</th><th>Kind</th><th>Result</th><th>Detail</th></tr></thead><tbody><tr><td>single band</td><td>hard requirement</td><td>✔ pass</td><td>count=1</td></tr><tr><td>dtype float32</td><td>hard requirement</td><td>✔ pass</td><td>dtypes=(&#x27;float32&#x27;,)</td></tr><tr><td>crs epsg 32611</td><td>hard requirement</td><td>✔ pass</td><td>EPSG:32611</td></tr><tr><td>shape matches template</td><td>hard requirement</td><td>✔ pass</td><td>(3730, 3292) vs (3730, 3292)</td></tr><tr><td>geotransform matches template</td><td>hard requirement</td><td>✔ pass</td><td>(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0)</td></tr><tr><td>footprint all finite</td><td>hard requirement</td><td>✔ pass</td><td>0 NaN/Inf inside the 5,167,373-pixel footprint</td></tr><tr><td>footprint range 0 1</td><td>hard requirement</td><td>✔ pass</td><td>min=0 max=1</td></tr><tr><td>outside is nan official text</td><td>advisory</td><td>✔ pass</td><td>DrivenData: data outside the bounds is null or NaN.</td></tr><tr><td>nodata tag is nan</td><td>advisory</td><td>✔ pass</td><td>The official sample declares nodata = NaN.</td></tr><tr><td>variant nan aware whole array</td><td>hard requirement</td><td>✔ pass</td><td>np.nanmin/np.nanmax over the whole array</td></tr><tr><td>variant masked read</td><td>hard requirement</td><td>✔ pass</td><td>rasterio read(masked=True).compressed()</td></tr><tr><td>variant strict whole array no nan allowed</td><td>advisory</td><td>○ n/a</td><td>Would reject ANY NaN, including the official sample&#x27;s NaN outside; shown only for completeness.</td></tr><tr><td>profile matches official sample</td><td>advisory</td><td>✔ pass</td><td>Driver, dtype, nodata, size, CRS and transform equal the template&#x27;s.</td></tr></tbody></table></div></details>
+</article>
+<h2>Step 2 — check any file before you spend a slot</h2>
+<p>Drop a .tif on the <a href="executive_summary.html#checker">checker</a>. It runs in your browser (nothing is uploaded) and tells you <em>which</em> pixels break <em>which</em> rule, including the “Predicted values must be in range [0, 1]” family of problems.</p>
+<h2>Why the score 0.1563 kept repeating</h2>
+<div class="grid g3">
+<div class="card"><h3>Same bytes</h3><p>GEMSDOE1 and 5GEMSDOE host the byte-identical file (Git blob <code>812e61b740…</code>). 8GEMSDOE differs only on known-fault pixels, which the evaluator masks, so it is the same submission. GEMSDOE2 overlaps it 94.6 %.</p></div>
+<div class="card"><h3>Copied seed</h3><p>That same file sits at 8 paths in 6 repositories: each new repo was seeded from earlier evidence folders whose default <code>submission.tif</code> is the old winner.</p></div>
+<div class="card"><h3>Repeated idea</h3><p>Three repos tried near-catalogue top-k predictions and all scored ≤ 0.046. The <a href="results.html#duplicates">Results page</a> has the matrix.</p></div></div>
+<h2>Where we stand</h2>
+<div class="grid g3">
+<div class="card"><span class="muted small">Leaderboard leader (snapshot 2026-09-30)</span><p style="font-size:2rem;margin:.1em 0"><strong>0.3168</strong></p><p class="small">DARD · live value on the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" rel="noopener">official page</a></p></div>
+<div class="card"><span class="muted small">Best group score (public)</span><p style="font-size:2rem;margin:.1em 0"><strong>0.1563</strong></p><p class="small">2.03× below the leader; gap 0.1605. See <a href="results.html">Results</a>.</p></div>
+<div class="card"><span class="muted small">Current holdout best (known faults)</span><p style="font-size:2rem;margin:.1em 0"><strong>0.213</strong> <span class="muted small">dense</span></p><p class="small">sparse 0.085. A proxy, not a score. <a href="research.html">Research</a>.</p></div></div>
+<div class="alert"><strong>Read before uploading.</strong> No file here has been live-scored. The holdout recovers <em>known</em> faults while the real scoring masks them, so a holdout gain is necessary, not sufficient, evidence (measured: for our own 15 distinct scored files, the dense known-fault proxy has rank correlation +0.17 with the public score). Upload #3 cannot pass the gate by construction and needs an explicit owner decision. The group's entries appear under separate DrivenData accounts — see <a href="audit.html#F08">flag F08</a> before using several accounts.</div>
 
-    <section class="hero">
-      <span class="badge">Research status: no new candidate passed</span>
-      <h1>Find unmapped faults with evidence—not repeated submissions.</h1>
-      <p class="muted">This project researches fault predictions related to geothermal systems using GeoDAWN and public geologic data. Existing downloads are local format-checked experiments, not verified leaderboard improvements. The latest preregistered new hypothesis, H17-1, failed the spatial holdout gate. <strong class="danger">No new submission is recommended; no submission slot was spent.</strong></p>
-      <p><a class="btn" href="executive_summary.html">Read the 60-second submission guide</a> <a class="btn" href="research/hypothesis_register.md">Review ranked hypotheses &amp; sources</a></p>
-    </section>
-
-    <section class="card" aria-labelledby="download-title">
-      <h2 id="download-title">Format-checked GeoTIFF download</h2>
-      <div class="alert"><strong>Important:</strong> downloading is not a recommendation to upload. No current file is live-scored. The site’s NaN-outside TIFF is the only supplied file that follows the official outside-bounds null/NaN convention. It is an encoding twin of the all-finite file and not a separate experiment.</div>
-      <div class="grid">
-        <article class="tile primary">
-          <span class="badge" style="color:var(--green);">Official-format encoding · experimental · no live score</span>
-          <h3 style="margin-top:10px;">H16-1 ridge synthesis — NaN outside footprint (b16f02)</h3>
-          <p class="muted">Single-band float32; EPSG:32611; template grid; no NaNs or out-of-range values inside the evaluation footprint; NaN outside. This proves format properties only, not score or geology.</p>
-          <p><strong>File:</strong> <code>gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif</code><br><strong>SHA-256:</strong> <code>78b2aebe410e016d76c1cf15760561d7699346647955039bcc0b8adce87af30a</code></p>
-          <a class="btn main" href="downloads/gems16-h16-1-seamfree-multiscale-ridge-nanmask-20260929-b16f02.tif" download>Download GeoTIFF (.tif, 850 KB)</a>
-          <span class="note" id="submission-note">16GEMSDOE | H16-1 ridge synthesis; NaN outside footprint; float32 [0,1] | ID: b16f02</span>
-          <button class="btn" type="button" onclick="copyNote()">Copy experiment name/comment</button>
-        </article>
-        <article class="tile">
-          <h3>Other experimental files (not a submission recommendation)</h3>
-          <ul>
-            <li><a href="downloads/gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.tif" download>a16f01 all-finite TIFF</a> — outside pixels are zero, so it does not follow the official null/NaN outside-bounds requirement. Same in-footprint values as b16f02.</li>
-            <li><a href="downloads/gems16-h16-1-seamfree-multiscale-ridge-allfinite-20260929-a16f01.zip" download>a16f01 ZIP</a> — same all-finite TIFF packaged as ZIP.</li>
-            <li><a href="downloads/gems16-h16-1-pure-physical-scarp-worm-allfinite-20260929-c16f03.tif" download>c16f03 physical-feature TIFF</a> — outside pixels are zero; exact export was not holdout-scored and has no live score.</li>
-          </ul>
-          <p class="foot">Do not submit different nodata encodings of the same in-footprint prediction as separate methods.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Why the score 0.1563 appeared repeatedly</h2>
-      <div class="grid">
-        <article class="tile"><h3>GEMSDOE1 = 5GEMSDOE</h3><span class="stat">Same bytes</span><p>Both public repositories contain the same 570,890-byte TIFF and SHA-256 <code>7f00890a62878d612fb5eef67a9a364a2df819433dde74b6762ce4fc0fc4fe15</code>. The reported 0.1563 is one identical prediction uploaded twice.</p></article>
-        <article class="tile"><h3>8GEMSDOE</h3><span class="stat">Same off-catalogue mask</span><p>Its TIFF is different, but pixelwise equals <code>max(ens12, catalogue)</code>; all changed pixels are on the known catalogue. Equal reported score is consistent with catalogue neutrality, but not conclusive proof of evaluator behavior.</p></article>
-        <article class="tile"><h3>12GEMSDOE twin</h3><span class="stat">Same footprint</span><p>The NaN-outside and zero-outside versions differ in encoding outside the map, not in their in-footprint predictions. They are not unique scientific methods.</p></article>
-      </div>
-      <p class="foot">Historical scores are user/group records, not current guarantees. See the <a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/group_forensic_audit.json">forensic evidence ↗</a>.</p>
-    </section>
-
-    <section class="card">
-      <h2>Leaderboard and spatial holdout: separate measures</h2>
-      <div class="grid">
-        <article class="tile"><h3>Public leaderboard snapshot</h3><span class="stat">0.3168</span><p>Rank 1 at the official page when checked on 2026-09-29, approximately 23:45 UTC. The 0.3049 supplied in the request was an earlier snapshot.</p><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">Refresh from official leaderboard ↗</a><p class="foot">Static snapshot; click through for the live value.</p></article>
-        <article class="tile"><h3>Existing holdout best</h3><span class="stat">0.21272 / 0.08541</span><p>H16-1 mean dense / sparse-proxy DTI across four geographic folds.</p><p class="foot">Scores transfer to held-out regions of known mapped faults and a synthetic sparse-component proxy. They are not public/hidden leaderboard DTI.</p></article>
-        <article class="tile"><h3>New test H17-1</h3><span class="stat" style="color:var(--red);">FAILED</span><p>Cross-sensor magnetic–gravity edge agreement: 0.15759 dense / 0.06227 sparse-proxy. It lost in every fold against H16-1. No TIFF or submission was generated.</p><a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/hypothesis_h17_1_validation.json">View fold scores and hashes ↗</a></article>
-      </div>
-      <p class="foot">For exact splits, methods and limitations, see the <a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/evidence/spatial_holdout_results.json">holdout report ↗</a> and <a href="research/hypothesis_register.md">ranked hypothesis register</a>.</p>
-    </section>
-
-    <section class="card">
-      <h2>Current research hypotheses</h2>
-      <p>The five new candidates are ranked in the research register with named layers, physical signatures, novelty relative to prior experiments, costs, and trusted source links. H17-1 was the first to test and did not beat H16-1; it is not being promoted. Remaining ideas are proposals, not established findings.</p>
-      <a class="btn" href="research/hypothesis_register.md">Open the full scientific hypothesis register</a>
-    </section>
-
-    <section class="card">
-      <h2>Submission checks and known irregularities</h2>
-      <ul>
-        <li>The <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">official competition page</a> requires EPSG:32611, 100 m resolution, matching bounds, a single float32 layer, values in [0,1], and null/NaN outside bounds. Review it before every upload.</li>
-        <li>The prior “Predicted values must be in range [0, 1]” rejection cannot be diagnosed exactly without the rejected file. In-footprint NaNs can trigger the check, but genuinely out-of-range values or other issues are also possible.</li>
-        <li>The official page describes the sample submission as an all-absence baseline. The local bridged sample has 60,988 positive pixels, exactly matching the positive mask in the local labels file. This is a confirmed local-file property, but the private competition download was not independently retrieved here; the cause remains unresolved.</li>
-        <li>The local data came from the team’s public hash-pinned GitHub bridge because the DrivenData data tab requires login. Matching hashes establish consistency with the bridge, not independent provenance from DrivenData.</li>
-        <li>A former README citation for GeoDAWN DOI <code>10.5066/P9Z6SA1Z</code> was incorrect; USGS lists GeoDAWN DOI <a href="https://doi.org/10.5066/P93LGLVQ">10.5066/P93LGLVQ</a>. A previously cited lidar ScienceBase record returned Not Found; see the source register for current official links.</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Official source links</h2>
-      <ul>
-        <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">DrivenData problem description, metric and submission format</a></li>
-        <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank" rel="noopener">DrivenData live public leaderboard</a></li>
-        <li><a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and" target="_blank" rel="noopener">USGS GeoDAWN data release</a> · <a href="https://data.usgs.gov/datacatalog/data/USGS:657e1d85d34e23d3533209f7" target="_blank" rel="noopener">USGS Science Data Catalog</a> · DOI <a href="https://doi.org/10.5066/P93LGLVQ">10.5066/P93LGLVQ</a></li>
-        <li><a href="https://www.usgs.gov/3d-elevation-program" target="_blank" rel="noopener">USGS 3DEP program</a> · <a href="https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer?f=pjson" target="_blank" rel="noopener">available USGS Elevation ImageServer metadata</a></li>
-        <li><a href="https://pubs.usgs.gov/publication/70202167" target="_blank" rel="noopener">USGS research on 3D structural mapping and geothermal potential</a> · <a href="https://www.usgs.gov/publications/geothermal-systems-northern-nevada" target="_blank" rel="noopener">USGS geothermal systems of northern Nevada</a></li>
-      </ul>
-      <p class="foot">This is a static GitHub Pages site. The leaderboard link is live, but the cached JSON is a timestamped snapshot rather than a continuously refreshed feed. The team has not connected an authenticated DrivenData submission account.</p>
-      <p><a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/README.md">Project brief and reproducibility steps ↗</a> · <a href="research/hypothesis_register.md">Research register</a> · <a href="leaderboard.json">Machine-readable snapshot</a></p>
-    </section>
-  </main>
-  <script>
-    function copyNote() {
-      const text = document.getElementById('submission-note').innerText;
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(() => { document.querySelector('button[onclick^="copyNote"]').innerText = 'Copied!'; });
-      } else {
-        const area = document.createElement('textarea'); area.value = text; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove();
-      }
-    }
-  </script>
-</body>
-</html>
+<footer><p>Built 2026-09-30 03:49 UTC from commit <code>e15145f45</code>. No score is predicted anywhere on this site; holdout figures measure recovery of <em>known</em> faults. Sources and irregularities: <a href="audit.html">Audit</a>. Project brief: <a href="https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/README.md">README</a>.</p></footer></main>
+<script src="js/site.js"></script></body></html>
