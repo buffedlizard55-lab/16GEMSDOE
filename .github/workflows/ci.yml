@@ -1,0 +1,30 @@
+name: ci
+# Fast, self-contained checks on every PR/push: tests (no large rasters needed), static-site integrity, and a check that the
+# committed site HTML is in sync with the committed data.
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # the pre-registration ancestry test needs history
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Unit, integration and site tests
+        run: python -m pytest -q
+      - name: Committed site HTML is in sync with committed data
+        run: |
+          python scripts/build_site.py
+          git diff --exit-code -I 'Built [0-9]' -- docs/ index.html
+      - name: Links, anchors and scripts
+        run: python scripts/check_site.py

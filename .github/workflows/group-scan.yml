@@ -1,0 +1,36 @@
+name: group-scan
+# Daily: find NEW GeoTIFFs published in the group's public GEMS repositories and compare each on the scored pixels with every
+# file already uploaded, so a duplicate is flagged BEFORE a weekly slot is spent.  Uses only GitHub (no DrivenData access).
+on:
+  schedule:
+    - cron: '43 5 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Scan group repositories
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GEMS_DATA_DIR: ${{ runner.temp }}/gems
+        run: python scripts/scan_group_repos.py
+      - run: python scripts/build_site.py
+      - name: Commit refreshed scan
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          git commit -m "chore: daily group-repo scan [skip ci]" || echo "nothing to commit"
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"

@@ -16,7 +16,6 @@ Output: evidence/ci/external_verification.json
 from __future__ import annotations
 
 import hashlib
-import io
 import json
 import sys
 import tempfile
@@ -84,7 +83,6 @@ def main() -> None:
     import rasterio
     from rasterio import features
     from scipy.ndimage import distance_transform_edt
-    from scipy.spatial import cKDTree
 
     p_lab, p_tmp = fetch("labels"), fetch("template")
     if not (p_lab and p_tmp):
