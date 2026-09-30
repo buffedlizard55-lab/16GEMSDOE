@@ -12,13 +12,14 @@ from __future__ import annotations
 import concurrent.futures
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "data" / "dem10"
+OUT = Path(os.environ.get("GEMS_DATA_DIR", ROOT / "data")) / "dem10"
 EVIDENCE_DIR = ROOT / "evidence"
 REPO = "buffedlizard55-lab/GEMSDOE10"
 TAG = "ext/dem10-36343078537"

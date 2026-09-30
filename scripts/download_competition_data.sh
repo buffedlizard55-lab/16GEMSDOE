@@ -6,7 +6,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-DATA_DIR="${ROOT}/data"
+DATA_DIR="${GEMS_DATA_DIR:-${ROOT}/data}"
+export GEMS_DATA_DIR="${DATA_DIR}"
 mkdir -p "${DATA_DIR}/external" "${DATA_DIR}/dem10" "${DATA_DIR}/derived" "${DATA_DIR}/scored"
 
 EXPECTED_FEAT_SHA="4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5"
