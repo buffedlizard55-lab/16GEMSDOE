@@ -266,6 +266,21 @@
         "https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/docs/data/footprint.json",
         "https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/tests/test_footprint.py"
       ]
+    },
+    {
+      "id": "F22",
+      "area": "Novelty / duplication",
+      "severity": "medium",
+      "status": "needs-owner",
+      "title": "Candidate #3 (SGMC geologic-map faults) repeats an idea the group already built: Jaccard 0.63 with an unregistered GEMSDOE3 file",
+      "evidence": "The first real run of scripts/scan_group_repos.py (2026-09-30) cross-checked our three ready-to-upload candidates against the 42 published GeoTIFFs in the group repositories that are not in the registry. #1 (H18-3a) and #2 (H16-1) are clear of all of them (most similar: GEMSDOE2 gemsdoe2-extension-arm-ad5ba911.tif, Jaccard 0.07). #3 shares 46,198 of its 57,783 scored positive pixels with GEMSDOE3/docs/downloads/gapfinder-v2-sgmc-gap-20260925T045014Z-7251c22bb4.tif (61,664 positives): Jaccard 0.6307, below the 0.80 duplicate threshold but far above every other pair. GEMSDOE3's README describes SGMC-gap traces as an input to its Gapfinder and Coverline work ('Coverline v3 fusion ... + SGMC-gap traces') and says its current portfolio is unscored ('No upload has been made'). Whether the gapfinder file was ever uploaded is not known: it is not in the registry and no score is recorded for it. Earlier wording in the hypothesis register ('uses an independent official map', 'the most different candidate from every registered file') was true of the 21 registered files only; it has been corrected.",
+      "action": "Treat #3 and GEMSDOE3's gapfinder-v2-sgmc-gap file as one experiment and upload at most one of them, and only if you want to measure whether geologic-map faults are what the experts added (it cannot pass the holdout gate). Prefer uploads #1 and #2. From now on group-scan cross-checks every ready-to-upload candidate against newly published group files, and the result is shown on each candidate card.",
+      "how_established": "verified",
+      "links": [
+        "https://github.com/buffedlizard55-lab/GEMSDOE3/blob/main/docs/downloads/gapfinder-v2-sgmc-gap-20260925T045014Z-7251c22bb4.tif",
+        "https://github.com/buffedlizard55-lab/GEMSDOE3/blob/main/README.md",
+        "https://github.com/buffedlizard55-lab/16GEMSDOE/blob/main/docs/data/group_scan.json"
+      ]
     }
   ]
 }
