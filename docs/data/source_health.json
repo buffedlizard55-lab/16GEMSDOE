@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-10-12T15:17:23+00:00",
+  "generated_utc": "2026-10-19T13:08:21+00:00",
   "results": [
     {
       "url": "https://docs.nlr.gov/docs/fy26osti/96647.pdf",
@@ -66,11 +66,11 @@
     },
     {
       "url": "https://pubs.usgs.gov/publication/70202167",
-      "ok": true,
-      "status": 200,
-      "final_url": "https://pubs.usgs.gov/publication/70202167",
-      "content_type": "text/html; charset=utf-8",
-      "error": null,
+      "ok": false,
+      "status": 500,
+      "final_url": null,
+      "content_type": null,
+      "error": "HTTP 500",
       "id": "S25"
     },
     {
@@ -111,11 +111,11 @@
     },
     {
       "url": "https://mrdata.usgs.gov/geology/state/",
-      "ok": true,
-      "status": 200,
-      "final_url": "https://mrdata.usgs.gov/geology/state/",
-      "content_type": "text/html; charset=UTF-8",
-      "error": null,
+      "ok": false,
+      "status": null,
+      "final_url": null,
+      "content_type": null,
+      "error": "TimeoutError('The read operation timed out')",
       "id": "S31"
     },
     {
